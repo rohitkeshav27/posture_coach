@@ -3,7 +3,11 @@ import 'package:posture_coach/screens/bicep_screen.dart';
 import 'package:posture_coach/screens/excercises_screeen.dart';
 import 'package:posture_coach/screens/press_screen.dart';
 import 'package:posture_coach/screens/raise_screen.dart';
+import 'package:posture_coach/screens/shrug_model_screen.dart';
 import 'package:posture_coach/screens/shrug_screen.dart';
+import 'package:posture_coach/screens/bicep_model_screen.dart';
+import 'package:posture_coach/screens/raise_model_screen.dart';
+import 'package:posture_coach/screens/press_model_screen.dart';
 
 void main() {
   runApp(MyApp());
@@ -25,6 +29,10 @@ class MyApp extends StatelessWidget {
         '/raise': (context) => RaiseScreen(),
         '/press': (context) => PressScreen(),
         '/shrug': (context) => ShrugScreen(),
+        'bicep/bicepmod': (context) => BicepModelScreen(),
+        'raise/raisemod': (context) => RaiseModelScreen(),
+        '/press/pressmod': (context) => PressModelScreen(),
+        'shrug/shrugmod': (context) => ShrugModelScreen(),
       },
     );
   }

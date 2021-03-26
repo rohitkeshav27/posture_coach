@@ -41,30 +41,36 @@ class ExercisesScreen extends StatelessWidget {
         ),
       ))),
       body: SafeArea(
-        child: Column(
-          children: <Widget>[
-            Expanded(
-              child: Container(
-                child: VerticalCardPager(
-                    titles: titles, // required
-                    images: images, // required
-                    textStyle: TextStyle(
-                        color: Colors.grey[350],
-                        fontSize: 10.0,
-                        fontFamily: 'Acetone',
-                        fontWeight: FontWeight.w600), // optional
-                    onPageChanged: (page) {
-                      // optional
-                    },
-                    onSelectedItem: (index) {
-                      Navigator.pushNamed(context, routeName[index]);
-                    },
-                    initialPage: 0, // optional
-                    align: ALIGN.CENTER // optional
-                    ),
+        child: Container(
+          constraints: BoxConstraints.expand(),
+          decoration: BoxDecoration(
+              image: DecorationImage(
+                  image: AssetImage('images/bg1.jpg'), fit: BoxFit.cover)),
+          child: Column(
+            children: <Widget>[
+              Expanded(
+                child: Container(
+                  child: VerticalCardPager(
+                      titles: titles, // required
+                      images: images, // required
+                      textStyle: TextStyle(
+                          color: Colors.grey[350],
+                          fontSize: 10.0,
+                          fontFamily: 'Acetone',
+                          fontWeight: FontWeight.w600), // optional
+                      onPageChanged: (page) {
+                        // optional
+                      },
+                      onSelectedItem: (index) {
+                        Navigator.pushNamed(context, routeName[index]);
+                      },
+                      initialPage: 0, // optional
+                      align: ALIGN.CENTER // optional
+                      ),
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
