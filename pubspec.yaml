@@ -31,6 +31,8 @@ dependencies:
   vertical_card_pager: ^1.3.0
   video_player: ^2.0.2
   flip_card: ^0.4.4
+  tflite: ^1.1.1
+
 
 dev_dependencies:
   flutter_test:
