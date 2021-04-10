@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:posture_coach/screens/excercises_screeen.dart';
 import 'package:posture_coach/screens/exercise_model_screen.dart';
 import 'package:posture_coach/screens/exercise_screen_general.dart';
+import 'package:posture_coach/main.dart';
 
 const kbicep_info_front =
     'Biceps curl is a general term for a series of strength'
@@ -53,7 +54,7 @@ final bicep_exercise_screen = ExerciseScreenGeneral(
   route_grind_now: 'bicep/bicepmod',
 );
 final bicep_model_screen =
-    ExerciseModelScreen(exercise_name: 'Bicep Curl Model Screen');
+    ExerciseModelScreen(exercise_name: 'Bicep Curl', cameras: cameras);
 
 final press_exercise_screen = ExerciseScreenGeneral(
   video_name: "videos/press.mp4",
@@ -65,7 +66,7 @@ final press_exercise_screen = ExerciseScreenGeneral(
 );
 
 final press_model_screen =
-    ExerciseModelScreen(exercise_name: 'Shoulder Press Model Screen');
+    ExerciseModelScreen(exercise_name: 'Shoulder Press', cameras: cameras);
 
 final raise_exercise_screen = ExerciseScreenGeneral(
   video_name: "videos/frontraise.mp4",
@@ -77,7 +78,7 @@ final raise_exercise_screen = ExerciseScreenGeneral(
 );
 
 final raise_model_screen =
-    ExerciseModelScreen(exercise_name: 'Shoulder Front Raise Model Screen');
+    ExerciseModelScreen(exercise_name: 'Shoulder Front Raise', cameras: cameras);
 
 final shrug_exercise_screen = ExerciseScreenGeneral(
   video_name: "videos/Shrug.mp4",
@@ -88,4 +89,4 @@ final shrug_exercise_screen = ExerciseScreenGeneral(
   route_grind_now: 'shrug/shrugmod',
 );
 final shrug_model_screen =
-    ExerciseModelScreen(exercise_name: 'Shoulder Shrugs Model Screen');
+    ExerciseModelScreen(exercise_name: 'Shoulder Shrugs', cameras: cameras);

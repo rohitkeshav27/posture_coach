@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:posture_coach/constants.dart';
 import 'package:posture_coach/screens/excercises_screeen.dart';
+import 'package:posture_coach/cameras.dart';
+import 'package:camera/camera.dart';
 
-void main() {
+List<CameraDescription> cameras;
+Future<Null> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  cameras = await availableCameras();
   runApp(MyApp());
 }
 

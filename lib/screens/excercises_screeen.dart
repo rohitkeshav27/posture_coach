@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:vertical_card_pager/vertical_card_pager.dart';
 import 'package:posture_coach/imagecontainer.dart';
+import 'package:camera/camera.dart';
 
 class ExercisesScreen extends StatelessWidget {
   final List<String> titles = [
