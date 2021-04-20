@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 
 List<dynamic> _inputArr = [];
 
+// BndBox is used to draw the key points
 class BndBox extends StatelessWidget {
   static const platform = const MethodChannel('ondeviceML');
 

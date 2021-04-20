@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 
 class ImageContainer extends StatelessWidget {
   ImageContainer({@required this.path, @required this.routeName});
+
   final String path;
   final String routeName;
+
   @override
   Widget build(BuildContext context) {
     return Container(

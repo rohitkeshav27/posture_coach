@@ -1,13 +1,11 @@
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:tflite/tflite.dart';
 import 'dart:math' as math;
 
 typedef void Callback(List<dynamic> list, int h, int w);
 
 class CameraScreen extends StatefulWidget {
-
   final List<CameraDescription> cameras;
   final Callback setRecognitions;
 
@@ -17,11 +15,9 @@ class CameraScreen extends StatefulWidget {
   State<StatefulWidget> createState() {
     return new CameraScreenState();
   }
-
 }
 
 class CameraScreenState extends State<CameraScreen> {
-
   CameraController controller;
   bool isDetecting = false;
 
@@ -91,11 +87,10 @@ class CameraScreenState extends State<CameraScreen> {
 
     return OverflowBox(
       maxHeight:
-      screenRatio > previewRatio ? screenH : screenW / previewW * previewH,
+          screenRatio > previewRatio ? screenH : screenW / previewW * previewH,
       maxWidth:
-      screenRatio > previewRatio ? screenH / previewH * previewW : screenW,
+          screenRatio > previewRatio ? screenH / previewH * previewW : screenW,
       child: CameraPreview(controller),
     );
   }
-
 }

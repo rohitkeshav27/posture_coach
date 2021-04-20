@@ -1,8 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:posture_coach/screens/exercises_screen.dart';
 import 'package:posture_coach/screens/exercise_model_screen.dart';
 import 'package:posture_coach/screens/exercise_screen_general.dart';
 import 'package:posture_coach/main.dart';
+
+final List<String> titles = [
+  "Bicep Curl",
+  "Shoulder Front Raise",
+  "Shoulder Press",
+  "Shrugs",
+];
 
 const kbicep_info_front =
     'Biceps curl is a general term for a series of strength'
@@ -45,48 +51,49 @@ const kshrug_info_back =
     'Types of shoulder shrugs\n\nSeated Dumbbells\n\nHaney Barbell'
     '\n\nLaying Bar';
 
-final bicep_exercise_screen = ExerciseScreenGeneral(
-  video_name: "videos/bicep.mp4",
-  padding_value: 95.0,
-  exercise_name: 'Biceps Curl',
-  card_front_info: kbicep_info_front,
-  card_back_info: kbicep_info_back,
-  route_grind_now: 'bicep/bicepmod',
-);
-final bicep_model_screen =
-    ExerciseModelScreen(exercise_name: 'Bicep Curl', cameras: cameras);
-
-final press_exercise_screen = ExerciseScreenGeneral(
-  video_name: "videos/press.mp4",
-  padding_value: 60.0,
-  exercise_name: "Shoulder Press",
-  card_front_info: kpress_info_front,
-  card_back_info: kpress_info_back,
-  route_grind_now: '/press/pressmod',
+final bicepCurlExerciseScreen = ExerciseScreenGeneral(
+  videoName: "videos/bicep.mp4",
+  paddingValue: 95.0,
+  exerciseName: titles[0],
+  cardFrontInfo: kbicep_info_front,
+  cardBackInfo: kbicep_info_back,
+  routeGrindNow: 'bicep/bicepmod',
 );
 
-final press_model_screen =
-    ExerciseModelScreen(exercise_name: 'Shoulder Press', cameras: cameras);
+final bicepCurlModelScreen =
+    ExerciseModelScreen(exercise_name: titles[0], cameras: cameras);
 
-final raise_exercise_screen = ExerciseScreenGeneral(
-  video_name: "videos/frontraise.mp4",
-  padding_value: 40.0,
-  exercise_name: "Shoulder Front Raise",
-  card_front_info: kraise_info_front,
-  card_back_info: kraise_info_back,
-  route_grind_now: 'raise/raisemod',
+final shoulderFrontRaiseExerciseScreen = ExerciseScreenGeneral(
+  videoName: "videos/frontraise.mp4",
+  paddingValue: 40.0,
+  exerciseName: titles[1],
+  cardFrontInfo: kraise_info_front,
+  cardBackInfo: kraise_info_back,
+  routeGrindNow: 'raise/raisemod',
 );
 
-final raise_model_screen =
-    ExerciseModelScreen(exercise_name: 'Shoulder Front Raise', cameras: cameras);
+final shoulderFrontRaiseModelScreen = ExerciseModelScreen(
+    exercise_name: titles[1], cameras: cameras);
 
-final shrug_exercise_screen = ExerciseScreenGeneral(
-  video_name: "videos/Shrug.mp4",
-  padding_value: 40.0,
-  exercise_name: "Shoulder Shrugs",
-  card_front_info: kshrug_info_front,
-  card_back_info: kshrug_info_back,
-  route_grind_now: 'shrug/shrugmod',
+final shoulderPressExerciseScreen = ExerciseScreenGeneral(
+  videoName: "videos/press.mp4",
+  paddingValue: 60.0,
+  exerciseName: titles[2],
+  cardFrontInfo: kpress_info_front,
+  cardBackInfo: kpress_info_back,
+  routeGrindNow: '/press/pressmod',
 );
-final shrug_model_screen =
-    ExerciseModelScreen(exercise_name: 'Shoulder Shrugs', cameras: cameras);
+
+final shoulderPressModelScreen =
+    ExerciseModelScreen(exercise_name: titles[2], cameras: cameras);
+
+final shrugExerciseScreen = ExerciseScreenGeneral(
+  videoName: "videos/Shrug.mp4",
+  paddingValue: 40.0,
+  exerciseName: titles[3],
+  cardFrontInfo: kshrug_info_front,
+  cardBackInfo: kshrug_info_back,
+  routeGrindNow: 'shrug/shrugmod',
+);
+final shrugModelScreen =
+    ExerciseModelScreen(exercise_name: titles[3], cameras: cameras);

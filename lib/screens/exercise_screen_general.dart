@@ -1,24 +1,24 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:posture_coach/constants.dart';
 import 'package:video_player/video_player.dart';
 import 'package:posture_coach/Custom_Widgets/flipping_card.dart';
-import 'package:posture_coach/Custom_Widgets/buttononscreen.dart';
+import 'package:posture_coach/Custom_Widgets/on_screen_button.dart';
 
 class ExerciseScreenGeneral extends StatefulWidget {
-  final String video_name;
-  final double padding_value;
-  final String exercise_name;
-  final String card_front_info;
-  final String card_back_info;
-  final String route_grind_now;
+  final String videoName;
+  final double paddingValue;
+  final String exerciseName;
+  final String cardFrontInfo;
+  final String cardBackInfo;
+  final String routeGrindNow;
+
   ExerciseScreenGeneral(
-      {this.video_name,
-      this.padding_value,
-      this.exercise_name,
-      this.card_front_info,
-      this.card_back_info,
-      this.route_grind_now})
+      {this.videoName,
+      this.paddingValue,
+      this.exerciseName,
+      this.cardFrontInfo,
+      this.cardBackInfo,
+      this.routeGrindNow})
       : super();
 
   @override
@@ -26,13 +26,12 @@ class ExerciseScreenGeneral extends StatefulWidget {
 }
 
 class ExerciseScreenGeneralState extends State<ExerciseScreenGeneral> {
-  //
   VideoPlayerController _controller;
   Future<void> _initializeVideoPlayerFuture;
 
   @override
   void initState() {
-    _controller = VideoPlayerController.asset(widget.video_name);
+    _controller = VideoPlayerController.asset(widget.videoName);
     _initializeVideoPlayerFuture = _controller.initialize();
     _controller.setLooping(true);
     _controller.setVolume(0.0);
@@ -51,9 +50,9 @@ class ExerciseScreenGeneralState extends State<ExerciseScreenGeneral> {
     return Scaffold(
       appBar: AppBar(
         title: Padding(
-            padding: EdgeInsets.only(left: widget.padding_value),
+            padding: EdgeInsets.only(left: widget.paddingValue),
             child: Text(
-              widget.exercise_name,
+              widget.exerciseName,
               style: TextStyle(color: Colors.red),
             )),
       ),
@@ -81,44 +80,17 @@ class ExerciseScreenGeneralState extends State<ExerciseScreenGeneral> {
             height: 40.0,
           ),
           FlippingCard(
-            front_info: widget.card_front_info,
-            back_info: widget.card_back_info,
+            front_info: widget.cardFrontInfo,
+            back_info: widget.cardBackInfo,
           ),
           SizedBox(
             height: 30.0,
           ),
           ButtonOnScreen(
-            routeto: widget.route_grind_now,
+            routeto: widget.routeGrindNow,
           )
         ],
       ),
     );
   }
 }
-
-// floatingActionButton: FloatingActionButton(
-//   onPressed: () {
-//     setState(() {
-//       if (_controller.value.isPlaying) {
-//         _controller.pause();
-//       } else {
-//         _controller.play();
-//       }
-//     });
-//   },
-//   child:
-//       Icon(_controller.value.isPlaying ? Icons.pause : Icons.play_arrow),
-// ),
-
-// Text(
-// 'Biceps curl is a general term for a series of strength'
-// ' exercises that involve brachioradialis, '
-// 'front deltoid and the main target on biceps brachii.'
-// 'Includes variations using barbell, dumbbell and resistance band, etc.',
-// textAlign: TextAlign.center,
-// style: TextStyle(
-// //fontFamily: 'Acetone',
-// color: Colors.red[300],
-// fontWeight: FontWeight.bold,
-// fontSize: 25.0),
-// ),

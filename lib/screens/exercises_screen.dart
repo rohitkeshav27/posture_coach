@@ -1,15 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:vertical_card_pager/vertical_card_pager.dart';
-import 'package:posture_coach/imagecontainer.dart';
-import 'package:camera/camera.dart';
+import 'package:posture_coach/image_container.dart';
+
+import '../constants.dart';
 
 class ExercisesScreen extends StatelessWidget {
-  final List<String> titles = [
-    "Bicep Curl",
-    "Front Raise",
-    "Shoulder Press",
-    "SHRUGS",
-  ];
 
   final List<Widget> images = [
     ImageContainer(
@@ -29,7 +24,9 @@ class ExercisesScreen extends StatelessWidget {
       routeName: '/shrugs',
     )
   ];
+
   final List<String> routeName = ['/bicep', '/raise', '/press', '/shrug'];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -52,20 +49,24 @@ class ExercisesScreen extends StatelessWidget {
               Expanded(
                 child: Container(
                   child: VerticalCardPager(
-                      titles: titles, // required
-                      images: images, // required
+                      titles: titles,
+                      // required
+                      images: images,
+                      // required
                       textStyle: TextStyle(
                           color: Colors.grey[350],
                           fontSize: 10.0,
                           fontFamily: 'Acetone',
-                          fontWeight: FontWeight.w600), // optional
+                          fontWeight: FontWeight.w600),
+                      // optional
                       onPageChanged: (page) {
                         // optional
                       },
                       onSelectedItem: (index) {
                         Navigator.pushNamed(context, routeName[index]);
                       },
-                      initialPage: 0, // optional
+                      initialPage: 0,
+                      // optional
                       align: ALIGN.CENTER // optional
                       ),
                 ),
