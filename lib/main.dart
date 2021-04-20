@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:posture_coach/constants.dart';
-import 'package:posture_coach/screens/excercises_screeen.dart';
+import 'package:posture_coach/screens/exercises_screen.dart';
 import 'package:posture_coach/cameras.dart';
 import 'package:camera/camera.dart';
 

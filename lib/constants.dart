@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:posture_coach/screens/excercises_screeen.dart';
+import 'package:posture_coach/screens/exercises_screen.dart';
 import 'package:posture_coach/screens/exercise_model_screen.dart';
 import 'package:posture_coach/screens/exercise_screen_general.dart';
 import 'package:posture_coach/main.dart';
