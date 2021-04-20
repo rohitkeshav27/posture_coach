@@ -1,19 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:flip_card/flip_card.dart';
-import 'package:posture_coach/constants.dart';
+
+const flippingCardStyle = TextStyle(
+    color: Colors.black, fontWeight: FontWeight.normal, fontSize: 20.0);
 
 class FlippingCard extends StatelessWidget {
-  FlippingCard({@required this.front_info, @required this.back_info});
+  FlippingCard({@required this.frontInfo, @required this.backInfo});
 
-  final String front_info;
-  final String back_info;
+  final String frontInfo;
+  final String backInfo;
+
   @override
   Widget build(BuildContext context) {
     return Opacity(
       opacity: 0.70,
       child: Card(
+        margin: const EdgeInsets.only(left: 20.0, right: 20.0),
         elevation: 0.0,
-        color: Colors.black,
+        color: Colors.white,
         child: FlipCard(
           direction: FlipDirection.HORIZONTAL,
           speed: 1000,
@@ -22,8 +26,8 @@ class FlippingCard extends StatelessWidget {
           },
           front: Container(
             decoration: BoxDecoration(
-              border: Border.all(color: Colors.red, width: 5.0),
-              color: Colors.black,
+              border: Border.all(color: Colors.white, width: 5.0),
+              color: Colors.teal,
               borderRadius: BorderRadius.all(Radius.circular(8.0)),
             ),
             child: Column(
@@ -31,7 +35,7 @@ class FlippingCard extends StatelessWidget {
               children: <Widget>[
                 Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: Text(front_info, style: kbicep_info_style),
+                  child: Text(frontInfo, style: flippingCardStyle),
                 ),
               ],
             ),
@@ -39,14 +43,18 @@ class FlippingCard extends StatelessWidget {
           back: Container(
             width: 400.0,
             decoration: BoxDecoration(
-              border: Border.all(color: Colors.red, width: 5.0),
-              color: Colors.black,
+              border: Border.all(color: Colors.white, width: 5.0),
+              color: Colors.teal,
               borderRadius: BorderRadius.all(Radius.circular(8.0)),
             ),
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                Text(back_info, style: kbicep_info_style),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text(backInfo, style: flippingCardStyle),
+                )
               ],
             ),
           ),

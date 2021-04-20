@@ -14,7 +14,7 @@ class ImageContainer extends StatelessWidget {
         boxShadow: [
           //background color of box
           BoxShadow(
-            color: Colors.red[400],
+            color: Colors.teal[800],
             blurRadius: 10.0, // soften the shadow
             spreadRadius: 1.0, //extend the shadow
             offset: Offset(

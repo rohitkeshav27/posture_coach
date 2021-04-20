@@ -1,37 +1,26 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:posture_coach/Exercises/exercise.dart';
 import 'package:video_player/video_player.dart';
 import 'package:posture_coach/Custom_Widgets/flipping_card.dart';
 import 'package:posture_coach/Custom_Widgets/on_screen_button.dart';
 
-class ExerciseScreenGeneral extends StatefulWidget {
-  final String videoName;
-  final double paddingValue;
-  final String exerciseName;
-  final String cardFrontInfo;
-  final String cardBackInfo;
-  final String routeGrindNow;
+class ExerciseScreen extends StatefulWidget {
+  final Exercise exercise;
 
-  ExerciseScreenGeneral(
-      {this.videoName,
-      this.paddingValue,
-      this.exerciseName,
-      this.cardFrontInfo,
-      this.cardBackInfo,
-      this.routeGrindNow})
-      : super();
+  ExerciseScreen({this.exercise}) : super();
 
   @override
-  ExerciseScreenGeneralState createState() => ExerciseScreenGeneralState();
+  ExerciseScreenState createState() => ExerciseScreenState();
 }
 
-class ExerciseScreenGeneralState extends State<ExerciseScreenGeneral> {
+class ExerciseScreenState extends State<ExerciseScreen> {
   VideoPlayerController _controller;
   Future<void> _initializeVideoPlayerFuture;
 
   @override
   void initState() {
-    _controller = VideoPlayerController.asset(widget.videoName);
+    _controller = VideoPlayerController.asset(widget.exercise.videoURL);
     _initializeVideoPlayerFuture = _controller.initialize();
     _controller.setLooping(true);
     _controller.setVolume(0.0);
@@ -50,10 +39,10 @@ class ExerciseScreenGeneralState extends State<ExerciseScreenGeneral> {
     return Scaffold(
       appBar: AppBar(
         title: Padding(
-            padding: EdgeInsets.only(left: widget.paddingValue),
+            padding: EdgeInsets.only(left: widget.exercise.paddingValue),
             child: Text(
-              widget.exerciseName,
-              style: TextStyle(color: Colors.red),
+              widget.exercise.name,
+              style: TextStyle(color: Colors.black),
             )),
       ),
       body: Column(
@@ -80,14 +69,14 @@ class ExerciseScreenGeneralState extends State<ExerciseScreenGeneral> {
             height: 40.0,
           ),
           FlippingCard(
-            front_info: widget.cardFrontInfo,
-            back_info: widget.cardBackInfo,
+            frontInfo: widget.exercise.cardInfoFront,
+            backInfo: widget.exercise.cardInfoBack,
           ),
           SizedBox(
             height: 30.0,
           ),
           ButtonOnScreen(
-            routeto: widget.routeGrindNow,
+            routeTo: widget.exercise.route,
           )
         ],
       ),

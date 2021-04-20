@@ -1,24 +1,25 @@
 import 'package:flutter/material.dart';
 
 class ButtonOnScreen extends StatelessWidget {
-  ButtonOnScreen({@required this.routeto});
-  final String routeto;
+  ButtonOnScreen({@required this.routeTo});
+
+  final String routeTo;
+
   @override
   Widget build(BuildContext context) {
     return Opacity(
       opacity: 0.95,
       child: ElevatedButton(
           onPressed: () {
-            Navigator.pushNamed(context, routeto);
+            Navigator.pushNamed(context, routeTo);
           },
           style: ElevatedButton.styleFrom(
-            shadowColor: Colors.red,
+            shadowColor: Colors.teal,
             textStyle: TextStyle(
-              fontFamily: 'Granite',
               fontSize: 30.0,
               fontWeight: FontWeight.bold,
             ),
-            onPrimary: Colors.red,
+            onPrimary: Colors.teal,
             primary: Colors.white,
             padding: EdgeInsets.only(
                 left: 100.0, right: 100.0, top: 10.0, bottom: 10.0),
@@ -26,7 +27,7 @@ class ButtonOnScreen extends StatelessWidget {
               borderRadius: new BorderRadius.circular(30.0),
             ),
           ),
-          child: Text('Grind   Now',
+          child: Text('Try it Now!',
               style: TextStyle(
                 fontWeight: FontWeight.bold,
               ))),

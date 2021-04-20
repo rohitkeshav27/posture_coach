@@ -2,9 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:vertical_card_pager/vertical_card_pager.dart';
 import 'package:posture_coach/image_container.dart';
 
-import '../constants.dart';
+class ExerciseInventoryScreen extends StatelessWidget {
 
-class ExercisesScreen extends StatelessWidget {
+  final List<String> titles = [
+    "Bicep Curl",
+    "Shoulder Front Raise",
+    "Shoulder Press",
+    "Shrugs",
+  ];
 
   final List<Widget> images = [
     ImageContainer(
@@ -35,15 +40,11 @@ class ExercisesScreen extends StatelessWidget {
               child: Text(
         'List of Exercises',
         style: TextStyle(
-          color: Colors.red,
+          color: Colors.black,
         ),
       ))),
       body: SafeArea(
         child: Container(
-          constraints: BoxConstraints.expand(),
-          decoration: BoxDecoration(
-              image: DecorationImage(
-                  image: AssetImage('images/bg1.jpg'), fit: BoxFit.cover)),
           child: Column(
             children: <Widget>[
               Expanded(

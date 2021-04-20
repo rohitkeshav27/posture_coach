@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:posture_coach/constants.dart';
-import 'package:posture_coach/screens/exercises_screen.dart';
 import 'package:camera/camera.dart';
+import 'package:posture_coach/screens/exercise_inventory_screen.dart';
+import 'package:posture_coach/Exercises/exercise.dart';
+import 'package:posture_coach/screens/exercise_model_screen.dart';
+import 'package:posture_coach/screens/exercise_screen.dart';
 
 List<CameraDescription> cameras;
+
 Future<Null> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   cameras = await availableCameras();
@@ -16,20 +19,24 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Posture Coach',
       theme: ThemeData(
-        primaryColor: Colors.grey[900],
-        scaffoldBackgroundColor: Colors.black,
+        primaryColor: Colors.teal,
+        scaffoldBackgroundColor: Colors.white,
       ),
       initialRoute: '/',
       routes: {
-        '/': (context) => ExercisesScreen(),
-        '/bicep': (context) => bicepCurlExerciseScreen,
-        '/raise': (context) => shoulderFrontRaiseExerciseScreen,
-        '/press': (context) => shoulderPressExerciseScreen,
-        '/shrug': (context) => shrugExerciseScreen,
-        'bicep/bicepmod': (context) => bicepCurlModelScreen,
-        'raise/raisemod': (context) => shoulderFrontRaiseModelScreen,
-        '/press/pressmod': (context) => shoulderPressModelScreen,
-        'shrug/shrugmod': (context) => shrugModelScreen,
+        '/': (context) => ExerciseInventoryScreen(),
+        '/bicep': (context) => ExerciseScreen(exercise: exercises[0]),
+        '/raise': (context) => ExerciseScreen(exercise: exercises[1]),
+        '/press': (context) => ExerciseScreen(exercise: exercises[2]),
+        '/shrug': (context) => ExerciseScreen(exercise: exercises[3]),
+        '/bicep/bicepmod': (context) => ExerciseModelScreen(
+            exerciseName: exercises[0].name, cameras: cameras),
+        '/raise/raisemod': (context) => ExerciseModelScreen(
+            exerciseName: exercises[1].name, cameras: cameras),
+        '/press/pressmod': (context) => ExerciseModelScreen(
+            exerciseName: exercises[2].name, cameras: cameras),
+        '/shrug/shrugmod': (context) => ExerciseModelScreen(
+            exerciseName: exercises[3].name, cameras: cameras),
       },
     );
   }
