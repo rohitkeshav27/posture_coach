@@ -26,7 +26,7 @@ class CameraScreenState extends State<CameraScreen> {
   @override
   void initState() {
     super.initState();
-    controller = new CameraController(widget.cameras[1], ResolutionPreset.low);
+    controller = new CameraController(widget.cameras[1], ResolutionPreset.high);
     controller.initialize().then((_) {
       if (!mounted) {
         return;
@@ -51,13 +51,13 @@ class CameraScreenState extends State<CameraScreen> {
             nmsRadius: 10,
           ).then((recognitions) {
             int endTime = new DateTime.now().millisecondsSinceEpoch;
-            print("Detection took ${endTime - startTime}");
-            print("RBlog posenet");
-            print(recognitions);
+            //print("Detection took ${endTime - startTime}");
+            //print("RBlog posenet");
+            //print(recognitions);
             //print("img.height");
-             print(recognitions.length);
-            print(img.height);
-             print(img.width);
+             //print(recognitions.length);
+            //print(img.height);
+            // print(img.width);
             widget.setRecognitions(recognitions, img.height, img.width);
 
             isDetecting = false;
