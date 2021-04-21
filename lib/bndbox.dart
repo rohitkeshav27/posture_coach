@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:posture_coach/stickFigure.dart';
 
 List<dynamic> _inputArr = [];
 
@@ -60,20 +61,23 @@ class BndBox extends StatelessWidget {
             var temp = 320 - x;
             x = 320 + temp;
           }
-
           return Positioned(
-            left: x - 275,
+            left: x - 230,
             top: y - 50,
             width: 100,
             height: 15,
             child: Container(
-              child: Text(
-                "● ${k["part"]}",
-                style: TextStyle(
-                  color: Color.fromRGBO(37, 213, 253, 1.0),
-                  fontSize: 12.0,
-                ),
-              ),
+              child :  Stack(
+                  children : [
+                    Text(
+                      "● ${k["part"]}",
+                      style: TextStyle(
+                        color: Color.fromRGBO(37, 213, 253, 1.0),
+                        fontSize: 12.0,
+                      ),
+                    )
+                  ]
+              )
             ),
           );
         }).toList();
