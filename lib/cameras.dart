@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:tflite/tflite.dart';
@@ -21,6 +23,7 @@ class CameraScreenState extends State<CameraScreen> {
   CameraController controller;
   bool isDetecting = false;
   int startTime;
+  int endTime;
   //static const platform = const MethodChannel('ondeviceML');
 
   @override
@@ -37,7 +40,7 @@ class CameraScreenState extends State<CameraScreen> {
         if (!isDetecting) {
           isDetecting = true;
 
-          startTime = new DateTime.now().millisecondsSinceEpoch;
+          startTime = DateTime.now().millisecondsSinceEpoch;
           Tflite.runPoseNetOnFrame(
             bytesList: img.planes.map((plane) {
               return plane.bytes;
@@ -49,14 +52,14 @@ class CameraScreenState extends State<CameraScreen> {
             threshold: 0.2,
             nmsRadius: 10,
           ).then((recognitions) {
-            int endTime = new DateTime.now().millisecondsSinceEpoch;
+            endTime = DateTime.now().millisecondsSinceEpoch;
             print("Detection took ${endTime - startTime}");
-            print("RBlog posenet");
+            // print("RBlog posenet");
             // print(recognitions.length);
             // print(img.height);
             // print(img.width);
+            //log(recognitions.toString());
             widget.setRecognitions(recognitions, img.height, img.width);
-
             isDetecting = false;
           });
         }

@@ -25,7 +25,7 @@ class BndBox extends StatelessWidget {
   Widget build(BuildContext context) {
     List<Widget> _renderKeypoints() {
       var lists = <Widget>[];
-      print("RBlog bndbox");
+      // print("RBlog bndbox");
       // print(results.length);
       results.forEach((re) {
         var list = re["keypoints"].values.map<Widget>((k) {
