@@ -21,6 +21,7 @@ class CameraScreenState extends State<CameraScreen> {
   CameraController controller;
   bool isDetecting = false;
   int startTime;
+
   //static const platform = const MethodChannel('ondeviceML');
 
   @override
@@ -34,7 +35,6 @@ class CameraScreenState extends State<CameraScreen> {
       setState(() {});
 
       controller.startImageStream((CameraImage img) {
-
         if (!isDetecting) {
           isDetecting = true;
 
@@ -55,7 +55,7 @@ class CameraScreenState extends State<CameraScreen> {
             //print("RBlog posenet");
             //print(recognitions);
             //print("img.height");
-             //print(recognitions.length);
+            //print(recognitions.length);
             //print(img.height);
             // print(img.width);
             widget.setRecognitions(recognitions, img.height, img.width);
