@@ -67,21 +67,17 @@ class BndBox extends StatelessWidget {
             width: 100,
             height: 15,
             child: Container(
-              child :  Stack(
-                  children : [
-                    Text(
-                      "● ${k["part"]}",
-                      style: TextStyle(
-                        color: Color.fromRGBO(37, 213, 253, 1.0),
-                        fontSize: 12.0,
-                      ),
-                    )
-                  ]
+                child: Stack(children: [
+              Text(
+                "● ${k["part"]}",
+                style: TextStyle(
+                  color: Color.fromRGBO(37, 213, 253, 1.0),
+                  fontSize: 12.0,
+                ),
               )
-            ),
+            ])),
           );
         }).toList();
-
 
         _inputArr.clear();
         // print("Input Arr after clear: " + _inputArr.toList().toString());
