@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-List<dynamic> _inputArr = [];
-
 // BndBox is used to draw the key points
 class BndBox extends StatelessWidget {
   static const platform = const MethodChannel('ondeviceML');
@@ -25,8 +23,6 @@ class BndBox extends StatelessWidget {
   Widget build(BuildContext context) {
     List<Widget> _renderKeypoints() {
       var lists = <Widget>[];
-      // print("RBlog bndbox");
-      // print(results.length);
       results.forEach((re) {
         var list = re["keypoints"].values.map<Widget>((k) {
           var _x = k["x"];
@@ -46,41 +42,25 @@ class BndBox extends StatelessWidget {
             x = _x * scaleW;
             y = (_y - difH / 2) * scaleH;
           }
-          // print('x: ' + x.toString());
-          // print('y: ' + y.toString());
-
-          _inputArr.add(x);
-          _inputArr.add(y);
 
           // To solve mirror problem on front camera
-          if (x > 320) {
-            var temp = x - 320;
-            x = 320 - temp;
-          } else {
-            var temp = 320 - x;
-            x = 320 + temp;
-          }
+          x = screenW - x;
 
           return Positioned(
-            left: x - 275,
-            top: y - 50,
-            width: 100,
-            height: 15,
+            left: x,
+            top: y,
             child: Container(
-              child: Text(
+                child: Stack(children: [
+              Text(
                 "● ${k["part"]}",
                 style: TextStyle(
                   color: Color.fromRGBO(37, 213, 253, 1.0),
                   fontSize: 12.0,
                 ),
-              ),
-            ),
+              )
+            ])),
           );
         }).toList();
-
-
-        _inputArr.clear();
-        // print("Input Arr after clear: " + _inputArr.toList().toString());
 
         lists..addAll(list);
       });

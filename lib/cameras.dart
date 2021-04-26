@@ -54,10 +54,6 @@ class CameraScreenState extends State<CameraScreen> {
           ).then((recognitions) {
             endTime = DateTime.now().millisecondsSinceEpoch;
             print("Detection took ${endTime - startTime}");
-            // print("RBlog posenet");
-            // print(recognitions.length);
-            // print(img.height);
-            // print(img.width);
             //log(recognitions.toString());
             widget.setRecognitions(recognitions, img.height, img.width);
             isDetecting = false;

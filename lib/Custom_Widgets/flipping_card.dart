@@ -22,7 +22,7 @@ class FlippingCard extends StatelessWidget {
           direction: FlipDirection.HORIZONTAL,
           speed: 1000,
           onFlipDone: (status) {
-            print(status);
+      //      print(status);
           },
           front: Container(
             decoration: BoxDecoration(
