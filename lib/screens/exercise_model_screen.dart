@@ -5,6 +5,7 @@ import 'package:posture_coach/bndbox.dart';
 import 'package:posture_coach/stickFigure.dart';
 import 'package:camera/camera.dart';
 import 'package:tflite/tflite.dart';
+import 'package:flutter/services.dart';
 
 class ExerciseModelScreen extends StatefulWidget {
   final String exerciseName;
@@ -27,19 +28,13 @@ class _ExerciseModelScreenState extends State<ExerciseModelScreen> {
     super.initState();
     var res = loadModel();
     print('Model Response: ' + res.toString());
+    SystemChrome.setEnabledSystemUIOverlays([]);
   }
 
   @override
   Widget build(BuildContext context) {
     Size screen = MediaQuery.of(context).size;
     return Scaffold(
-      appBar: AppBar(
-        title: Center(
-            child: Text(
-          widget.exerciseName,
-          style: TextStyle(color: Colors.black),
-        )),
-      ),
       body: Stack(children: [
         CameraScreen(
             cameras: widget.cameras, setRecognitions: _setRecognitions),

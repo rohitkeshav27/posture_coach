@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-List<dynamic> _inputArr = [];
-
 // MyPainter is used to draw the sticky figure
 class MyPainter extends CustomPainter {
   static const platform = const MethodChannel('ondeviceML');
@@ -44,28 +42,13 @@ class MyPainter extends CustomPainter {
       x = _x * scaleW;
       y = (_y - difH / 2) * scaleH;
     }
-    if (x > 320) {
-      var temp = x - 320;
-      x = 320 - temp;
-    } else {
-      var temp = 320 - x;
-      x = 320 + temp;
-    }
+    x = screenW - x;
 
-    x = x - 230;
-    y = y - 50;
-    // print(x);
-    // print(y);
     point["x"] = x;
     point["y"] = y;
   }
 
   void drawSkeleton(var part1, var part2, Paint paint, Canvas canvas) {
-    // print(part1["x"]);
-    // print(part1["y"]);
-    // print("inside draw");
-    //  print(part1["part"]);
-    //  print(part2["part"]);
 
     if (part1["score"] < 0.2 || part2["score"] < 0.2) {
       return;
@@ -82,7 +65,7 @@ class MyPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     var paint = Paint()
-      ..color = Colors.red
+      ..color = Color.fromRGBO(37, 213, 253, 1.0)
       ..strokeWidth = 5;
 
     var numbers = [5, 6, 7, 8, 9, 10, 11, 13, 15, 12, 14, 16];
