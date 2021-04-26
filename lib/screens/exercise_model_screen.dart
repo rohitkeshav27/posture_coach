@@ -64,17 +64,23 @@ class _ExerciseModelScreenState extends State<ExerciseModelScreen> {
       return;
     }
     setState(() {
-      var pose = new Skeleton(recognitions);
-      pose.display();
       _recognitions = recognitions;
       _imageHeight = imageHeight;
       _imageWidth = imageWidth;
+      if(_recognitions.isNotEmpty) {
+        var pose = new Skeleton(recognitions);
+        //.display();
+      }
     });
   }
 
   Future loadModel() async {
     return await Tflite.loadModel(
       model: "assets/models/posenet_mv1_075_float_from_checkpoints.tflite",
+      // model: "assets/models/posenet_mobilenet_v1_100_257x257_multi_kpt_stripped.tflite",
+      // model: "assets/models/multi_person_mobilenet_v1_075_float.tflite",
+      useGpuDelegate: true,
+      numThreads: 2,
     );
   }
 }
