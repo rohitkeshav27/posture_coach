@@ -4,6 +4,7 @@ import 'package:posture_coach/cameras.dart';
 import 'package:posture_coach/bndbox.dart';
 import 'package:posture_coach/stickFigure.dart';
 import 'package:camera/camera.dart';
+import 'package:posture_coach/skeleton.dart';
 import 'package:tflite/tflite.dart';
 import 'package:flutter/services.dart';
 
@@ -63,6 +64,8 @@ class _ExerciseModelScreenState extends State<ExerciseModelScreen> {
       return;
     }
     setState(() {
+      var pose = new Skeleton(recognitions);
+      pose.display();
       _recognitions = recognitions;
       _imageHeight = imageHeight;
       _imageWidth = imageWidth;
@@ -70,7 +73,6 @@ class _ExerciseModelScreenState extends State<ExerciseModelScreen> {
   }
 
   Future loadModel() async {
-    Tflite?.close();
     return await Tflite.loadModel(
       model: "assets/models/posenet_mv1_075_float_from_checkpoints.tflite",
     );
