@@ -7,6 +7,7 @@ import 'package:camera/camera.dart';
 import 'package:posture_coach/skeleton.dart';
 import 'package:tflite/tflite.dart';
 import 'package:flutter/services.dart';
+import 'package:posture_coach/Custom_Widgets/accuracy_meter.dart';
 
 class ExerciseModelScreen extends StatefulWidget {
   final String exerciseName;
@@ -23,6 +24,7 @@ class _ExerciseModelScreenState extends State<ExerciseModelScreen> {
   List<dynamic> _recognitions;
   int _imageHeight = 0;
   int _imageWidth = 0;
+  double _accuracyscore = 0;
 
   @override
   void initState() {
@@ -48,17 +50,31 @@ class _ExerciseModelScreenState extends State<ExerciseModelScreen> {
         ),
         CustomPaint(
             painter: MyPainter(
-            results: _recognitions == null ? [] : _recognitions,
+          results: _recognitions == null ? [] : _recognitions,
           previewH: max(_imageHeight, _imageWidth),
           previewW: min(_imageHeight, _imageWidth),
           screenH: screen.height,
           screenW: screen.width,
-            )
-        )
+        )),
+        Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(top: 8.0),
+              child: AccuracyMeter(
+                score: _accuracyscore,
+              ),
+            ),
+          ],
+        ),
       ]),
     );
   }
 
+  // Future _putscore(double value)async
+  // {
+  //   return
+  // }
   _setRecognitions(recognitions, imageHeight, imageWidth) {
     if (!mounted) {
       return;
@@ -67,8 +83,10 @@ class _ExerciseModelScreenState extends State<ExerciseModelScreen> {
       _recognitions = recognitions;
       _imageHeight = imageHeight;
       _imageWidth = imageWidth;
-      if(_recognitions.isNotEmpty) {
+      if (_recognitions.isNotEmpty) {
         var pose = new Skeleton(recognitions);
+        _accuracyscore =
+            22.0; //TODO:Pass the value after calculating the accuracy
         //.display();
       }
     });
