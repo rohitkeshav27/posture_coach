@@ -33,6 +33,7 @@ dependencies:
   flip_card: ^0.4.4
   tflite: ^1.1.1
   camera: ^0.5.5
+  syncfusion_flutter_gauges: ^19.1.58
 
 
 dev_dependencies:
