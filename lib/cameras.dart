@@ -54,7 +54,7 @@ class CameraScreenState extends State<CameraScreen> {
           ).then((recognitions) {
             endTime = DateTime.now().millisecondsSinceEpoch;
             print("Detection took ${endTime - startTime}");
-            //log(recognitions.toString());
+            //log(recognitions.toString())
             widget.setRecognitions(recognitions, img.height, img.width);
             isDetecting = false;
           });
@@ -84,11 +84,18 @@ class CameraScreenState extends State<CameraScreen> {
     var screenRatio = screenH / screenW;
     var previewRatio = previewH / previewW;
 
-    return OverflowBox(
-      maxHeight:
-          screenRatio > previewRatio ? screenH : screenW / previewW * previewH,
-      maxWidth:
-          screenRatio > previewRatio ? screenH / previewH * previewW : screenW,
+    // return OverflowBox(
+    //   maxHeight:
+    //       screenRatio < previewRatio ? screenH : screenW / previewW * previewH,
+    //   maxWidth:
+    //       screenRatio < previewRatio ? screenH / previewH * previewW : screenW,
+    //   child: CameraPreview(controller),
+    // );
+
+    return Positioned(
+      top: 0,
+      height: screenRatio < previewRatio ? screenH : screenW / previewW * previewH,
+      width: screenRatio < previewRatio ? screenH / previewH * previewW : screenW,
       child: CameraPreview(controller),
     );
   }

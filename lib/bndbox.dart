@@ -29,7 +29,7 @@ class BndBox extends StatelessWidget {
           var _y = k["y"];
           var scaleW, scaleH, x, y;
 
-          if (screenH / screenW > previewH / previewW) {
+          if (screenH / screenW < previewH / previewW) {
             scaleW = screenH / previewH * previewW;
             scaleH = screenH;
             var difW = (scaleW - screenW) / scaleW;
@@ -38,13 +38,23 @@ class BndBox extends StatelessWidget {
           } else {
             scaleH = screenW / previewW * previewH;
             scaleW = screenW;
-            var difH = (scaleH - screenH) / scaleH;
+            var difH = 0;// (scaleH - screenH) / scaleH;
             x = _x * scaleW;
             y = (_y - difH / 2) * scaleH;
           }
 
           // To solve mirror problem on front camera
           x = screenW - x;
+
+          if (k["part"]=="rightShoulder") {
+            print("bndbox "+x.toString()+","+y.toString());
+          }
+          if (k["part"]=="rightElbow") {
+            print("bndbox "+x.toString()+","+y.toString());
+          }
+          if (k["part"]=="rightWrist") {
+            print("bndbox "+x.toString()+","+y.toString());
+          }
 
           return Positioned(
             left: x,
