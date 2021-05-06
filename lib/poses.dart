@@ -1,8 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:posture_coach/metrics.dart';
 
 class Poses {
-  Map<int,Map<String,double>> evaluate(var recognitions) {}
+  Map<dynamic,dynamic> evaluate(var recognitions, var imageHeight, var imageWidth, var counter) {}
 }
 
 class PosesFactory {
@@ -12,38 +13,17 @@ class PosesFactory {
       break;
       case "Shoulder Press": return ShoulderPress();
       break;
+      case "Shoulder Front Raise": return ShoulderFrontRaise();
+      break;
+      case "Shrugs": return Shrugs();
+      break;
       default: return null;
     }
   }
 }
 
-class BicepCurl implements Poses {
-  Map<int,Map<String,double>> evaluate(var recognitions) {
-    print("Bicep curl evaluate");
-    var result = Map<int,Map<String,double>>();
-    var innerResult = Map<String,double>();
-    innerResult["x"] = recognitions[0]["keypoints"][8]["x"];
-    innerResult["y"] = recognitions[0]["keypoints"][8]["y"];
-    innerResult["completion"] = 0.75;
-    result[8] = innerResult;
-    return result;
-  }
-}
-
-class ShoulderPress implements Poses {
-  Map<int,Map<String,double>> evaluate(var recognitions) {
-    print("Shoulder Press evaluate");
-    var result = Map();
-    result[8] = Map();
-    result[8]["x"] = recognitions[0]["keypoints"][8]["x"];
-    result[8]["y"] = recognitions[0]["keypoints"][8]["y"];
-    result[8]["completion"] = 0.5; //TODO: Calculate completion value
-    return result;
-  }
-}
-
 class JointCompletion extends StatelessWidget {
-  final Map<int,Map<String,double>> results;
+  final Map<dynamic,dynamic> results;
   final int previewH;
   final int previewW;
   final double screenH;
@@ -62,7 +42,7 @@ class JointCompletion extends StatelessWidget {
     List<Widget> _renderCompletions() {
       var lists = <Widget>[];
       if(results.isNotEmpty) {
-        var list = results.values.map((k) {
+        var list = results["keypoints"].map<Widget>((k) {
           var _x = k["x"];
           var _y = k["y"];
           var scaleW, scaleH, x, y;
@@ -84,11 +64,36 @@ class JointCompletion extends StatelessWidget {
           // To solve mirror problem on front camera
           x = screenW - x;
 
+          int green;
+          int red;
+          double score;
+          if (k["type"] == 1.0) {
+            score = k["completion"];
+            if (score < 0.5) {
+              red = 255;
+              green = (score * 2 * 255).toInt();
+            } else {
+              red = 255 - (score * 2 * 255).toInt();
+              green = 255;
+            }
+          } else {
+            score = 1;
+            if (k["completion"] == 1.0) {
+              green = 255;
+              red = 0;
+            } else {
+              green = 0;
+              red = 255;
+            }
+          }
+
           return Positioned(
               left: x,
               top: y,
               child: CircularProgressIndicator(
-                value: k["completion"],
+                value: score,
+                valueColor: AlwaysStoppedAnimation<Color>(Color.fromRGBO(red, green, 0, 1.0)),
+                strokeWidth: 8.0,
               )
           );
         }).toList();

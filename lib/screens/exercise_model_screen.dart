@@ -27,6 +27,7 @@ class _ExerciseModelScreenState extends State<ExerciseModelScreen> {
   int _imageWidth = 0;
   String angle = "";
   var completions;
+  int counter = 0;
 
   @override
   void initState() {
@@ -62,7 +63,7 @@ class _ExerciseModelScreenState extends State<ExerciseModelScreen> {
         Positioned(
           top: 10,
           child: Text(
-          angle,
+          counter.toString(),
           style: TextStyle(
             color: Color.fromRGBO(37, 213, 253, 1.0),
             fontSize: 20.0,
@@ -70,7 +71,7 @@ class _ExerciseModelScreenState extends State<ExerciseModelScreen> {
         )
         ),
         JointCompletion(
-          results: completions == null ? Map<int, Map<String, double>>() : completions,
+          results: completions == null ? Map<dynamic,dynamic>() : completions,
           previewH: max(_imageHeight, _imageWidth),
           previewW: min(_imageHeight, _imageWidth),
           screenH: screen.height,
@@ -89,16 +90,19 @@ class _ExerciseModelScreenState extends State<ExerciseModelScreen> {
       _imageHeight = imageHeight;
       _imageWidth = imageWidth;
       if(_recognitions.isNotEmpty) {
-        var skeleton = new Skeleton(recognitions, imageHeight, imageWidth);
-        if (recognitions[0]["keypoints"][8]["score"]>0.5) {
-          angle = skeleton.getAngleBetween(
-              recognitions[0]["keypoints"][6], recognitions[0]["keypoints"][8],
-              recognitions[0]["keypoints"][10]).toString();
-          print("angle: "+angle);
-        }
+        // var skeleton = new Skeleton(recognitions, imageHeight, imageWidth);
+        // if (recognitions[0]["keypoints"][8]["score"]>0.5) {
+        //   angle = skeleton.getAngleBetween(
+        //       recognitions[0]["keypoints"][6], recognitions[0]["keypoints"][8],
+        //       recognitions[0]["keypoints"][10]).toString();
+        //   print("angle: "+angle);
+        // }
         //.display();
         var pose = PosesFactory.getPose(widget.exerciseName);
-        completions = pose.evaluate(recognitions);
+        completions = pose.evaluate(recognitions, imageHeight, imageWidth, counter);
+        if (completions["isStepCompleted"]) {
+          counter++;
+        }
       }
     });
   }
