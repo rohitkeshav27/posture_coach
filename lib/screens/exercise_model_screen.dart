@@ -8,6 +8,7 @@ import 'package:posture_coach/poses.dart';
 import 'package:posture_coach/stickFigure.dart';
 import 'package:camera/camera.dart';
 import 'package:posture_coach/skeleton.dart';
+import 'package:posture_coach/keypointConstants.dart';
 import 'package:tflite/tflite.dart';
 import 'package:flutter/services.dart';
 
@@ -23,6 +24,7 @@ class ExerciseModelScreen extends StatefulWidget {
 }
 
 class _ExerciseModelScreenState extends State<ExerciseModelScreen> {
+  KeyPointConstants keyPoints;
   List<dynamic> _recognitions;
   int _imageHeight = 0;
   int _imageWidth = 0;
@@ -48,48 +50,47 @@ class _ExerciseModelScreenState extends State<ExerciseModelScreen> {
             cameras: widget.cameras, setRecognitions: _setRecognitions),
         BndBox(
           results: _recognitions == null ? [] : _recognitions,
-          previewH: max(_imageHeight, _imageWidth), //TODO: make image dimensions global
+          previewH: max(_imageHeight, _imageWidth),
+          //TODO: make image dimensions global
           previewW: min(_imageHeight, _imageWidth),
           screenH: screen.height,
           screenW: screen.width,
         ),
         CustomPaint(
             painter: MyPainter(
-            results: _recognitions == null ? [] : _recognitions,
+          results: _recognitions == null || _recognitions.length<=0 ? null : new KeyPointConstants(_recognitions),
           previewH: max(_imageHeight, _imageWidth),
           previewW: min(_imageHeight, _imageWidth),
           screenH: screen.height,
           screenW: screen.width,
-            )
-        ),
+        )),
         Positioned(
-          top: 10,
-          child: Text(
-          counter.toString() + " " + metricFlag.toString(),
-          style: TextStyle(
-            backgroundColor: Color.fromRGBO(0, 0, 0, 0.7),
-            color: Color.fromRGBO(37, 213, 253, 1.0),
-            fontSize: 20.0,
-          ),
-        )
-        ),
-        JointCompletion(
-          results: completions == null ? Map<dynamic,dynamic>() : completions,
-          previewH: max(_imageHeight, _imageWidth),
-          previewW: min(_imageHeight, _imageWidth),
-          screenH: screen.height,
-          screenW: screen.width,
-        ),
-        Positioned(
-            top: max(_imageHeight, _imageWidth).toDouble(),
+            top: 10,
             child: Text(
-              "some message", //TODO: Display relevant message
+              counter.toString() + " " + metricFlag.toString(),
               style: TextStyle(
-                backgroundColor: Colors.black,
-                color: Colors.white,
+                backgroundColor: Color.fromRGBO(0, 0, 0, 0.7),
+                color: Color.fromRGBO(37, 213, 253, 1.0),
                 fontSize: 20.0,
               ),
+            )),
+        JointCompletion(
+          results: completions == null ? Map<dynamic, dynamic>() : completions,
+          previewH: max(_imageHeight, _imageWidth),
+          previewW: min(_imageHeight, _imageWidth),
+          screenH: screen.height,
+          screenW: screen.width,
+        ),
+        Positioned(
+          top: max(_imageHeight, _imageWidth).toDouble(),
+          child: Text(
+            "some message", //TODO: Display relevant message
+            style: TextStyle(
+              backgroundColor: Colors.black,
+              color: Colors.white,
+              fontSize: 20.0,
             ),
+          ),
         )
       ]),
     );
@@ -101,9 +102,12 @@ class _ExerciseModelScreenState extends State<ExerciseModelScreen> {
     }
     setState(() {
       _recognitions = recognitions;
+      if(_recognitions.isNotEmpty){
+        keyPoints = new KeyPointConstants(_recognitions);
+      }
       _imageHeight = imageHeight;
       _imageWidth = imageWidth;
-      if(_recognitions.isNotEmpty) {
+      if (_recognitions.isNotEmpty) {
         // var skeleton = new Skeleton(recognitions, imageHeight, imageWidth);
         // if (recognitions[0]["keypoints"][8]["score"]>0.5) {
         //   angle = skeleton.getAngleBetween(
@@ -112,20 +116,24 @@ class _ExerciseModelScreenState extends State<ExerciseModelScreen> {
         //   print("angle: "+angle);
         // }
         //.display();
-        
+
         var pose = PosesFactory.getPose(widget.exerciseName);
         //TODO: Check if relevant keypoints are visible
-        completions = pose.evaluate(recognitions, imageHeight, imageWidth, counter);
+        completions =
+            pose.evaluate(keyPoints, imageHeight, imageWidth, counter);
 
         bool reset = true;
         completions["keypoints"].forEach((metric) {
-          if (metric["type"] == metricType.static && metric["completion"] == 0) {
+          if (metric["type"] == metricType.static &&
+              metric["completion"] == 0) {
             metricFlag = false;
           }
-          if (metric["type"] == metricType.static && metric["completion"] == 0) {
+          if (metric["type"] == metricType.static &&
+              metric["completion"] == 0) {
             reset = false;
           }
-          if (metric["type"] == metricType.dynamic && metric["completion"] != 0) {
+          if (metric["type"] == metricType.dynamic &&
+              metric["completion"] != 0) {
             reset = false;
           }
         });

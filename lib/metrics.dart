@@ -1,3 +1,4 @@
+import 'package:posture_coach/keypointConstants.dart';
 import 'package:posture_coach/poses.dart';
 import 'package:posture_coach/skeleton.dart';
 
@@ -7,85 +8,85 @@ import 'package:posture_coach/skeleton.dart';
     keypoints: [ { "x":double, "y":double, "completion":double(range 0-1), "type":metricType} , {} ]
     }
 */
-enum metricType {
-  static,
-  dynamic
-}
+enum metricType { static, dynamic }
 
 class BicepCurl implements Poses {
-  Map<dynamic,dynamic> evaluate(var recognitions, var imageHeight, var imageWidth, var counter) {
+  Map<dynamic, dynamic> evaluate(KeyPointConstants keyPoints, var imageHeight,
+      var imageWidth, var counter) {
     print("Bicep curl evaluate");
-    var result = Map<String,dynamic>();
-    var keypointList = [];
-    var skeleton = new Skeleton(recognitions, imageHeight, imageWidth);
+    var result = Map<String, dynamic>();
+    var keyPointList = [];
+    var skeleton = new Skeleton(keyPoints, imageHeight, imageWidth);
 
-
-    var elbowAngle = skeleton.getAngleBetween(recognitions[0]["keypoints"][6], recognitions[0]["keypoints"][8],
-        recognitions[0]["keypoints"][10]);
-    var elbowMetric = Map<String,dynamic>();
-    elbowMetric["x"] = recognitions[0]["keypoints"][8]["x"];
-    elbowMetric["y"] = recognitions[0]["keypoints"][8]["y"];
+    var elbowAngle = skeleton.getAngleBetween(
+        keyPoints.rightShoulder, keyPoints.rightElbow, keyPoints.rightWrist);
+    var elbowMetric = Map<String, dynamic>();
+    elbowMetric["x"] = keyPoints.rightElbow["x"];
+    elbowMetric["y"] = keyPoints.rightElbow["y"];
     elbowMetric["type"] = metricType.dynamic;
     if (elbowAngle < 40.0) {
       elbowMetric["completion"] = counter % 2 == 0 ? 1 : 0;
-    }
-    else if (elbowAngle > 165.0) {
+    } else if (elbowAngle > 165.0) {
       elbowMetric["completion"] = counter % 2 == 0 ? 0 : 1;
+    } else {
+      elbowMetric["completion"] = counter % 2 == 0
+          ? 1 - ((elbowAngle - 40) / (165 - 40))
+          : ((elbowAngle - 40) / (165 - 40));
     }
-    else {
-      elbowMetric["completion"] = counter % 2 == 0 ? 1 - ((elbowAngle - 40) / (165 - 40)) : ((elbowAngle - 40) / (165 - 40));
-    }
-    keypointList.add(elbowMetric);
+    keyPointList.add(elbowMetric);
 
-    var shoulderAngle = skeleton.getAngleBetween(recognitions[0]["keypoints"][12], recognitions[0]["keypoints"][6],
-        recognitions[0]["keypoints"][8]);
-    var shoulderMetric = Map<String,dynamic>();
-    shoulderMetric["x"] = recognitions[0]["keypoints"][6]["x"];
-    shoulderMetric["y"] = recognitions[0]["keypoints"][6]["y"];
+    var shoulderAngle = skeleton.getAngleBetween(
+        keyPoints.rightHip, keyPoints.rightShoulder, keyPoints.rightElbow);
+    var shoulderMetric = Map<String, dynamic>();
+    shoulderMetric["x"] = keyPoints.rightShoulder["x"];
+    shoulderMetric["y"] = keyPoints.rightShoulder["y"];
     shoulderMetric["type"] = metricType.static;
     shoulderMetric["completion"] = shoulderAngle < 35.0 ? 1 : 0;
-    keypointList.add(shoulderMetric);
+    keyPointList.add(shoulderMetric);
 
     var flag = true;
-    keypointList.forEach((metric) {
-      if(metric["completion"] != 1) {
+    keyPointList.forEach((metric) {
+      if (metric["completion"] != 1) {
         flag = false;
       }
     });
     result["isStepCompleted"] = flag;
-    result["keypoints"] = keypointList;
+    result["keypoints"] = keyPointList;
     return result;
   }
 }
 
 class ShoulderPress implements Poses {
-  Map<dynamic,dynamic> evaluate(var recognitions, var imageHeight, var imageWidth, var counter) {
+  Map<dynamic, dynamic> evaluate(
+      KeyPointConstants keyPoints, var imageHeight, var imageWidth, var counter) {
     print("Shoulder Press evaluate");
-    var result = Map<String,dynamic>();
-    var keypointList = [];
-    var skeleton = new Skeleton(recognitions, imageHeight, imageWidth);
+    var result = Map<String, dynamic>();
+    var keyPointList = [];
+    var skeleton = new Skeleton(keyPoints, imageHeight, imageWidth);
 
     return result;
   }
 }
 
 class ShoulderFrontRaise implements Poses {
-  Map<dynamic,dynamic> evaluate(var recognitions, var imageHeight, var imageWidth, var counter) {
+  Map<dynamic, dynamic> evaluate(
+      KeyPointConstants keyPoints, var imageHeight, var imageWidth, var counter) {
     print("Shoulder Press evaluate");
-    var result = Map<String,dynamic>();
-    var keypointList = [];
-    var skeleton = new Skeleton(recognitions, imageHeight, imageWidth);
+    var result = Map<String, dynamic>();
+    var keyPointList = [];
+    var skeleton = new Skeleton(keyPoints, imageHeight, imageWidth);
 
     return result;
   }
 }
 
 class Shrugs implements Poses {
-  Map<dynamic,dynamic> evaluate(var recognitions, var imageHeight, var imageWidth, var counter) {
+  Map<dynamic, dynamic> evaluate(
+      KeyPointConstants keyPoints, var imageHeight, var imageWidth, var counter) {
     print("Shoulder Press evaluate");
-    var result = Map<String,dynamic>();
-    var keypointList = [];
-    var skeleton = new Skeleton(recognitions, imageHeight, imageWidth);
+    var result = Map<String, dynamic>();
+    var keyPointList = [];
+    var skeleton = new Skeleton(keyPoints, imageHeight, imageWidth);
 
     return result;
   }

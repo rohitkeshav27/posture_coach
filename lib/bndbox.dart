@@ -18,7 +18,7 @@ class BndBox extends StatelessWidget {
     this.screenH,
     this.screenW,
   });
-
+////TODO: Refactor to remove recognitions and add KeyPointConstantClass
   @override
   Widget build(BuildContext context) {
     List<Widget> _renderKeypoints() {
