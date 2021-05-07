@@ -13,14 +13,14 @@ enum metricType {
 }
 
 class BicepCurl implements Poses {
-  Map<dynamic,dynamic> evaluate(var recognitions, var imageHeight, var imageWidth, var counter) {
+  Map<dynamic,dynamic> evaluate(var keypoints, var imageHeight, var imageWidth, var counter) {
     print("Bicep curl evaluate");
     var result = Map<String,dynamic>();
     var keypointList = [];
-    var skeleton = new Skeleton(recognitions, imageHeight, imageWidth);
+    var skeleton = new Skeleton(keypoints, imageHeight, imageWidth);
 
 
-    var elbowAngle = skeleton.getAngleBetween(recognitions[0]["keypoints"][6], recognitions[0]["keypoints"][8],
+    var elbowAngle = skeleton.getAngleBetween(keypoints.rightShoulder, keypoints.rightElbow,
         recognitions[0]["keypoints"][10]);
     var elbowMetric = Map<String,dynamic>();
     elbowMetric["x"] = recognitions[0]["keypoints"][8]["x"];

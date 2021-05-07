@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:posture_coach/metrics.dart';
 
 class Poses {
-  Map<dynamic,dynamic> evaluate(var recognitions, var imageHeight, var imageWidth, var counter) {}
+  Map<dynamic,dynamic> evaluate(var keypoints, var imageHeight, var imageWidth, var counter) {}
 }
 
 class PosesFactory {

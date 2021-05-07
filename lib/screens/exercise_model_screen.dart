@@ -23,6 +23,7 @@ class ExerciseModelScreen extends StatefulWidget {
 }
 
 class _ExerciseModelScreenState extends State<ExerciseModelScreen> {
+  keypointConstants keypoints;
   List<dynamic> _recognitions;
   int _imageHeight = 0;
   int _imageWidth = 0;
@@ -101,6 +102,7 @@ class _ExerciseModelScreenState extends State<ExerciseModelScreen> {
     }
     setState(() {
       _recognitions = recognitions;
+      keypoints = new keypointConstants(recognitions)
       _imageHeight = imageHeight;
       _imageWidth = imageWidth;
       if(_recognitions.isNotEmpty) {
@@ -115,7 +117,7 @@ class _ExerciseModelScreenState extends State<ExerciseModelScreen> {
         
         var pose = PosesFactory.getPose(widget.exerciseName);
         //TODO: Check if relevant keypoints are visible
-        completions = pose.evaluate(recognitions, imageHeight, imageWidth, counter);
+        completions = pose.evaluate(keypoints, imageHeight, imageWidth, counter);
 
         bool reset = true;
         completions["keypoints"].forEach((metric) {

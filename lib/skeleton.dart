@@ -6,22 +6,22 @@ class Skeleton {
   int imageWidth;
   var normalizationConstant;
 
-  Skeleton(List<dynamic> recognitions, imageHeight, imageWidth) {
+  Skeleton(List<dynamic> keypoints, imageHeight, imageWidth) {
     this.imageHeight = imageHeight;
     this.imageWidth = imageWidth;
     bodyPart = new Map();
-    getLengths(recognitions);
-    normalize(recognitions);
+    getLengths(keypoints);
+    normalize(keypoints);
   }
 
-  void getLengths(List<dynamic> recognitions) {
-    bodyPart["shoulderLength"] = straightLineDistance(recognitions[0]["keypoints"][5], recognitions[0]["keypoints"][6]);
-    bodyPart["hipLength"] = straightLineDistance(recognitions[0]["keypoints"][11], recognitions[0]["keypoints"][12]);
-    bodyPart["rightTorsoLength"] = straightLineDistance(recognitions[0]["keypoints"][6], recognitions[0]["keypoints"][12]);
-    bodyPart["leftTorsoLength"] = straightLineDistance(recognitions[0]["keypoints"][5], recognitions[0]["keypoints"][11]);
+  void getLengths(List<dynamic> keypoints) {
+    bodyPart["shoulderLength"] = straightLineDistance(keypoints.leftShoulder, keypoints.rightShoulder);
+    bodyPart["hipLength"] = straightLineDistance(keypoints.leftHip, keypoints.rightHip);
+    bodyPart["rightTorsoLength"] = straightLineDistance(keypoints.rightShoulder, keypoints.rightHip);
+    bodyPart["leftTorsoLength"] = straightLineDistance(keypoints.leftShoulder, keypoints.leftHip);
   }
 
-  void normalize(List<dynamic> recognitions) {
+  void normalize(List<dynamic> keypoints) {
     normalizationConstant = (bodyPart["rightTorsoLength"] + bodyPart["leftTorsoLength"])/2;
     // var normalizationConstant = straightLineDistance(midPoint(recognitions[0]["keypoints"][5], recognitions[0]["keypoints"][6]), midPoint(recognitions[0]["keypoints"][11], recognitions[0]["keypoints"][12]));
     // bodyPart.forEach((key, value) {
