@@ -65,6 +65,10 @@ class MyPainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
+    if(results ==null){
+      print("null found in paint");
+      return;
+    }
     var paint = Paint()
       ..color = Color.fromRGBO(37, 213, 253, 1.0)
       ..strokeWidth = 5;

@@ -58,7 +58,7 @@ class _ExerciseModelScreenState extends State<ExerciseModelScreen> {
         ),
         CustomPaint(
             painter: MyPainter(
-          results: keyPoints == null ? [] : keyPoints,
+          results: _recognitions == null || _recognitions.length<=0 ? null : new KeyPointConstants(_recognitions),
           previewH: max(_imageHeight, _imageWidth),
           previewW: min(_imageHeight, _imageWidth),
           screenH: screen.height,
@@ -102,10 +102,12 @@ class _ExerciseModelScreenState extends State<ExerciseModelScreen> {
     }
     setState(() {
       _recognitions = recognitions;
-      keyPoints = new KeyPointConstants(recognitions);
+      if(_recognitions.isNotEmpty){
+        keyPoints = new KeyPointConstants(_recognitions);
+      }
       _imageHeight = imageHeight;
       _imageWidth = imageWidth;
-      if (_recognitions.isNotEmpty && keyPoints != null) {
+      if (_recognitions.isNotEmpty) {
         // var skeleton = new Skeleton(recognitions, imageHeight, imageWidth);
         // if (recognitions[0]["keypoints"][8]["score"]>0.5) {
         //   angle = skeleton.getAngleBetween(
