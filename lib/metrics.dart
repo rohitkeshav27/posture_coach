@@ -352,6 +352,41 @@ class Squats implements Poses {
     result["isStepCompleted"] = flag;
     result["keypoints"] = keyPointList;
 
+    var elbowAngle = skeleton.getAngleBetween(
+        keyPoints.rightShoulder, keyPoints.rightElbow, keyPoints.rightWrist);
+    var elbowMetric = Map<String, dynamic>();
+    elbowMetric["x"] = keyPoints.rightElbow["x"];
+    elbowMetric["y"] = keyPoints.rightElbow["y"];
+    elbowMetric["type"] = metricType.dynamic;
+    if (elbowAngle > 160.0) {
+      elbowMetric["completion"] = counter % 2 == 0 ? 0 : 1;
+    } else if (elbowAngle < 80.0) {
+      elbowMetric["completion"] = counter % 2 == 0 ? 1 : 0;
+    } else {
+      elbowMetric["completion"] = counter % 2 == 0
+          ? 1 - ((elbowAngle - 80) / (160 - 80))
+          : ((elbowAngle - 80) / (160 - 80));
+    }
+    keyPointList.add(elbowMetric);
+
+    var shoulderAngle = skeleton.getAngleBetween(
+        keyPoints.rightHip, keyPoints.rightShoulder, keyPoints.rightElbow);
+    var shoulderMetric = Map<String, dynamic>();
+    shoulderMetric["x"] = keyPoints.rightShoulder["x"];
+    shoulderMetric["y"] = keyPoints.rightShoulder["y"];
+    shoulderMetric["type"] = metricType.static;
+    shoulderMetric["completion"] = shoulderAngle > 160.0 ? 1 : 0;
+    keyPointList.add(shoulderMetric);
+
+    var flag = true;
+    keyPointList.forEach((metric) {
+      if (metric["completion"] != 1) {
+        flag = false;
+      }
+    });
+    result["isStepCompleted"] = flag;
+    result["keypoints"] = keyPointList;
+
     return result;
   }
 }
