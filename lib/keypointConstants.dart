@@ -18,7 +18,6 @@ class KeyPointConstants {
   var rightEar;
 
   KeyPointConstants(recognitions) {
-    print (recognitions);
     leftWrist = recognitions[0]["keypoints"][9];
     leftElbow = recognitions[0]["keypoints"][7];
     leftShoulder = recognitions[0]["keypoints"][5];
