@@ -28,6 +28,7 @@ class _ExerciseModelScreenState extends State<ExerciseModelScreen> {
   String angle = "";
   var completions;
   int counter = 0;
+  bool metricFlag = true;
 
   @override
   void initState() {
@@ -46,7 +47,7 @@ class _ExerciseModelScreenState extends State<ExerciseModelScreen> {
             cameras: widget.cameras, setRecognitions: _setRecognitions),
         BndBox(
           results: _recognitions == null ? [] : _recognitions,
-          previewH: max(_imageHeight, _imageWidth),
+          previewH: max(_imageHeight, _imageWidth), //TODO: make image dimensions global
           previewW: min(_imageHeight, _imageWidth),
           screenH: screen.height,
           screenW: screen.width,
@@ -63,8 +64,9 @@ class _ExerciseModelScreenState extends State<ExerciseModelScreen> {
         Positioned(
           top: 10,
           child: Text(
-          counter.toString(),
+          counter.toString() + " " + metricFlag.toString(),
           style: TextStyle(
+            backgroundColor: Color.fromRGBO(0, 0, 0, 0.7),
             color: Color.fromRGBO(37, 213, 253, 1.0),
             fontSize: 20.0,
           ),
@@ -76,6 +78,17 @@ class _ExerciseModelScreenState extends State<ExerciseModelScreen> {
           previewW: min(_imageHeight, _imageWidth),
           screenH: screen.height,
           screenW: screen.width,
+        ),
+        Positioned(
+            top: max(_imageHeight, _imageWidth).toDouble(),
+            child: Text(
+              "some message", //TODO: Display relevant message
+              style: TextStyle(
+                backgroundColor: Colors.black,
+                color: Colors.white,
+                fontSize: 20.0,
+              ),
+            ),
         )
       ]),
     );
@@ -98,9 +111,28 @@ class _ExerciseModelScreenState extends State<ExerciseModelScreen> {
         //   print("angle: "+angle);
         // }
         //.display();
+        
         var pose = PosesFactory.getPose(widget.exerciseName);
+        //TODO: Check if relevant keypoints are visible
         completions = pose.evaluate(recognitions, imageHeight, imageWidth, counter);
-        if (completions["isStepCompleted"]) {
+
+        bool reset = true;
+        completions["keypoints"].forEach((metric) {
+          if (metric["type"] == 0 && metric["completion"] == 0) {
+            metricFlag = false;
+          }
+          if (metric["type"] == 0 && metric["completion"] == 0) {
+            reset = false;
+          }
+          if (metric["type"] == 1 && metric["completion"] != 0) {
+            reset = false;
+          }
+        });
+        if (reset) {
+          metricFlag = true;
+        }
+
+        if (completions["isStepCompleted"] && metricFlag) {
           counter++;
         }
       }

@@ -90,8 +90,10 @@ class JointCompletion extends StatelessWidget {
           return Positioned(
               left: x,
               top: y,
+              //TODO: https://www.syncfusion.com/blogs/post/create-stunning-circular-progress-bars-with-flutter-radial-gauge-part-1.aspx
               child: CircularProgressIndicator(
                 value: score,
+                backgroundColor: Color.fromRGBO(0, 0, 0, 0.5),
                 valueColor: AlwaysStoppedAnimation<Color>(Color.fromRGBO(red, green, 0, 1.0)),
                 strokeWidth: 8.0,
               )

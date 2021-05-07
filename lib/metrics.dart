@@ -4,7 +4,7 @@ import 'package:posture_coach/skeleton.dart';
 /*
     {
     isStepCompleted: Bool,
-    keypoints: [ { "x":double, "y":double, "completion":double(range 0-1), "type":double(static:0, dynamic:1) } , {} ]
+    keypoints: [ { "x":double, "y":double, "completion":double(range 0-1), "type":double(static:0, dynamic:1)} , {} ]
     }
 */
 
