@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:posture_coach/cameras.dart';
 import 'package:posture_coach/bndbox.dart';
+import 'package:posture_coach/metrics.dart';
 import 'package:posture_coach/poses.dart';
 import 'package:posture_coach/stickFigure.dart';
 import 'package:camera/camera.dart';
@@ -118,13 +119,13 @@ class _ExerciseModelScreenState extends State<ExerciseModelScreen> {
 
         bool reset = true;
         completions["keypoints"].forEach((metric) {
-          if (metric["type"] == 0 && metric["completion"] == 0) {
+          if (metric["type"] == metricType.static && metric["completion"] == 0) {
             metricFlag = false;
           }
-          if (metric["type"] == 0 && metric["completion"] == 0) {
+          if (metric["type"] == metricType.static && metric["completion"] == 0) {
             reset = false;
           }
-          if (metric["type"] == 1 && metric["completion"] != 0) {
+          if (metric["type"] == metricType.dynamic && metric["completion"] != 0) {
             reset = false;
           }
         });

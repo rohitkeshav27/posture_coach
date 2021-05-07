@@ -7,6 +7,10 @@ import 'package:posture_coach/skeleton.dart';
     keypoints: [ { "x":double, "y":double, "completion":double(range 0-1), "type":double(static:0, dynamic:1)} , {} ]
     }
 */
+enum metricType {
+  static,
+  dynamic
+}
 
 class BicepCurl implements Poses {
   Map<dynamic,dynamic> evaluate(var recognitions, var imageHeight, var imageWidth, var counter) {
@@ -18,10 +22,10 @@ class BicepCurl implements Poses {
 
     var elbowAngle = skeleton.getAngleBetween(recognitions[0]["keypoints"][6], recognitions[0]["keypoints"][8],
         recognitions[0]["keypoints"][10]);
-    var elbowMetric = Map<String,double>();
+    var elbowMetric = Map<String,dynamic>();
     elbowMetric["x"] = recognitions[0]["keypoints"][8]["x"];
     elbowMetric["y"] = recognitions[0]["keypoints"][8]["y"];
-    elbowMetric["type"] = 1;
+    elbowMetric["type"] = metricType.dynamic;
     if (elbowAngle < 40.0) {
       elbowMetric["completion"] = counter % 2 == 0 ? 1 : 0;
     }
@@ -35,10 +39,10 @@ class BicepCurl implements Poses {
 
     var shoulderAngle = skeleton.getAngleBetween(recognitions[0]["keypoints"][12], recognitions[0]["keypoints"][6],
         recognitions[0]["keypoints"][8]);
-    var shoulderMetric = Map<String,double>();
+    var shoulderMetric = Map<String,dynamic>();
     shoulderMetric["x"] = recognitions[0]["keypoints"][6]["x"];
     shoulderMetric["y"] = recognitions[0]["keypoints"][6]["y"];
-    shoulderMetric["type"] = 0;
+    shoulderMetric["type"] = metricType.static;
     shoulderMetric["completion"] = shoulderAngle < 35.0 ? 1 : 0;
     keypointList.add(shoulderMetric);
 
