@@ -29,7 +29,7 @@ class MyPainter extends CustomPainter {
     _x = point["x"];
     _y = point["y"];
     var scaleW, scaleH, x, y;
-    if (screenH / screenW > previewH / previewW) {
+    if (screenH / screenW < previewH / previewW) {
       scaleW = screenH / previewH * previewW;
       scaleH = screenH;
       var difW = (scaleW - screenW) / scaleW;
@@ -38,7 +38,7 @@ class MyPainter extends CustomPainter {
     } else {
       scaleH = screenW / previewW * previewH;
       scaleW = screenW;
-      var difH = (scaleH - screenH) / scaleH;
+      var difH = 0;// (scaleH - screenH) / scaleH;
       x = _x * scaleW;
       y = (_y - difH / 2) * scaleH;
     }
@@ -71,41 +71,41 @@ class MyPainter extends CustomPainter {
     var numbers = [5, 6, 7, 8, 9, 10, 11, 13, 15, 12, 14, 16];
     for (var i in numbers) getExactCoordinates(results[0]["keypoints"][i]);
 
-    drawSkeleton(
-        results[0]["keypoints"][5], results[0]["keypoints"][6], paint, canvas);
-
-    drawSkeleton(
-        results[0]["keypoints"][7], results[0]["keypoints"][5], paint, canvas);
+    // drawSkeleton(
+    //     results[0]["keypoints"][5], results[0]["keypoints"][6], paint, canvas);
+    //
+    // drawSkeleton(
+    //     results[0]["keypoints"][7], results[0]["keypoints"][5], paint, canvas);
 
     drawSkeleton(
         results[0]["keypoints"][6], results[0]["keypoints"][8], paint, canvas);
 
-    drawSkeleton(
-        results[0]["keypoints"][9], results[0]["keypoints"][7], paint, canvas);
+    // drawSkeleton(
+    //     results[0]["keypoints"][9], results[0]["keypoints"][7], paint, canvas);
 
     drawSkeleton(
         results[0]["keypoints"][8], results[0]["keypoints"][10], paint, canvas);
 
-    drawSkeleton(
-        results[0]["keypoints"][12], results[0]["keypoints"][6], paint, canvas);
-
-    drawSkeleton(results[0]["keypoints"][14], results[0]["keypoints"][12],
-        paint, canvas);
-
-    drawSkeleton(results[0]["keypoints"][14], results[0]["keypoints"][16],
-        paint, canvas);
-
-    drawSkeleton(results[0]["keypoints"][11], results[0]["keypoints"][12],
-        paint, canvas);
-
-    drawSkeleton(
-        results[0]["keypoints"][5], results[0]["keypoints"][11], paint, canvas);
-
-    drawSkeleton(results[0]["keypoints"][11], results[0]["keypoints"][13],
-        paint, canvas);
-
-    drawSkeleton(results[0]["keypoints"][13], results[0]["keypoints"][15],
-        paint, canvas);
+    // drawSkeleton(
+    //     results[0]["keypoints"][12], results[0]["keypoints"][6], paint, canvas);
+    //
+    // drawSkeleton(results[0]["keypoints"][14], results[0]["keypoints"][12],
+    //     paint, canvas);
+    //
+    // drawSkeleton(results[0]["keypoints"][14], results[0]["keypoints"][16],
+    //     paint, canvas);
+    //
+    // drawSkeleton(results[0]["keypoints"][11], results[0]["keypoints"][12],
+    //     paint, canvas);
+    //
+    // drawSkeleton(
+    //     results[0]["keypoints"][5], results[0]["keypoints"][11], paint, canvas);
+    //
+    // drawSkeleton(results[0]["keypoints"][11], results[0]["keypoints"][13],
+    //     paint, canvas);
+    //
+    // drawSkeleton(results[0]["keypoints"][13], results[0]["keypoints"][15],
+    //     paint, canvas);
   }
 
   @override
