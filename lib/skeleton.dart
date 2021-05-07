@@ -1,27 +1,29 @@
 import 'dart:math';
 
+import 'keypointConstants.dart';
+
 class Skeleton {
   Map<String,double> bodyPart;
   int imageHeight;
   int imageWidth;
   var normalizationConstant;
 
-  Skeleton(List<dynamic> keypoints, imageHeight, imageWidth) {
+  Skeleton(KeyPointConstants keyPoints, imageHeight, imageWidth) {
     this.imageHeight = imageHeight;
     this.imageWidth = imageWidth;
     bodyPart = new Map();
-    getLengths(keypoints);
-    normalize(keypoints);
+    getLengths(keyPoints);
+    normalize(keyPoints);
   }
 
-  void getLengths(List<dynamic> keypoints) {
-    bodyPart["shoulderLength"] = straightLineDistance(keypoints.leftShoulder, keypoints.rightShoulder);
-    bodyPart["hipLength"] = straightLineDistance(keypoints.leftHip, keypoints.rightHip);
-    bodyPart["rightTorsoLength"] = straightLineDistance(keypoints.rightShoulder, keypoints.rightHip);
-    bodyPart["leftTorsoLength"] = straightLineDistance(keypoints.leftShoulder, keypoints.leftHip);
+  void getLengths(KeyPointConstants keyPoints) {
+    bodyPart["shoulderLength"] = straightLineDistance(keyPoints.leftShoulder, keyPoints.rightShoulder);
+    bodyPart["hipLength"] = straightLineDistance(keyPoints.leftHip, keyPoints.rightHip);
+    bodyPart["rightTorsoLength"] = straightLineDistance(keyPoints.rightShoulder, keyPoints.rightHip);
+    bodyPart["leftTorsoLength"] = straightLineDistance(keyPoints.leftShoulder, keyPoints.leftHip);
   }
 
-  void normalize(List<dynamic> keypoints) {
+  void normalize(KeyPointConstants keyPoints) {
     normalizationConstant = (bodyPart["rightTorsoLength"] + bodyPart["leftTorsoLength"])/2;
     // var normalizationConstant = straightLineDistance(midPoint(recognitions[0]["keypoints"][5], recognitions[0]["keypoints"][6]), midPoint(recognitions[0]["keypoints"][11], recognitions[0]["keypoints"][12]));
     // bodyPart.forEach((key, value) {

@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import 'keypointConstants.dart';
+
 // MyPainter is used to draw the sticky figure
 class MyPainter extends CustomPainter {
   static const platform = const MethodChannel('ondeviceML');
 
-  final List<dynamic> results;
+  final KeyPointConstants results;
   final int previewH;
   final int previewW;
   final double screenH;
@@ -38,7 +40,7 @@ class MyPainter extends CustomPainter {
     } else {
       scaleH = screenW / previewW * previewH;
       scaleW = screenW;
-      var difH = 0;// (scaleH - screenH) / scaleH;
+      var difH = 0; // (scaleH - screenH) / scaleH;
       x = _x * scaleW;
       y = (_y - difH / 2) * scaleH;
     }
@@ -49,7 +51,6 @@ class MyPainter extends CustomPainter {
   }
 
   void drawSkeleton(var part1, var part2, Paint paint, Canvas canvas) {
-
     if (part1["score"] < 0.2 || part2["score"] < 0.2) {
       return;
     } else {
@@ -68,43 +69,56 @@ class MyPainter extends CustomPainter {
       ..color = Color.fromRGBO(37, 213, 253, 1.0)
       ..strokeWidth = 5;
 
-    var numbers = [5, 6, 7, 8, 9, 10, 11, 13, 15, 12, 14, 16];
-    for (var i in numbers) getExactCoordinates(results[0]["keypoints"][i]);
+    var bodyPoints = [
+      results.leftShoulder,
+      results.rightShoulder,
+      results.leftElbow,
+      results.rightElbow,
+      results.leftWrist,
+      results.rightWrist,
+      results.leftHip,
+      results.leftKnee,
+      results.leftAnkle,
+      results.rightHip,
+      results.rightKnee,
+      results.rightAnkle
+    ];
+    for (var i in bodyPoints) getExactCoordinates(i);
 
     // drawSkeleton(
-    //     results[0]["keypoints"][5], results[0]["keypoints"][6], paint, canvas);
+    //     results.leftShoulder, results.rightShoulder, paint, canvas);
     //
     // drawSkeleton(
-    //     results[0]["keypoints"][7], results[0]["keypoints"][5], paint, canvas);
+    //     results.leftElbow, results.leftShoulder, paint, canvas);
 
     drawSkeleton(
-        results[0]["keypoints"][6], results[0]["keypoints"][8], paint, canvas);
-
+        results.rightShoulder, results.rightElbow, paint, canvas);
+    //
     // drawSkeleton(
-    //     results[0]["keypoints"][9], results[0]["keypoints"][7], paint, canvas);
+    //     results.leftWrist, results.leftElbow, paint, canvas);
 
     drawSkeleton(
-        results[0]["keypoints"][8], results[0]["keypoints"][10], paint, canvas);
+        results.rightElbow, results.rightWrist, paint, canvas);
 
     // drawSkeleton(
-    //     results[0]["keypoints"][12], results[0]["keypoints"][6], paint, canvas);
+    //     results.rightHip, results.rightShoulder, paint, canvas);
     //
-    // drawSkeleton(results[0]["keypoints"][14], results[0]["keypoints"][12],
+    // drawSkeleton(results.rightKnee, results.rightHip,
     //     paint, canvas);
     //
-    // drawSkeleton(results[0]["keypoints"][14], results[0]["keypoints"][16],
+    // drawSkeleton(results.rightKnee, results.rightAnkle,
     //     paint, canvas);
     //
-    // drawSkeleton(results[0]["keypoints"][11], results[0]["keypoints"][12],
+    // drawSkeleton(results.leftHip, results.rightHip,
     //     paint, canvas);
     //
     // drawSkeleton(
-    //     results[0]["keypoints"][5], results[0]["keypoints"][11], paint, canvas);
+    //     results.leftShoulder, results.leftHip, paint, canvas);
     //
-    // drawSkeleton(results[0]["keypoints"][11], results[0]["keypoints"][13],
+    // drawSkeleton(results.leftHip, results.leftKnee,
     //     paint, canvas);
     //
-    // drawSkeleton(results[0]["keypoints"][13], results[0]["keypoints"][15],
+    // drawSkeleton(results.leftKnee, results.leftAnkle,
     //     paint, canvas);
   }
 

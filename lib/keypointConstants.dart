@@ -1,22 +1,23 @@
-class keypointConstants{
-  leftWrist;
-  leftElbow;
-  leftShoulder;
-  leftHip;
-  leftKnee;
-  leftAnkle;
-  leftEye;
-  leftEar;
-  nose;
-  rightWrist;
-  rightElbow;
-  rightShoulder;
-  rightHip;
-  rightKnee;
-  rightAnkle;
-  rightEye;
-  rightEar;
-  keypointConstants(recognitions){
+class KeyPointConstants {
+  var leftWrist;
+  var leftElbow;
+  var leftShoulder;
+  var leftHip;
+  var leftKnee;
+  var leftAnkle;
+  var leftEye;
+  var leftEar;
+  var nose;
+  var rightWrist;
+  var rightElbow;
+  var rightShoulder;
+  var rightHip;
+  var rightKnee;
+  var rightAnkle;
+  var rightEye;
+  var rightEar;
+
+  KeyPointConstants(recognitions) {
     leftWrist = recognitions[0]["keypoints"][9];
     leftElbow = recognitions[0]["keypoints"][7];
     leftShoulder = recognitions[0]["keypoints"][5];
