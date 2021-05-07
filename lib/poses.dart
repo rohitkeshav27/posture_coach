@@ -67,8 +67,8 @@ class JointCompletion extends StatelessWidget {
           int green;
           int red;
           double score;
-          if (k["type"] == 1.0) {
-            score = k["completion"];
+          if (k["type"] == metricType.dynamic) {
+            score = k["completion"].toDouble();
             if (score < 0.5) {
               red = 255;
               green = (score * 2 * 255).toInt();
