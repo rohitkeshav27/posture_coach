@@ -8,7 +8,7 @@ class ExerciseInventoryScreen extends StatelessWidget {
     "Bicep Curl",
     "Shoulder Front Raise",
     "Shoulder Press",
-    "Shrugs",
+    "Tricep Extension",
   ];
 
   final List<Widget> images = [
@@ -26,11 +26,11 @@ class ExerciseInventoryScreen extends StatelessWidget {
     ),
     ImageContainer(
       path: 'images/Shrugs.jpg',
-      routeName: '/shrugs',
+      routeName: '/tricepExtension',
     )
   ];
 
-  final List<String> routeName = ['/bicep', '/raise', '/press', '/shrug'];
+  final List<String> routeName = ['/bicep', '/raise', '/press', '/tricepExtension'];
 
   @override
   Widget build(BuildContext context) {

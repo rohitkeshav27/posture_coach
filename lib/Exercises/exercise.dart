@@ -50,14 +50,10 @@ final List<Exercise> exercises = [
       'Types of Shoulder Press:\n\t-Military Press\n\t-Push Press\n\t-Bradford Press',
       60.0),
   Exercise(
-      "Shrugs",
-      '/shrug/shrugmod',
+      "Tricep Extension",
+      '/tricepExtension/tricepExtensionmod',
       "videos/Shrug.mp4",
-      'The shoulder shrug is an exercise in weight training '
-          'used to develop the upper trapezius muscle.shoulder shrugs '
-          'can be combined with weightlifting to help develop and strengthen'
-          'your trapezius muscles or traps.',
-      'Types of shoulder shrugs\n\t-Seated Dumbbells\n\t-Haney Barbell'
-          '\n\t=Laying Bar',
+      'TRICEP EXTENSION STUFF',
+      'Types of TricepExtension',
       40.0)
 ];
