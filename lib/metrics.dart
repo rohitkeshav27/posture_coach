@@ -80,10 +80,10 @@ class ShoulderFrontRaise implements Poses {
   }
 }
 
-class Shrugs implements Poses {
+class TricepExtension implements Poses {
   Map<dynamic, dynamic> evaluate(
       KeyPointConstants keyPoints, var imageHeight, var imageWidth, var counter) {
-    print("Shoulder Press evaluate");
+    print("Tricep Extension evaluate");
     var result = Map<String, dynamic>();
     var keyPointList = [];
     var skeleton = new Skeleton(keyPoints, imageHeight, imageWidth);

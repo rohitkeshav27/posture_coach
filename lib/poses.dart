@@ -16,7 +16,7 @@ class PosesFactory {
       break;
       case "Shoulder Front Raise": return ShoulderFrontRaise();
       break;
-      case "Shrugs": return Shrugs();
+      case "Tricep Extension": return TricepExtension();
       break;
       default: return null;
     }
