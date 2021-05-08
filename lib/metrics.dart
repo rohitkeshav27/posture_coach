@@ -9,13 +9,15 @@ import 'package:posture_coach/skeleton.dart';
     partsToDisplay: [ [keypointA,keypointB] , [keypointC,keypointD] ],
     }
 */
+//TODO: Differentiate between static and dynamic metrics visually ?
+//TODO: Lateral raise ?
 enum metricType { static, dynamic }
 
 class BicepCurl implements Poses {
   Map<dynamic, dynamic> evaluate(KeyPointConstants keyPoints, var imageHeight,
       var imageWidth, var counter) {
     print("Bicep curl evaluate");
-
+    //TODO: Perspective Detection
     var result = Map<String, dynamic>();
     var keyPointList = [];
     var skeleton = new Skeleton(keyPoints, imageHeight, imageWidth);

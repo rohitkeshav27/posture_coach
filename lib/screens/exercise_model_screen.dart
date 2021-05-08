@@ -89,7 +89,7 @@ class _ExerciseModelScreenState extends State<ExerciseModelScreen> {
         Positioned(
           top: cameraHeight,
           child: Text(
-            messages.values.join("\n"), //TODO: Display relevant message
+            messages.values.join("\n"), //TODO: Check message width
             style: TextStyle(
               backgroundColor: Colors.black,
               color: Colors.white,
