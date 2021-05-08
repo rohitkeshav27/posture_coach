@@ -25,17 +25,13 @@ class PosesFactory {
 
 class JointCompletion extends StatelessWidget {
   final Map<dynamic,dynamic> results;
-  final int previewH;
-  final int previewW;
-  final double screenH;
-  final double screenW;
+  final double height;
+  final double width;
 
   const JointCompletion({
     this.results,
-    this.previewH,
-    this.previewW,
-    this.screenH,
-    this.screenW,
+    this.height,
+    this.width
 });
 
   @override
@@ -46,24 +42,12 @@ class JointCompletion extends StatelessWidget {
         var list = results["keypoints"].map<Widget>((k) {
           var _x = k["x"];
           var _y = k["y"];
-          var scaleW, scaleH, x, y;
+          var x, y;
 
-          if (screenH / screenW < previewH / previewW) {
-            scaleW = screenH / previewH * previewW;
-            scaleH = screenH;
-            var difW = (scaleW - screenW) / scaleW;
-            x = (_x - difW / 2) * scaleW;
-            y = _y * scaleH;
-          } else {
-            scaleH = screenW / previewW * previewH;
-            scaleW = screenW;
-            var difH = 0; // (scaleH - screenH) / scaleH;
-            x = _x * scaleW;
-            y = (_y - difH / 2) * scaleH;
-          }
-
+          x = _x * width;
+          y = _y * height;
           // To solve mirror problem on front camera
-          x = screenW - x;
+          x = width - x;
 
           int green;
           int red;

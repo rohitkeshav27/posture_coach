@@ -28,6 +28,9 @@ class _ExerciseModelScreenState extends State<ExerciseModelScreen> {
   List<dynamic> _recognitions;
   int _imageHeight = 0;
   int _imageWidth = 0;
+  Size screen;
+  double cameraHeight = 0.0;
+  double cameraWidth = 0.0;
   String angle = "";
   var completions;
   int counter = 0;
@@ -43,26 +46,21 @@ class _ExerciseModelScreenState extends State<ExerciseModelScreen> {
 
   @override
   Widget build(BuildContext context) {
-    Size screen = MediaQuery.of(context).size;
+    screen = MediaQuery.of(context).size;
     return Scaffold(
       body: Stack(children: [
         CameraScreen(
-            cameras: widget.cameras, setRecognitions: _setRecognitions),
+            cameras: widget.cameras, setRecognitions: _setRecognitions, getCameraScale:  _getCameraScale,),
         BndBox(
           results: _recognitions == null ? [] : _recognitions,
-          previewH: max(_imageHeight, _imageWidth),
-          //TODO: make image dimensions global
-          previewW: min(_imageHeight, _imageWidth),
-          screenH: screen.height,
-          screenW: screen.width,
+          height: cameraHeight,
+          width: cameraWidth,
         ),
         CustomPaint(
             painter: MyPainter(
           results: _recognitions == null || _recognitions.length<=0 ? null : new KeyPointConstants(_recognitions),
-          previewH: max(_imageHeight, _imageWidth),
-          previewW: min(_imageHeight, _imageWidth),
-          screenH: screen.height,
-          screenW: screen.width,
+              height: cameraHeight,
+              width: cameraWidth,
         )),
         Positioned(
             top: 10,
@@ -76,13 +74,11 @@ class _ExerciseModelScreenState extends State<ExerciseModelScreen> {
             )),
         JointCompletion(
           results: completions == null ? Map<dynamic, dynamic>() : completions,
-          previewH: max(_imageHeight, _imageWidth),
-          previewW: min(_imageHeight, _imageWidth),
-          screenH: screen.height,
-          screenW: screen.width,
+          height: cameraHeight,
+          width: cameraWidth,
         ),
         Positioned(
-          top: max(_imageHeight, _imageWidth).toDouble(),
+          top: cameraHeight,
           child: Text(
             "some message", //TODO: Display relevant message
             style: TextStyle(
@@ -105,8 +101,6 @@ class _ExerciseModelScreenState extends State<ExerciseModelScreen> {
       if(_recognitions.isNotEmpty){
         keyPoints = new KeyPointConstants(_recognitions);
       }
-      _imageHeight = imageHeight;
-      _imageWidth = imageWidth;
       if (_recognitions.isNotEmpty) {
         // var skeleton = new Skeleton(recognitions, imageHeight, imageWidth);
         // if (recognitions[0]["keypoints"][8]["score"]>0.5) {
@@ -146,6 +140,18 @@ class _ExerciseModelScreenState extends State<ExerciseModelScreen> {
         }
       }
     });
+  }
+
+  _getCameraScale(imageHeight, imageWidth) {
+    _imageHeight = imageHeight;
+    _imageWidth = imageWidth;
+    if (screen.height / screen.width < _imageHeight / _imageWidth) {
+      cameraWidth = screen.height / _imageHeight * _imageWidth;
+      cameraHeight = screen.height;
+    } else {
+      cameraHeight = screen.width / _imageWidth * _imageHeight;
+      cameraWidth = screen.width;
+    }
   }
 
   Future loadModel() async {

@@ -8,10 +8,8 @@ class MyPainter extends CustomPainter {
   static const platform = const MethodChannel('ondeviceML');
 
   final KeyPointConstants results;
-  final int previewH;
-  final int previewW;
-  final double screenH;
-  final double screenW;
+  final double height;
+  final double width;
   var prev;
   var cur;
   var _x;
@@ -21,30 +19,19 @@ class MyPainter extends CustomPainter {
 
   MyPainter({
     this.results,
-    this.previewH,
-    this.previewW,
-    this.screenH,
-    this.screenW,
+    this.height,
+    this.width
   });
 
   getExactCoordinates(var point) {
     _x = point["x"];
     _y = point["y"];
-    var scaleW, scaleH, x, y;
-    if (screenH / screenW < previewH / previewW) {
-      scaleW = screenH / previewH * previewW;
-      scaleH = screenH;
-      var difW = (scaleW - screenW) / scaleW;
-      x = (_x - difW / 2) * scaleW;
-      y = _y * scaleH;
-    } else {
-      scaleH = screenW / previewW * previewH;
-      scaleW = screenW;
-      var difH = 0; // (scaleH - screenH) / scaleH;
-      x = _x * scaleW;
-      y = (_y - difH / 2) * scaleH;
-    }
-    x = screenW - x;
+    var x, y;
+
+    x = _x * width;
+    y = _y * height;
+    // To solve mirror problem on front camera
+    x = width - x;
 
     point["x"] = x;
     point["y"] = y;

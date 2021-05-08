@@ -5,13 +5,15 @@ import 'package:flutter/material.dart';
 import 'package:tflite/tflite.dart';
 import 'dart:math' as math;
 
-typedef void Callback(List<dynamic> list, int h, int w);
+typedef void RecognitionCallback(List<dynamic> list, int h, int w);
+typedef void ScaleCallback(int h, int w);
 
 class CameraScreen extends StatefulWidget {
   final List<CameraDescription> cameras;
-  final Callback setRecognitions;
+  final RecognitionCallback setRecognitions;
+  final ScaleCallback getCameraScale;
 
-  const CameraScreen({this.cameras, this.setRecognitions});
+  const CameraScreen({this.cameras, this.setRecognitions, this.getCameraScale});
 
   @override
   State<StatefulWidget> createState() {
@@ -24,6 +26,8 @@ class CameraScreenState extends State<CameraScreen> {
   bool isDetecting = false;
   int startTime;
   int endTime;
+  int cameraHeight = 0;
+  int cameraWidth = 0;
   //static const platform = const MethodChannel('ondeviceML');
 
   @override
@@ -55,6 +59,11 @@ class CameraScreenState extends State<CameraScreen> {
             endTime = DateTime.now().millisecondsSinceEpoch;
             print("Detection took ${endTime - startTime}");
             //log(recognitions.toString())
+            if(cameraHeight == 0 || cameraWidth == 0) {
+              cameraHeight = math.max(img.height,img.width);
+              cameraWidth = math.min(img.height,img.width);
+              widget.getCameraScale(cameraHeight,cameraWidth);
+            }
             widget.setRecognitions(recognitions, img.height, img.width);
             isDetecting = false;
           });
