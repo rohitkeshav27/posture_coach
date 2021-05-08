@@ -5,7 +5,7 @@ import 'package:posture_coach/skeleton.dart';
 /*
     {
     isStepCompleted: Bool,
-    keypoints: [ { "x":double, "y":double, "completion":double(range 0-1), "type":metricType} , {} ],
+    keypoints: [ { "x":double, "y":double, "completion":double(range 0-1), "type":metricType, "message":String} , {} ],
     partsToDisplay: [ [keypointA,keypointB] , [keypointC,keypointD] ],
     }
 */
@@ -35,6 +35,7 @@ class BicepCurl implements Poses {
           ? 1 - ((elbowAngle - 40) / (165 - 40))
           : ((elbowAngle - 40) / (165 - 40));
     }
+    elbowMetric["message"] = counter % 2 == 0 ? "Please raise your arm completely" : "Please lower your arm completely";
     keyPointList.add(elbowMetric);
 
     var shoulderAngle = skeleton.getAngleBetween(
@@ -44,6 +45,7 @@ class BicepCurl implements Poses {
     shoulderMetric["y"] = keyPoints.rightShoulder["y"];
     shoulderMetric["type"] = metricType.static;
     shoulderMetric["completion"] = shoulderAngle < 35.0 ? 1 : 0;
+    shoulderMetric["message"] = "Please keep your upper arm close to your body";
     keyPointList.add(shoulderMetric);
 
     var flag = true;

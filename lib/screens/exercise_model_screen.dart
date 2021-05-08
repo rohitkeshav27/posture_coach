@@ -12,6 +12,13 @@ import 'package:posture_coach/keypointConstants.dart';
 import 'package:tflite/tflite.dart';
 import 'package:flutter/services.dart';
 
+enum MetricStatus {
+  start,
+  inProgress,
+  completed,
+  notCompleted,
+}
+
 class ExerciseModelScreen extends StatefulWidget {
   final String exerciseName;
   final List<CameraDescription> cameras;
@@ -35,6 +42,8 @@ class _ExerciseModelScreenState extends State<ExerciseModelScreen> {
   var completions;
   int counter = 0;
   bool metricFlag = true;
+  var dynamicMetricStatus = Map();
+  var messages = Map();
 
   @override
   void initState() {
@@ -80,7 +89,7 @@ class _ExerciseModelScreenState extends State<ExerciseModelScreen> {
         Positioned(
           top: cameraHeight,
           child: Text(
-            "some message", //TODO: Display relevant message
+            messages.values.join("\n"), //TODO: Display relevant message
             style: TextStyle(
               backgroundColor: Colors.black,
               color: Colors.white,
@@ -117,10 +126,11 @@ class _ExerciseModelScreenState extends State<ExerciseModelScreen> {
             pose.evaluate(keyPoints, imageHeight, imageWidth, counter);
 
         bool reset = true;
-        completions["keypoints"].forEach((metric) {
+        completions["keypoints"].asMap().forEach((index, metric) {
           if (metric["type"] == metricType.static &&
               metric["completion"] == 0) {
             metricFlag = false;
+            messages[index] = metric["message"];
           }
           if (metric["type"] == metricType.static &&
               metric["completion"] == 0) {
@@ -130,12 +140,42 @@ class _ExerciseModelScreenState extends State<ExerciseModelScreen> {
               metric["completion"] != 0) {
             reset = false;
           }
+          if (metric["type"] == metricType.dynamic) {
+            if (!dynamicMetricStatus.containsKey(index)) {
+              dynamicMetricStatus[index] = MetricStatus.start;
+            } else {
+              if (dynamicMetricStatus[index] == MetricStatus.start && metric["completion"] > 0) {
+                dynamicMetricStatus[index] = MetricStatus.inProgress;
+              }
+              if (dynamicMetricStatus[index] == MetricStatus.inProgress && metric["completion"] == 1) {
+                dynamicMetricStatus[index] = MetricStatus.completed;
+                messages.remove(index);
+              }
+              if (dynamicMetricStatus[index] == MetricStatus.inProgress && metric["completion"] == 0) {
+                dynamicMetricStatus[index] = MetricStatus.notCompleted;
+                messages[index] = metric["message"];
+              }
+              if (dynamicMetricStatus[index] == MetricStatus.notCompleted && metric["completion"] > 0) {
+                dynamicMetricStatus[index] = MetricStatus.inProgress;
+              }
+              if (dynamicMetricStatus[index] == MetricStatus.completed && metric["completion"] == 0 ) {
+                dynamicMetricStatus[index] = MetricStatus.start;
+              }
+            }
+          }
         });
-        if (reset) {
+        if (reset && !metricFlag) {
           metricFlag = true;
+          // completions["keypoints"].asMap().forEach((index, metric) {
+          //   if (metric["type"] == metricType.static) {
+          //     messages.remove(index);
+          //   }
+          // });
         }
 
         if (completions["isStepCompleted"] && metricFlag) {
+          dynamicMetricStatus.clear();
+          messages.clear();
           counter++;
         }
       }
