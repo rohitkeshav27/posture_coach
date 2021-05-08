@@ -5,7 +5,8 @@ import 'package:posture_coach/skeleton.dart';
 /*
     {
     isStepCompleted: Bool,
-    keypoints: [ { "x":double, "y":double, "completion":double(range 0-1), "type":metricType} , {} ]
+    keypoints: [ { "x":double, "y":double, "completion":double(range 0-1), "type":metricType} , {} ],
+    partsToDisplay: [ [keypointA,keypointB] , [keypointC,keypointD] ],
     }
 */
 enum metricType { static, dynamic }
@@ -14,6 +15,7 @@ class BicepCurl implements Poses {
   Map<dynamic, dynamic> evaluate(KeyPointConstants keyPoints, var imageHeight,
       var imageWidth, var counter) {
     print("Bicep curl evaluate");
+
     var result = Map<String, dynamic>();
     var keyPointList = [];
     var skeleton = new Skeleton(keyPoints, imageHeight, imageWidth);
@@ -51,6 +53,13 @@ class BicepCurl implements Poses {
       }
     });
     result["isStepCompleted"] = flag;
+
+    var partsToDisplay = [
+      [keyPoints.rightShoulder, keyPoints.rightElbow],
+      [keyPoints.rightElbow, keyPoints.rightWrist],
+    ];
+    result["partsToDisplay"] = partsToDisplay;
+
     result["keypoints"] = keyPointList;
     return result;
   }

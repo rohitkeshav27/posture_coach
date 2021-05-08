@@ -58,9 +58,9 @@ class _ExerciseModelScreenState extends State<ExerciseModelScreen> {
         ),
         CustomPaint(
             painter: MyPainter(
-          results: _recognitions == null || _recognitions.length<=0 ? null : new KeyPointConstants(_recognitions),
               height: cameraHeight,
               width: cameraWidth,
+              partsToDisplay: completions == null ? [] : completions["partsToDisplay"],
         )),
         Positioned(
             top: 10,
