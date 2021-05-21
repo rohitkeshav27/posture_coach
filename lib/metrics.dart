@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:posture_coach/keypointConstants.dart';
 import 'package:posture_coach/poses.dart';
 import 'package:posture_coach/skeleton.dart';
@@ -22,11 +24,23 @@ class BicepCurl implements Poses {
     var keyPointList = [];
     var skeleton = new Skeleton(keyPoints, imageHeight, imageWidth);
 
-    var elbowAngle = skeleton.getAngleBetween(
-        keyPoints.rightShoulder, keyPoints.rightElbow, keyPoints.rightWrist);
+    var shoulder,elbow,wrist,hip;
+    if(keyPoints.rightWrist["score"]+keyPoints.rightElbow["score"]+keyPoints.rightShoulder["score"] >
+        keyPoints.leftWrist["score"]+keyPoints.leftElbow["score"]+keyPoints.leftShoulder["score"]) {
+      shoulder = keyPoints.rightShoulder;
+      wrist = keyPoints.rightWrist;
+      elbow = keyPoints.rightElbow;
+      hip = keyPoints.rightHip;
+    } else {
+      shoulder = keyPoints.leftShoulder;
+      wrist = keyPoints.leftWrist;
+      elbow = keyPoints.leftElbow;
+      hip = keyPoints.leftHip;
+    }
+    var elbowAngle = skeleton.getAngleBetween(shoulder, elbow, wrist);
     var elbowMetric = Map<String, dynamic>();
-    elbowMetric["x"] = keyPoints.rightElbow["x"];
-    elbowMetric["y"] = keyPoints.rightElbow["y"];
+    elbowMetric["x"] = elbow["x"];
+    elbowMetric["y"] = elbow["y"];
     elbowMetric["type"] = metricType.dynamic;
     if (elbowAngle < 40.0) {
       elbowMetric["completion"] = counter % 2 == 0 ? 1 : 0;
@@ -40,11 +54,10 @@ class BicepCurl implements Poses {
     elbowMetric["message"] = counter % 2 == 0 ? "Please raise your arm completely" : "Please lower your arm completely";
     keyPointList.add(elbowMetric);
 
-    var shoulderAngle = skeleton.getAngleBetween(
-        keyPoints.rightHip, keyPoints.rightShoulder, keyPoints.rightElbow);
+    var shoulderAngle = skeleton.getAngleBetween(hip, shoulder, elbow);
     var shoulderMetric = Map<String, dynamic>();
-    shoulderMetric["x"] = keyPoints.rightShoulder["x"];
-    shoulderMetric["y"] = keyPoints.rightShoulder["y"];
+    shoulderMetric["x"] = shoulder["x"];
+    shoulderMetric["y"] = shoulder["y"];
     shoulderMetric["type"] = metricType.static;
     shoulderMetric["completion"] = shoulderAngle < 35.0 ? 1 : 0;
     shoulderMetric["message"] = "Please keep your upper arm close to your body";
@@ -59,8 +72,8 @@ class BicepCurl implements Poses {
     result["isStepCompleted"] = flag;
 
     var partsToDisplay = [
-      [keyPoints.rightShoulder, keyPoints.rightElbow],
-      [keyPoints.rightElbow, keyPoints.rightWrist],
+      [shoulder, elbow],
+      [elbow, wrist],
     ];
     result["partsToDisplay"] = partsToDisplay;
 
