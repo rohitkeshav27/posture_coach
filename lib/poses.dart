@@ -61,6 +61,17 @@ class JointCompletion extends StatelessWidget {
               red = 255 - (score * 2 * 255).toInt();
               green = 255;
             }
+            return Positioned(
+                left: x,
+                top: y,
+                //TODO: https://www.syncfusion.com/blogs/post/create-stunning-circular-progress-bars-with-flutter-radial-gauge-part-1.aspx
+                child: CircularProgressIndicator(
+                  value: score,
+                  backgroundColor: Color.fromRGBO(0, 0, 0, 0.5),
+                  valueColor: AlwaysStoppedAnimation<Color>(Color.fromRGBO(red, green, 0, 1.0)),
+                  strokeWidth: 8.0,
+                )
+            );
           } else {
             score = 1;
             if (k["completion"] == 1.0) {
@@ -70,19 +81,22 @@ class JointCompletion extends StatelessWidget {
               green = 0;
               red = 255;
             }
+            return Positioned(
+                left: x + 7.5,
+                top: y + 7.5,
+                //TODO: https://www.syncfusion.com/blogs/post/create-stunning-circular-progress-bars-with-flutter-radial-gauge-part-1.aspx
+                child: Container(
+                  width: 20.0,
+                  height: 20.0,
+                  decoration: new BoxDecoration(
+                    color: Color.fromRGBO(red, green, 0, 1.0),
+                    shape: BoxShape.circle,
+                  ),
+                ),
+            );
           }
 
-          return Positioned(
-              left: x,
-              top: y,
-              //TODO: https://www.syncfusion.com/blogs/post/create-stunning-circular-progress-bars-with-flutter-radial-gauge-part-1.aspx
-              child: CircularProgressIndicator(
-                value: score,
-                backgroundColor: Color.fromRGBO(0, 0, 0, 0.5),
-                valueColor: AlwaysStoppedAnimation<Color>(Color.fromRGBO(red, green, 0, 1.0)),
-                strokeWidth: 8.0,
-              )
-          );
+
         }).toList();
 
         lists..addAll(list);

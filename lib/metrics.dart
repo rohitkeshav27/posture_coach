@@ -90,6 +90,83 @@ class ShoulderPress implements Poses {
     var keyPointList = [];
     var skeleton = new Skeleton(keyPoints, imageHeight, imageWidth);
 
+    for(var i in ["left","right"]) {
+      var hip,shoulder,elbow,wrist;
+
+      if(i == "left") {
+        hip = keyPoints.leftHip;
+        shoulder = keyPoints.leftShoulder;
+        elbow = keyPoints.leftElbow;
+        wrist = keyPoints.leftWrist;
+      } else {
+        hip = keyPoints.rightHip;
+        shoulder = keyPoints.rightShoulder;
+        elbow = keyPoints.rightElbow;
+        wrist = keyPoints.rightWrist;
+      }
+
+      // TODO: Check keypoint scores to determine model accuracy
+      // if(hip["score"] < 0.3 || shoulder["score"] < 0.3 || elbow["score"] < 0.3 || wrist["score"] < 0.3) {
+      //   break;
+      // }
+
+      var shoulderAngle = skeleton.getAngleBetween(hip, shoulder, elbow);
+
+      var shoulderStaticMetric = Map<String, dynamic>();
+      shoulderStaticMetric["x"] = shoulder["x"];
+      shoulderStaticMetric["y"] = shoulder["y"];
+      shoulderStaticMetric["type"] = metricType.static;
+      shoulderStaticMetric["completion"] = shoulderAngle > 70.0 ? 1 : 0;
+      shoulderStaticMetric["message"] = "Please keep your " + i + "elbow at shoulder level"; //TODO: Check message
+      keyPointList.add(shoulderStaticMetric);
+
+      var ghostPoint = Map();
+      ghostPoint["x"] = elbow["x"];
+      ghostPoint["y"] = elbow["y"] + 50.0;
+      var lowerArmAngle = skeleton.getAngleBetween(wrist,elbow,ghostPoint);
+      var lowerArmMetric = Map<String, dynamic>();
+      lowerArmMetric["x"] = elbow["x"];
+      lowerArmMetric["y"] = elbow["y"];
+      lowerArmMetric["type"] = metricType.static;
+      lowerArmMetric["completion"] = lowerArmAngle > 150.0 ? 1 : 0;
+      lowerArmMetric["message"] = "Please keep your " + i + " arm vertical";
+      keyPointList.add(lowerArmMetric);
+
+      var shoulderDynamicMetric = Map<String, dynamic>();
+      shoulderDynamicMetric["x"] = shoulder["x"];
+      shoulderDynamicMetric["y"] = shoulder["y"];
+      shoulderDynamicMetric["type"] = metricType.dynamic;
+      if (shoulderAngle > 155.0) {
+        shoulderDynamicMetric["completion"] = counter % 2 == 0 ? 1 : 0;
+      } else if (shoulderAngle < 90.0) {
+        shoulderDynamicMetric["completion"] = counter % 2 == 0 ? 0 : 1;
+      } else {
+        shoulderDynamicMetric["completion"] = counter % 2 == 0
+            ? ((shoulderAngle - 90) / (165 - 90))
+            : 1 - ((shoulderAngle - 90) / (165 - 90));
+      }
+      shoulderDynamicMetric["message"] = counter % 2 == 0 ? "Please raise your " + i + " arm completely" : "Please lower your " + i + " arm completely";
+      keyPointList.add(shoulderDynamicMetric);
+    }
+
+    var flag = true;
+    keyPointList.forEach((metric) {
+      if (metric["completion"] != 1) {
+        flag = false;
+      }
+    });
+    result["isStepCompleted"] = flag;
+
+    var partsToDisplay = [
+      [keyPoints.leftShoulder, keyPoints.leftElbow],
+      [keyPoints.leftElbow, keyPoints.leftWrist],
+      [keyPoints.rightShoulder, keyPoints.rightElbow],
+      [keyPoints.rightElbow, keyPoints.rightWrist],
+      [keyPoints.leftShoulder, keyPoints.rightShoulder],
+    ];
+    result["partsToDisplay"] = partsToDisplay;
+
+    result["keypoints"] = keyPointList;
     return result;
   }
 }
