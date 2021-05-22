@@ -81,6 +81,10 @@ class JointCompletion extends StatelessWidget {
               green = 0;
               red = 255;
             }
+            if (!k["confidence"]) {
+              red = 255;
+              green = 255;
+            }
             return Positioned(
                 left: x + 7.5,
                 top: y + 7.5,

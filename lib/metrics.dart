@@ -7,7 +7,7 @@ import 'package:posture_coach/skeleton.dart';
 /*
     {
     isStepCompleted: Bool,
-    keypoints: [ { "x":double, "y":double, "completion":double(range 0-1), "type":metricType, "message":String} , {} ],
+    keypoints: [ { "x":double, "y":double, "completion":double(range 0-1), "type":metricType, "message":String , "confidence":Bool} , {} ],
     partsToDisplay: [ [keypointA,keypointB] , [keypointC,keypointD] ],
     }
 */
@@ -23,6 +23,7 @@ class BicepCurl implements Poses {
     var result = Map<String, dynamic>();
     var keyPointList = [];
     var skeleton = new Skeleton(keyPoints, imageHeight, imageWidth);
+    const scoreThreshold = 0;
 
     var shoulder,elbow,wrist,hip;
     if(keyPoints.rightWrist["score"]+keyPoints.rightElbow["score"]+keyPoints.rightShoulder["score"] >
@@ -51,6 +52,7 @@ class BicepCurl implements Poses {
           ? 1 - ((elbowAngle - 40) / (165 - 40))
           : ((elbowAngle - 40) / (165 - 40));
     }
+    elbowMetric["confidence"] = (wrist["score"] > scoreThreshold && shoulder["score"] > scoreThreshold && elbow["score"] > scoreThreshold);
     elbowMetric["message"] = counter % 2 == 0 ? "Please raise your arm completely" : "Please lower your arm completely";
     keyPointList.add(elbowMetric);
 
@@ -60,6 +62,7 @@ class BicepCurl implements Poses {
     shoulderMetric["y"] = shoulder["y"];
     shoulderMetric["type"] = metricType.static;
     shoulderMetric["completion"] = shoulderAngle < 35.0 ? 1 : 0;
+    shoulderMetric["confidence"] = (hip["score"] > scoreThreshold && shoulder["score"] > scoreThreshold && elbow["score"] > scoreThreshold);
     shoulderMetric["message"] = "Please keep your upper arm close to your body";
     keyPointList.add(shoulderMetric);
 
@@ -89,6 +92,7 @@ class ShoulderPress implements Poses {
     var result = Map<String, dynamic>();
     var keyPointList = [];
     var skeleton = new Skeleton(keyPoints, imageHeight, imageWidth);
+    const scoreThreshold = 0.5;
 
     for(var i in ["left","right"]) {
       var hip,shoulder,elbow,wrist;
@@ -117,6 +121,7 @@ class ShoulderPress implements Poses {
       shoulderStaticMetric["y"] = shoulder["y"];
       shoulderStaticMetric["type"] = metricType.static;
       shoulderStaticMetric["completion"] = shoulderAngle > 70.0 ? 1 : 0;
+      shoulderStaticMetric["confidence"] = (hip["score"] > scoreThreshold && shoulder["score"] > scoreThreshold && elbow["score"] > scoreThreshold);
       shoulderStaticMetric["message"] = "Please keep your " + i + "elbow at shoulder level"; //TODO: Check message
       keyPointList.add(shoulderStaticMetric);
 
@@ -129,6 +134,7 @@ class ShoulderPress implements Poses {
       lowerArmMetric["y"] = elbow["y"];
       lowerArmMetric["type"] = metricType.static;
       lowerArmMetric["completion"] = lowerArmAngle > 150.0 ? 1 : 0;
+      lowerArmMetric["confidence"] = (wrist["score"] > scoreThreshold && elbow["score"] > scoreThreshold);
       lowerArmMetric["message"] = "Please keep your " + i + " arm vertical";
       keyPointList.add(lowerArmMetric);
 
@@ -145,6 +151,7 @@ class ShoulderPress implements Poses {
             ? ((shoulderAngle - 90) / (165 - 90))
             : 1 - ((shoulderAngle - 90) / (165 - 90));
       }
+      shoulderDynamicMetric["confidence"] = (hip["score"] > scoreThreshold && shoulder["score"] > scoreThreshold && elbow["score"] > scoreThreshold);
       shoulderDynamicMetric["message"] = counter % 2 == 0 ? "Please raise your " + i + " arm completely" : "Please lower your " + i + " arm completely";
       keyPointList.add(shoulderDynamicMetric);
     }

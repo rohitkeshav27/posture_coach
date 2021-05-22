@@ -125,8 +125,22 @@ class _ExerciseModelScreenState extends State<ExerciseModelScreen> {
         completions =
             pose.evaluate(keyPoints, imageHeight, imageWidth, counter);
 
-        bool reset = true;
-        completions["keypoints"].asMap().forEach((index, metric) {
+        managePose();
+
+        if (completions["isStepCompleted"] && metricFlag) {
+          dynamicMetricStatus.clear();
+          messages.clear();
+          counter++;
+        }
+      }
+    });
+  }
+
+  void managePose() {
+    bool reset = true;
+    completions["keypoints"].asMap().forEach((index, metric) {
+      if(metric.containsKey("confidence"))
+        if(metric["confidence"]) {
           if (metric["type"] == metricType.static &&
               metric["completion"] == 0) {
             metricFlag = false;
@@ -144,42 +158,40 @@ class _ExerciseModelScreenState extends State<ExerciseModelScreen> {
             if (!dynamicMetricStatus.containsKey(index)) {
               dynamicMetricStatus[index] = MetricStatus.start;
             } else {
-              if (dynamicMetricStatus[index] == MetricStatus.start && metric["completion"] > 0) {
+              if (dynamicMetricStatus[index] == MetricStatus.start &&
+                  metric["completion"] > 0) {
                 dynamicMetricStatus[index] = MetricStatus.inProgress;
               }
-              if (dynamicMetricStatus[index] == MetricStatus.inProgress && metric["completion"] == 1) {
+              if (dynamicMetricStatus[index] == MetricStatus.inProgress &&
+                  metric["completion"] == 1) {
                 dynamicMetricStatus[index] = MetricStatus.completed;
                 messages.remove(index);
               }
-              if (dynamicMetricStatus[index] == MetricStatus.inProgress && metric["completion"] == 0) {
+              if (dynamicMetricStatus[index] == MetricStatus.inProgress &&
+                  metric["completion"] == 0) {
                 dynamicMetricStatus[index] = MetricStatus.notCompleted;
                 messages[index] = metric["message"];
               }
-              if (dynamicMetricStatus[index] == MetricStatus.notCompleted && metric["completion"] > 0) {
+              if (dynamicMetricStatus[index] == MetricStatus.notCompleted &&
+                  metric["completion"] > 0) {
                 dynamicMetricStatus[index] = MetricStatus.inProgress;
               }
-              if (dynamicMetricStatus[index] == MetricStatus.completed && metric["completion"] == 0 ) {
+              if (dynamicMetricStatus[index] == MetricStatus.completed &&
+                  metric["completion"] == 0) {
                 dynamicMetricStatus[index] = MetricStatus.start;
               }
             }
           }
-        });
-        if (reset && !metricFlag) {
-          metricFlag = true;
-          // completions["keypoints"].asMap().forEach((index, metric) {
-          //   if (metric["type"] == metricType.static) {
-          //     messages.remove(index);
-          //   }
-          // });
         }
-
-        if (completions["isStepCompleted"] && metricFlag) {
-          dynamicMetricStatus.clear();
-          messages.clear();
-          counter++;
-        }
-      }
     });
+    if (reset && !metricFlag) {
+      metricFlag = true;
+      // completions["keypoints"].asMap().forEach((index, metric) {
+      //   if (metric["type"] == metricType.static) {
+      //     messages.remove(index);
+      //   }
+      // });
+    }
   }
 
   _getCameraScale(imageHeight, imageWidth) {
