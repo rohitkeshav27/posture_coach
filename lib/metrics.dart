@@ -11,15 +11,12 @@ import 'package:posture_coach/skeleton.dart';
     partsToDisplay: [ [keypointA,keypointB] , [keypointC,keypointD] ],
     }
 */
-//TODO: Differentiate between static and dynamic metrics visually ?
-//TODO: Lateral raise ?
 enum metricType { static, dynamic }
 
 class BicepCurl implements Poses {
   Map<dynamic, dynamic> evaluate(KeyPointConstants keyPoints, var imageHeight,
       var imageWidth, var counter) {
     print("Bicep curl evaluate");
-    //TODO: Perspective Detection
     var result = Map<String, dynamic>();
     var keyPointList = [];
     var skeleton = new Skeleton(keyPoints, imageHeight, imageWidth);
@@ -109,11 +106,6 @@ class ShoulderPress implements Poses {
         wrist = keyPoints.rightWrist;
       }
 
-      // TODO: Check keypoint scores to determine model accuracy
-      // if(hip["score"] < 0.3 || shoulder["score"] < 0.3 || elbow["score"] < 0.3 || wrist["score"] < 0.3) {
-      //   break;
-      // }
-
       var shoulderAngle = skeleton.getAngleBetween(hip, shoulder, elbow);
 
       var shoulderStaticMetric = Map<String, dynamic>();
@@ -185,7 +177,78 @@ class ShoulderFrontRaise implements Poses {
     var result = Map<String, dynamic>();
     var keyPointList = [];
     var skeleton = new Skeleton(keyPoints, imageHeight, imageWidth);
+    const scoreThreshold = 0.5;
 
+    var shoulder,elbow,wrist,hip,knee;
+    if(keyPoints.rightWrist["score"]+keyPoints.rightElbow["score"]+keyPoints.rightShoulder["score"] >
+        keyPoints.leftWrist["score"]+keyPoints.leftElbow["score"]+keyPoints.leftShoulder["score"]) {
+      shoulder = keyPoints.rightShoulder;
+      wrist = keyPoints.rightWrist;
+      elbow = keyPoints.rightElbow;
+      hip = keyPoints.rightHip;
+      knee = keyPoints.rightKnee;
+    } else {
+      shoulder = keyPoints.leftShoulder;
+      wrist = keyPoints.leftWrist;
+      elbow = keyPoints.leftElbow;
+      hip = keyPoints.leftHip;
+      knee = keyPoints.leftKnee;
+    }
+
+    var backAngle = skeleton.getAngleBetween(shoulder, hip, knee);
+    var backMetric = Map<String, dynamic>();
+    backMetric["x"] = hip["x"];
+    backMetric["y"] = hip["y"];
+    backMetric["type"] = metricType.static;
+    backMetric["completion"] = (backAngle > 170) ? 1 : 0;
+    backMetric["confidence"] = (shoulder["score"] > scoreThreshold && hip["score"] > scoreThreshold && knee["score"] > scoreThreshold);
+    backMetric["message"] = "correct back"; //TODO: message
+    keyPointList.add(backMetric);
+
+    var elbowAngle = skeleton.getAngleBetween(shoulder, elbow, wrist);
+    var elbowMetric = Map<String, dynamic>();
+    elbowMetric["x"] = elbow["x"];
+    elbowMetric["y"] = elbow["y"];
+    elbowMetric["type"] = metricType.static;
+    elbowMetric["completion"] = elbowAngle > 150 ? 1 : 0;
+    elbowMetric["confidence"] = (shoulder["score"] > scoreThreshold && elbow["score"] > scoreThreshold && wrist["score"] > scoreThreshold);
+    elbowMetric["message"] = "correct elbow"; //TODO: message
+    keyPointList.add(elbowMetric);
+
+    var shoulderAngle = skeleton.getAngleBetween(wrist, shoulder, hip);
+    var shoulderMetric = Map<String, dynamic>();
+    shoulderMetric["x"] = shoulder["x"];
+    shoulderMetric["y"] = shoulder["y"];
+    shoulderMetric["type"] = metricType.dynamic;
+    if (shoulderAngle > 80.0) {
+      shoulderMetric["completion"] = counter % 2 == 0 ? 1 : 0;
+    } else if (shoulderAngle < 20.0) {
+      shoulderMetric["completion"] = counter % 2 == 0 ? 0 : 1;
+    } else {
+      shoulderMetric["completion"] = counter % 2 == 0
+          ? ((shoulderAngle - 20) / (80 - 20))
+          : 1 - ((shoulderAngle - 20) / (80 - 20));
+    }
+    shoulderMetric["confidence"] = (shoulder["score"] > scoreThreshold && wrist["score"] > scoreThreshold && hip["score"] > scoreThreshold);
+    shoulderMetric["message"] = "correct shoulder"; //TODO: message
+    keyPointList.add(shoulderMetric);
+
+    var flag = true;
+    keyPointList.forEach((metric) {
+      if (metric["completion"] != 1) {
+        flag = false;
+      }
+    });
+
+    var partsToDisplay = [
+      [shoulder, elbow],
+      [elbow, wrist],
+      [shoulder, hip],
+    ];
+    result["partsToDisplay"] = partsToDisplay;
+
+    result["isStepCompleted"] = flag;
+    result["keypoints"] = keyPointList;
     return result;
   }
 }
@@ -197,6 +260,8 @@ class TricepExtension implements Poses {
     var result = Map<String, dynamic>();
     var keyPointList = [];
     var skeleton = new Skeleton(keyPoints, imageHeight, imageWidth);
+
+
 
     return result;
   }
