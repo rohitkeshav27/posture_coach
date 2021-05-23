@@ -119,7 +119,7 @@ class ShoulderPress implements Poses {
 
       var ghostPoint = Map();
       ghostPoint["x"] = elbow["x"];
-      ghostPoint["y"] = elbow["y"] + 50.0;
+      ghostPoint["y"] = elbow["y"] + 1;
       var lowerArmAngle = skeleton.getAngleBetween(wrist,elbow,ghostPoint);
       var lowerArmMetric = Map<String, dynamic>();
       lowerArmMetric["x"] = elbow["x"];
@@ -233,19 +233,19 @@ class ShoulderFrontRaise implements Poses {
     shoulderMetric["message"] = "correct shoulder"; //TODO: message
     keyPointList.add(shoulderMetric);
 
-    var flag = true;
-    keyPointList.forEach((metric) {
-      if (metric["completion"] != 1) {
-        flag = false;
-      }
-    });
-
     var partsToDisplay = [
       [shoulder, elbow],
       [elbow, wrist],
       [shoulder, hip],
     ];
     result["partsToDisplay"] = partsToDisplay;
+
+    var flag = true;
+    keyPointList.forEach((metric) {
+      if (metric["completion"] != 1) {
+        flag = false;
+      }
+    });
 
     result["isStepCompleted"] = flag;
     result["keypoints"] = keyPointList;
@@ -260,8 +260,99 @@ class TricepExtension implements Poses {
     var result = Map<String, dynamic>();
     var keyPointList = [];
     var skeleton = new Skeleton(keyPoints, imageHeight, imageWidth);
+    var scoreThreshold = 0.4;
 
+    var shoulder,ankle,ear,hip,knee;
+    if(keyPoints.rightWrist["score"]+keyPoints.rightElbow["score"]+keyPoints.rightShoulder["score"] >
+        keyPoints.leftWrist["score"]+keyPoints.leftElbow["score"]+keyPoints.leftShoulder["score"]) {
+      shoulder = keyPoints.rightShoulder;
+      ankle = keyPoints.rightAnkle;
+      ear = keyPoints.rightEar;
+      hip = keyPoints.rightHip;
+      knee = keyPoints.rightKnee;
+    } else {
+      shoulder = keyPoints.leftShoulder;
+      ankle = keyPoints.leftAnkle;
+      ear = keyPoints.leftEar;
+      hip = keyPoints.leftHip;
+      knee = keyPoints.leftKnee;
+    }
 
+    var backAngle = skeleton.getAngleBetween(ear, shoulder, hip);
+    var backMetric = Map<String, dynamic>();
+    backMetric["x"] = hip["x"];
+    backMetric["y"] = hip["y"];
+    backMetric["type"] = metricType.static;
+    backMetric["completion"] = (backAngle > 150) ? 1 : 0;
+    backMetric["confidence"] = (shoulder["score"] > scoreThreshold && hip["score"] > scoreThreshold && ear["score"] > scoreThreshold);
+    backMetric["message"] = "correct back"; //TODO: message
+    keyPointList.add(backMetric);
+
+    var ghostPoint = Map();
+    ghostPoint["x"] = ankle["x"];
+    ghostPoint["y"] = ankle["y"] + 1;
+    var shoulderToAnkle = skeleton.getAngleBetween(shoulder, ankle, ghostPoint);
+    var shoulderToAnkleMetric = Map<String, dynamic>();
+    shoulderToAnkleMetric["x"] = shoulder["x"];
+    shoulderToAnkleMetric["y"] = shoulder["y"];
+    shoulderToAnkleMetric["type"] = metricType.static;
+    shoulderToAnkleMetric["completion"] = (shoulderToAnkle > 160) ? 1 : 0;
+    shoulderToAnkleMetric["confidence"] = (shoulder["score"] > scoreThreshold && ankle["score"] > scoreThreshold);
+    shoulderToAnkleMetric["message"] = "correct shoulder"; //TODO: message
+    keyPointList.add(shoulderToAnkleMetric);
+
+    var kneeAngle = skeleton.getAngleBetween(ankle, knee, hip);
+    var kneeDynamicMetric = Map<String, dynamic>();
+    kneeDynamicMetric["x"] = knee["x"];
+    kneeDynamicMetric["y"] = knee["y"];
+    kneeDynamicMetric["type"] = metricType.dynamic;
+    if (kneeAngle < 70.0) {
+      kneeDynamicMetric["completion"] = counter % 2 == 0 ? 1 : 0;
+    } else if (kneeAngle > 160.0) {
+      kneeDynamicMetric["completion"] = counter % 2 == 0 ? 0 : 1;
+    } else {
+      kneeDynamicMetric["completion"] = counter % 2 == 0
+          ? ((kneeAngle - 160) / (70 - 160))
+          : 1 - ((kneeAngle - 160) / (70 - 160));
+    }
+    kneeDynamicMetric["confidence"] = (hip["score"] > scoreThreshold && knee["score"] > scoreThreshold && ankle["score"] > scoreThreshold);
+    kneeDynamicMetric["message"] = counter % 2 == 0 ? "Please lower your hip" : "Please stand straight";
+    keyPointList.add(kneeDynamicMetric);
+
+    var hipAngle = skeleton.getAngleBetween(shoulder, hip, knee);
+    var hipDynamicMetric = Map<String, dynamic>();
+    hipDynamicMetric["x"] = hip["x"];
+    hipDynamicMetric["y"] = hip["y"];
+    hipDynamicMetric["type"] = metricType.dynamic;
+    if (hipAngle < 90.0) {
+      hipDynamicMetric["completion"] = counter % 2 == 0 ? 1 : 0;
+    } else if (hipAngle > 160.0) {
+      hipDynamicMetric["completion"] = counter % 2 == 0 ? 0 : 1;
+    } else {
+      hipDynamicMetric["completion"] = counter % 2 == 0
+          ? ((hipAngle - 160) / (90 - 160))
+          : 1 - ((hipAngle - 160) / (90 - 160));
+    }
+    hipDynamicMetric["confidence"] = (hip["score"] > scoreThreshold && knee["score"] > scoreThreshold && shoulder["score"] > scoreThreshold);
+    hipDynamicMetric["message"] = counter % 2 == 0 ? "Please lower your shoulder" : "Please stand straight";
+    keyPointList.add(hipDynamicMetric);
+
+    var partsToDisplay = [
+      [shoulder, hip],
+      [hip, knee],
+      [knee, ankle],
+    ];
+    result["partsToDisplay"] = partsToDisplay;
+
+    var flag = true;
+    keyPointList.forEach((metric) {
+      if (metric["completion"] != 1) {
+        flag = false;
+      }
+    });
+
+    result["isStepCompleted"] = flag;
+    result["keypoints"] = keyPointList;
 
     return result;
   }
