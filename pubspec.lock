@@ -182,13 +182,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.1.0"
-  vertical_card_pager:
-    dependency: "direct main"
-    description:
-      name: vertical_card_pager
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "1.5.0"
   video_player:
     dependency: "direct main"
     description:
@@ -211,5 +204,5 @@ packages:
     source: hosted
     version: "2.0.0"
 sdks:
-  dart: ">=2.12.0 <3.0.0"
+  dart: ">=2.12.0-259.9.beta <3.0.0"
   flutter: ">=1.20.0"
