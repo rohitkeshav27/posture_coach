@@ -3,12 +3,11 @@ import 'package:vertical_card_pager/vertical_card_pager.dart';
 import 'package:posture_coach/image_container.dart';
 
 class ExerciseInventoryScreen extends StatelessWidget {
-
   final List<String> titles = [
     "Bicep Curl",
     "Shoulder Front Raise",
     "Shoulder Press",
-    "Tricep Extension",
+    "Squats",
   ];
 
   final List<Widget> images = [
@@ -26,11 +25,11 @@ class ExerciseInventoryScreen extends StatelessWidget {
     ),
     ImageContainer(
       path: 'images/Shrugs.jpg',
-      routeName: '/tricepExtension',
+      routeName: '/squats',
     )
   ];
 
-  final List<String> routeName = ['/bicep', '/raise', '/press', '/tricepExtension'];
+  final List<String> routeName = ['/bicep', '/raise', '/press', '/squats'];
 
   @override
   Widget build(BuildContext context) {
@@ -38,7 +37,7 @@ class ExerciseInventoryScreen extends StatelessWidget {
       appBar: AppBar(
           title: Center(
               child: Text(
-        'List of Exercises',
+        'Posture Coach',
         style: TextStyle(
           color: Colors.black,
         ),

@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:tflite/tflite.dart';
@@ -28,6 +26,7 @@ class CameraScreenState extends State<CameraScreen> {
   int endTime;
   int cameraHeight = 0;
   int cameraWidth = 0;
+
   //static const platform = const MethodChannel('ondeviceML');
 
   @override
@@ -59,10 +58,10 @@ class CameraScreenState extends State<CameraScreen> {
             endTime = DateTime.now().millisecondsSinceEpoch;
             print("Detection took ${endTime - startTime}");
             //log(recognitions.toString())
-            if(cameraHeight == 0 || cameraWidth == 0) {
-              cameraHeight = math.max(img.height,img.width);
-              cameraWidth = math.min(img.height,img.width);
-              widget.getCameraScale(cameraHeight,cameraWidth);
+            if (cameraHeight == 0 || cameraWidth == 0) {
+              cameraHeight = math.max(img.height, img.width);
+              cameraWidth = math.min(img.height, img.width);
+              widget.getCameraScale(cameraHeight, cameraWidth);
             }
             widget.setRecognitions(recognitions, img.height, img.width);
             isDetecting = false;
@@ -103,8 +102,10 @@ class CameraScreenState extends State<CameraScreen> {
 
     return Positioned(
       top: 0,
-      height: screenRatio < previewRatio ? screenH : screenW / previewW * previewH,
-      width: screenRatio < previewRatio ? screenH / previewH * previewW : screenW,
+      height:
+          screenRatio < previewRatio ? screenH : screenW / previewW * previewH,
+      width:
+          screenRatio < previewRatio ? screenH / previewH * previewW : screenW,
       child: CameraPreview(controller),
     );
   }

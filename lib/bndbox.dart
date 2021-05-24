@@ -9,12 +9,8 @@ class BndBox extends StatelessWidget {
   final double height;
   final double width;
 
-  const BndBox({
-    this.results,
-    this.height,
-    this.width
-  });
-////TODO: Refactor to remove recognitions and add KeyPointConstantClass
+  const BndBox({this.results, this.height, this.width});
+
   @override
   Widget build(BuildContext context) {
     List<Widget> _renderKeypoints() {
@@ -30,14 +26,14 @@ class BndBox extends StatelessWidget {
           // To solve mirror problem on front camera
           x = width - x;
 
-          if (k["part"]=="rightShoulder") {
-            print("bndbox "+x.toString()+","+y.toString());
+          if (k["part"] == "rightShoulder") {
+            print("bndbox " + x.toString() + "," + y.toString());
           }
-          if (k["part"]=="rightElbow") {
-            print("bndbox "+x.toString()+","+y.toString());
+          if (k["part"] == "rightElbow") {
+            print("bndbox " + x.toString() + "," + y.toString());
           }
-          if (k["part"]=="rightWrist") {
-            print("bndbox "+x.toString()+","+y.toString());
+          if (k["part"] == "rightWrist") {
+            print("bndbox " + x.toString() + "," + y.toString());
           }
 
           return Positioned(
