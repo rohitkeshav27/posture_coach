@@ -4,41 +4,43 @@ import 'package:posture_coach/keypointConstants.dart';
 import 'package:posture_coach/metrics.dart';
 
 class Poses {
-  Map<dynamic,dynamic> evaluate(KeyPointConstants keyPoints, var imageHeight, var imageWidth, var counter) {}
+  Map<dynamic, dynamic> evaluate(KeyPointConstants keyPoints, var imageHeight,
+      var imageWidth, var counter) {}
 }
 
 class PosesFactory {
   static Poses getPose(String poseName) {
     switch (poseName) {
-      case "Bicep Curl": return BicepCurl();
-      break;
-      case "Shoulder Press": return ShoulderPress();
-      break;
-      case "Shoulder Front Raise": return ShoulderFrontRaise();
-      break;
-      case "Tricep Extension": return TricepExtension();
-      break;
-      default: return null;
+      case "Bicep Curl":
+        return BicepCurl();
+        break;
+      case "Shoulder Press":
+        return ShoulderPress();
+        break;
+      case "Shoulder Front Raise":
+        return ShoulderFrontRaise();
+        break;
+      case "Squats":
+        return Squats();
+        break;
+      default:
+        return null;
     }
   }
 }
 
 class JointCompletion extends StatelessWidget {
-  final Map<dynamic,dynamic> results;
+  final Map<dynamic, dynamic> results;
   final double height;
   final double width;
 
-  const JointCompletion({
-    this.results,
-    this.height,
-    this.width
-});
+  const JointCompletion({this.results, this.height, this.width});
 
   @override
   Widget build(BuildContext context) {
     List<Widget> _renderCompletions() {
       var lists = <Widget>[];
-      if(results.isNotEmpty) {
+      if (results.isNotEmpty) {
         var list = results["keypoints"].map<Widget>((k) {
           var _x = k["x"];
           var _y = k["y"];
@@ -68,10 +70,10 @@ class JointCompletion extends StatelessWidget {
                 child: CircularProgressIndicator(
                   value: score,
                   backgroundColor: Color.fromRGBO(0, 0, 0, 0.5),
-                  valueColor: AlwaysStoppedAnimation<Color>(Color.fromRGBO(red, green, 0, 1.0)),
+                  valueColor: AlwaysStoppedAnimation<Color>(
+                      Color.fromRGBO(red, green, 0, 1.0)),
                   strokeWidth: 8.0,
-                )
-            );
+                ));
           } else {
             score = 1;
             if (k["completion"] == 1.0) {
@@ -86,27 +88,26 @@ class JointCompletion extends StatelessWidget {
               green = 255;
             }
             return Positioned(
-                left: x + 7.5,
-                top: y + 7.5,
-                //TODO: https://www.syncfusion.com/blogs/post/create-stunning-circular-progress-bars-with-flutter-radial-gauge-part-1.aspx
-                child: Container(
-                  width: 20.0,
-                  height: 20.0,
-                  decoration: new BoxDecoration(
-                    color: Color.fromRGBO(red, green, 0, 1.0),
-                    shape: BoxShape.circle,
-                  ),
+              left: x + 7.5,
+              top: y + 7.5,
+              //TODO: https://www.syncfusion.com/blogs/post/create-stunning-circular-progress-bars-with-flutter-radial-gauge-part-1.aspx
+              child: Container(
+                width: 20.0,
+                height: 20.0,
+                decoration: new BoxDecoration(
+                  color: Color.fromRGBO(red, green, 0, 1.0),
+                  shape: BoxShape.circle,
                 ),
+              ),
             );
           }
-
-
         }).toList();
 
         lists..addAll(list);
       }
       return lists;
     }
+
     return Stack(children: _renderCompletions());
   }
 }

@@ -50,10 +50,10 @@ final List<Exercise> exercises = [
       'Types of Shoulder Press:\n\t-Military Press\n\t-Push Press\n\t-Bradford Press',
       60.0),
   Exercise(
-      "Tricep Extension",
-      '/tricepExtension/tricepExtensionmod',
+      "Squats",
+      '/squats/squats',
       "videos/Shrug.mp4",
-      'TRICEP EXTENSION STUFF',
-      'Types of TricepExtension',
+      'A squat is a strength exercise in which the trainee lowers their hips from a standing position and then stands back up.',
+      'Types of Squats:\n\t-Barbell Squats\n\t-Dumbbell Squats\n\t-Weighted Squats',
       40.0)
 ];

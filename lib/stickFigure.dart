@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-import 'keypointConstants.dart';
 
 // MyPainter is used to draw the sticky figure
 class MyPainter extends CustomPainter {

@@ -1,4 +1,3 @@
-import 'dart:math';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:posture_coach/cameras.dart';
@@ -7,7 +6,6 @@ import 'package:posture_coach/metrics.dart';
 import 'package:posture_coach/poses.dart';
 import 'package:posture_coach/stickFigure.dart';
 import 'package:camera/camera.dart';
-import 'package:posture_coach/skeleton.dart';
 import 'package:posture_coach/keypointConstants.dart';
 import 'package:tflite/tflite.dart';
 import 'package:flutter/services.dart';
@@ -59,7 +57,10 @@ class _ExerciseModelScreenState extends State<ExerciseModelScreen> {
     return Scaffold(
       body: Stack(children: [
         CameraScreen(
-            cameras: widget.cameras, setRecognitions: _setRecognitions, getCameraScale:  _getCameraScale,),
+          cameras: widget.cameras,
+          setRecognitions: _setRecognitions,
+          getCameraScale: _getCameraScale,
+        ),
         BndBox(
           results: _recognitions == null ? [] : _recognitions,
           height: cameraHeight,
@@ -67,9 +68,10 @@ class _ExerciseModelScreenState extends State<ExerciseModelScreen> {
         ),
         CustomPaint(
             painter: MyPainter(
-              height: cameraHeight,
-              width: cameraWidth,
-              partsToDisplay: completions == null ? [] : completions["partsToDisplay"],
+          height: cameraHeight,
+          width: cameraWidth,
+          partsToDisplay:
+              completions == null ? [] : completions["partsToDisplay"],
         )),
         Positioned(
             top: 10,
@@ -107,7 +109,7 @@ class _ExerciseModelScreenState extends State<ExerciseModelScreen> {
     }
     setState(() {
       _recognitions = recognitions;
-      if(_recognitions.isNotEmpty){
+      if (_recognitions.isNotEmpty) {
         keyPoints = new KeyPointConstants(_recognitions);
       }
       if (_recognitions.isNotEmpty) {
@@ -139,50 +141,46 @@ class _ExerciseModelScreenState extends State<ExerciseModelScreen> {
   void managePose() {
     bool reset = true;
     completions["keypoints"].asMap().forEach((index, metric) {
-      if(metric.containsKey("confidence"))
-        if(metric["confidence"]) {
-          if (metric["type"] == metricType.static &&
-              metric["completion"] == 0) {
-            metricFlag = false;
-            messages[index] = metric["message"];
-          }
-          if (metric["type"] == metricType.static &&
-              metric["completion"] == 0) {
-            reset = false;
-          }
-          if (metric["type"] == metricType.dynamic &&
-              metric["completion"] != 0) {
-            reset = false;
-          }
-          if (metric["type"] == metricType.dynamic) {
-            if (!dynamicMetricStatus.containsKey(index)) {
+      if (metric.containsKey("confidence")) if (metric["confidence"]) {
+        if (metric["type"] == metricType.static && metric["completion"] == 0) {
+          metricFlag = false;
+          messages[index] = metric["message"];
+        }
+        if (metric["type"] == metricType.static && metric["completion"] == 0) {
+          reset = false;
+        }
+        if (metric["type"] == metricType.dynamic && metric["completion"] != 0) {
+          reset = false;
+        }
+        if (metric["type"] == metricType.dynamic) {
+          if (!dynamicMetricStatus.containsKey(index)) {
+            dynamicMetricStatus[index] = MetricStatus.start;
+          } else {
+            if (dynamicMetricStatus[index] == MetricStatus.start &&
+                metric["completion"] > 0) {
+              dynamicMetricStatus[index] = MetricStatus.inProgress;
+            }
+            if (dynamicMetricStatus[index] == MetricStatus.inProgress &&
+                metric["completion"] == 1) {
+              dynamicMetricStatus[index] = MetricStatus.completed;
+              messages.remove(index);
+            }
+            if (dynamicMetricStatus[index] == MetricStatus.inProgress &&
+                metric["completion"] == 0) {
+              dynamicMetricStatus[index] = MetricStatus.notCompleted;
+              messages[index] = metric["message"];
+            }
+            if (dynamicMetricStatus[index] == MetricStatus.notCompleted &&
+                metric["completion"] > 0) {
+              dynamicMetricStatus[index] = MetricStatus.inProgress;
+            }
+            if (dynamicMetricStatus[index] == MetricStatus.completed &&
+                metric["completion"] == 0) {
               dynamicMetricStatus[index] = MetricStatus.start;
-            } else {
-              if (dynamicMetricStatus[index] == MetricStatus.start &&
-                  metric["completion"] > 0) {
-                dynamicMetricStatus[index] = MetricStatus.inProgress;
-              }
-              if (dynamicMetricStatus[index] == MetricStatus.inProgress &&
-                  metric["completion"] == 1) {
-                dynamicMetricStatus[index] = MetricStatus.completed;
-                messages.remove(index);
-              }
-              if (dynamicMetricStatus[index] == MetricStatus.inProgress &&
-                  metric["completion"] == 0) {
-                dynamicMetricStatus[index] = MetricStatus.notCompleted;
-                messages[index] = metric["message"];
-              }
-              if (dynamicMetricStatus[index] == MetricStatus.notCompleted &&
-                  metric["completion"] > 0) {
-                dynamicMetricStatus[index] = MetricStatus.inProgress;
-              }
-              if (dynamicMetricStatus[index] == MetricStatus.completed &&
-                  metric["completion"] == 0) {
-                dynamicMetricStatus[index] = MetricStatus.start;
-              }
             }
           }
         }
+      }
     });
     if (reset && !metricFlag) {
       metricFlag = true;

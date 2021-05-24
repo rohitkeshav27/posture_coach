@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:posture_coach/keypointConstants.dart';
 import 'package:posture_coach/poses.dart';
 import 'package:posture_coach/skeleton.dart';
@@ -253,10 +251,10 @@ class ShoulderFrontRaise implements Poses {
   }
 }
 
-class TricepExtension implements Poses {
+class Squats implements Poses {
   Map<dynamic, dynamic> evaluate(
       KeyPointConstants keyPoints, var imageHeight, var imageWidth, var counter) {
-    print("Tricep Extension evaluate");
+    print("Squats evaluate");
     var result = Map<String, dynamic>();
     var keyPointList = [];
     var skeleton = new Skeleton(keyPoints, imageHeight, imageWidth);
