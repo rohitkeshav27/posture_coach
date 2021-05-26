@@ -51,7 +51,7 @@ final List<Exercise> exercises = [
       60.0),
   Exercise(
       "Squats",
-      '/squats/squats',
+      '/squats/squatsmod',
       "videos/Shrug.mp4",
       'A squat is a strength exercise in which the trainee lowers their hips from a standing position and then stands back up.',
       'Types of Squats:\n\t-Barbell Squats\n\t-Dumbbell Squats\n\t-Weighted Squats',
