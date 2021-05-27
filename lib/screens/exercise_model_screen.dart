@@ -88,7 +88,7 @@ class _ExerciseModelScreenState extends State<ExerciseModelScreen> {
                 color: Color.fromRGBO(0, 0, 0, 0.7),
                 borderRadius: BorderRadius.only(
                   bottomRight: Radius.circular(8),
-                ) // green shaped
+                )
             ),
             child: Text(
                 // counter.toString() + " " + metricFlag.toString(),
