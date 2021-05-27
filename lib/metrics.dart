@@ -18,7 +18,7 @@ class BicepCurl implements Poses {
     var result = Map<String, dynamic>();
     var keyPointList = [];
     var skeleton = new Skeleton(keyPoints, imageHeight, imageWidth);
-    const scoreThreshold = 0;
+    const scoreThreshold = 0.2;
 
     var shoulder,elbow,wrist,hip;
     if(keyPoints.rightWrist["score"]+keyPoints.rightElbow["score"]+keyPoints.rightShoulder["score"] >

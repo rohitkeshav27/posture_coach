@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:posture_coach/cameras.dart';
@@ -42,6 +44,10 @@ class _ExerciseModelScreenState extends State<ExerciseModelScreen> {
   bool metricFlag = true;
   var dynamicMetricStatus = Map();
   var messages = Map();
+  bool showFeedback = false;
+  final String tickImageString = 'images/tick.png';
+  final String crossImageString = 'images/cross.png';
+  var feedbackImageToDisplay = '';
 
   @override
   void initState() {
@@ -55,6 +61,7 @@ class _ExerciseModelScreenState extends State<ExerciseModelScreen> {
   Widget build(BuildContext context) {
     screen = MediaQuery.of(context).size;
     return Scaffold(
+      backgroundColor: Colors.black,
       body: Stack(children: [
         CameraScreen(
           cameras: widget.cameras,
@@ -74,30 +81,52 @@ class _ExerciseModelScreenState extends State<ExerciseModelScreen> {
               completions == null ? [] : completions["partsToDisplay"],
         )),
         Positioned(
-            top: 10,
+          top: 0,
+          child: Container(
+            padding: EdgeInsets.symmetric(vertical: 8, horizontal: 8),
+            decoration: BoxDecoration(
+                color: Color.fromRGBO(0, 0, 0, 0.7),
+                borderRadius: BorderRadius.only(
+                  bottomRight: Radius.circular(8),
+                ) // green shaped
+            ),
             child: Text(
-              counter.toString() + " " + metricFlag.toString(),
-              style: TextStyle(
-                backgroundColor: Color.fromRGBO(0, 0, 0, 0.7),
-                color: Color.fromRGBO(37, 213, 253, 1.0),
-                fontSize: 20.0,
-              ),
-            )),
+                // counter.toString() + " " + metricFlag.toString(),
+                "Reps: " + (counter ~/ 2).toString(),
+                style: TextStyle(
+                  color: Color.fromRGBO(37, 213, 253, 1.0),
+                  fontSize: 20.0,
+                ),
+            ),
+          ),
+        ),
         JointCompletion(
           results: completions == null ? Map<dynamic, dynamic>() : completions,
           height: cameraHeight,
           width: cameraWidth,
         ),
         Positioned(
-          top: cameraHeight,
+          top: cameraHeight + 8,
+          width: MediaQuery.of(context).size.width,
           child: Text(
-            messages.values.join("\n"), //TODO: Check message width
+            messages.values.join("\n"),
             style: TextStyle(
-              backgroundColor: Colors.black,
               color: Colors.white,
-              fontSize: 20.0,
+              fontSize: 18.0,
             ),
           ),
+        ),
+        Positioned(
+          top: 20,
+          right: 20,
+          child: Opacity(
+            opacity: showFeedback ? 1 : 0,
+            child: Image(
+              image: AssetImage(feedbackImageToDisplay),
+              height: 50,
+              width: 50,
+            ),
+          )
         )
       ]),
     );
@@ -132,9 +161,18 @@ class _ExerciseModelScreenState extends State<ExerciseModelScreen> {
         if (completions["isStepCompleted"] && metricFlag) {
           dynamicMetricStatus.clear();
           messages.clear();
+          displayTickForDuration(2);
           counter++;
         }
       }
+    });
+  }
+
+  void displayTickForDuration(int seconds) {
+    feedbackImageToDisplay = tickImageString;
+    showFeedback = true;
+    Timer(Duration(seconds: seconds), (){
+      showFeedback = false;
     });
   }
 
@@ -145,6 +183,8 @@ class _ExerciseModelScreenState extends State<ExerciseModelScreen> {
         if (metric["type"] == metricType.static && metric["completion"] == 0) {
           metricFlag = false;
           messages[index] = metric["message"];
+          feedbackImageToDisplay = crossImageString;
+          showFeedback = true;
         }
         if (metric["type"] == metricType.static && metric["completion"] == 0) {
           reset = false;
@@ -157,7 +197,7 @@ class _ExerciseModelScreenState extends State<ExerciseModelScreen> {
             dynamicMetricStatus[index] = MetricStatus.start;
           } else {
             if (dynamicMetricStatus[index] == MetricStatus.start &&
-                metric["completion"] > 0) {
+                metric["completion"] > 0.2) {
               dynamicMetricStatus[index] = MetricStatus.inProgress;
             }
             if (dynamicMetricStatus[index] == MetricStatus.inProgress &&
@@ -169,9 +209,11 @@ class _ExerciseModelScreenState extends State<ExerciseModelScreen> {
                 metric["completion"] == 0) {
               dynamicMetricStatus[index] = MetricStatus.notCompleted;
               messages[index] = metric["message"];
+              feedbackImageToDisplay = crossImageString;
+              showFeedback = true;
             }
             if (dynamicMetricStatus[index] == MetricStatus.notCompleted &&
-                metric["completion"] > 0) {
+                metric["completion"] > 0.2) {
               dynamicMetricStatus[index] = MetricStatus.inProgress;
             }
             if (dynamicMetricStatus[index] == MetricStatus.completed &&
@@ -180,10 +222,13 @@ class _ExerciseModelScreenState extends State<ExerciseModelScreen> {
             }
           }
         }
+      } else {
+        reset = false;
       }
     });
     if (reset && !metricFlag) {
       metricFlag = true;
+      showFeedback = false;
       // completions["keypoints"].asMap().forEach((index, metric) {
       //   if (metric["type"] == metricType.static) {
       //     messages.remove(index);
