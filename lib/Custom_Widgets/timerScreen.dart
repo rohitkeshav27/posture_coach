@@ -1,12 +1,7 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:circular_countdown/circular_countdown.dart';
 
 class TimerScreen extends StatefulWidget {
-  // final bool istimercompleted;
-  // TimerScreen({ Key key, this.userId }): super(key: key);
-
   bool _isTimerCompleted = false;
 
   bool getIsTimerCompleted() {

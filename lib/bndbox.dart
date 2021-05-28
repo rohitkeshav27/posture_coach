@@ -26,16 +26,6 @@ class BndBox extends StatelessWidget {
           // To solve mirror problem on front camera
           x = width - x;
 
-          if (k["part"] == "rightShoulder") {
-            print("bndbox " + x.toString() + "," + y.toString());
-          }
-          if (k["part"] == "rightElbow") {
-            print("bndbox " + x.toString() + "," + y.toString());
-          }
-          if (k["part"] == "rightWrist") {
-            print("bndbox " + x.toString() + "," + y.toString());
-          }
-
           return Positioned(
             left: x,
             top: y,

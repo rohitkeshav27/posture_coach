@@ -27,8 +27,6 @@ class CameraScreenState extends State<CameraScreen> {
   int cameraHeight = 0;
   int cameraWidth = 0;
 
-  //static const platform = const MethodChannel('ondeviceML');
-
   @override
   void initState() {
     super.initState();
@@ -91,14 +89,6 @@ class CameraScreenState extends State<CameraScreen> {
     var previewW = math.min(tmp.height, tmp.width);
     var screenRatio = screenH / screenW;
     var previewRatio = previewH / previewW;
-
-    // return OverflowBox(
-    //   maxHeight:
-    //       screenRatio < previewRatio ? screenH : screenW / previewW * previewH,
-    //   maxWidth:
-    //       screenRatio < previewRatio ? screenH / previewH * previewW : screenW,
-    //   child: CameraPreview(controller),
-    // );
 
     return Positioned(
       top: 0,

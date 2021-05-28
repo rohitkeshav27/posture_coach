@@ -34,10 +34,6 @@ class Skeleton {
     // bodyPart.forEach((key, value) {
     //   bodyPart.update(key, (value) => value/normalizationConstant);
     // });
-    // print("left shoulder "+recognitions[0]["keypoints"][5]["x"].toString()+" "+recognitions[0]["keypoints"][5]["y"].toString());
-    // print("right shoulder "+recognitions[0]["keypoints"][6]["x"].toString()+" "+recognitions[0]["keypoints"][6]["y"].toString());
-    // print("left hip "+recognitions[0]["keypoints"][11]["x"].toString()+" "+recognitions[0]["keypoints"][11]["y"].toString());
-    // print("right hip "+recognitions[0]["keypoints"][12]["x"].toString()+" "+recognitions[0]["keypoints"][12]["y"].toString());
     // print("constant = "+normalizationConstant.toString());
   }
 
@@ -51,28 +47,31 @@ class Skeleton {
     return {"x": (p1["x"] + p2["x"]) / 2, "y": (p1["y"] + p2["y"]) / 2};
   }
 
-  void display() {
-    bodyPart.forEach((key, value) {
-      print(key + "\t" + value.toString());
-    });
-  }
+  // void display() {
+  //   bodyPart.forEach((key, value) {
+  //     print(key + "\t" + value.toString());
+  //   });
+  // }
 
   double getAngleBetween(var p1, var p2, var p3) {
     p1 = getActualCoordinates(p1);
     p2 = getActualCoordinates(p2);
     p3 = getActualCoordinates(p3);
-    print("actual coordinates");
-    print(p1["x"].toString() + "," + p1["y"].toString());
-    print(p2["x"].toString() + "," + p2["y"].toString());
-    print(p3["x"].toString() + "," + p3["y"].toString());
+    // print("actual coordinates");
+    // print(p1["x"].toString() + "," + p1["y"].toString());
+    // print(p2["x"].toString() + "," + p2["y"].toString());
+    // print(p3["x"].toString() + "," + p3["y"].toString());
+
+    // mathematical function to calculate the angle
     // arccos((P12^2 + P23^2 - P13^2) / (2 * P12 * P23))
+
     var p12 = straightLineDistance(p1, p2); //normalizationConstant;
     var p23 = straightLineDistance(p2, p3); //normalizationConstant;
     var p31 = straightLineDistance(p3, p1); //normalizationConstant;
-    print("distances");
-    print("p12 : " + p12.toString());
-    print("p23 : " + p23.toString());
-    print("p31 : " + p31.toString());
+    // print("distances");
+    // print("p12 : " + p12.toString());
+    // print("p23 : " + p23.toString());
+    // print("p31 : " + p31.toString());
     return acos((pow(p12, 2) + pow(p23, 2) - pow(p31, 2)) / (2 * p12 * p23)) *
         (180 / pi);
   }

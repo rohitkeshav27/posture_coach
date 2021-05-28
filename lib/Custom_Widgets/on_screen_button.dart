@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:posture_coach/screens/exercise_screen.dart';
-import 'package:video_player/video_player.dart';
 
 class ButtonOnScreen extends StatelessWidget {
   ButtonOnScreen({@required this.routeTo});

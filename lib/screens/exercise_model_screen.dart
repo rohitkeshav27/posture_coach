@@ -55,7 +55,7 @@ class _ExerciseModelScreenState extends State<ExerciseModelScreen> {
   void initState() {
     super.initState();
     var res = loadModel();
-    print('Model Response: ' + res.toString());
+    // print('Model Response: ' + res.toString());
     SystemChrome.setEnabledSystemUIOverlays([]);
   }
 
@@ -169,15 +169,6 @@ class _ExerciseModelScreenState extends State<ExerciseModelScreen> {
         keyPoints = new KeyPointConstants(_recognitions);
       }
       if (_recognitions.isNotEmpty) {
-        // var skeleton = new Skeleton(recognitions, imageHeight, imageWidth);
-        // if (recognitions[0]["keypoints"][8]["score"]>0.5) {
-        //   angle = skeleton.getAngleBetween(
-        //       recognitions[0]["keypoints"][6], recognitions[0]["keypoints"][8],
-        //       recognitions[0]["keypoints"][10]).toString();
-        //   print("angle: "+angle);
-        // }
-        //.display();
-
         var pose = PosesFactory.getPose(widget.exerciseName);
         //TODO: Check if relevant keypoints are visible
         completions =

@@ -45,7 +45,6 @@ class JointCompletion extends StatelessWidget {
           var _x = k["x"];
           var _y = k["y"];
           var x, y;
-
           x = _x * width;
           y = _y * height;
           // To solve mirror problem on front camera
@@ -66,7 +65,6 @@ class JointCompletion extends StatelessWidget {
             return Positioned(
                 left: x,
                 top: y,
-                //TODO: https://www.syncfusion.com/blogs/post/create-stunning-circular-progress-bars-with-flutter-radial-gauge-part-1.aspx
                 child: CircularProgressIndicator(
                   value: score,
                   backgroundColor: Color.fromRGBO(0, 0, 0, 0.5),
@@ -90,7 +88,6 @@ class JointCompletion extends StatelessWidget {
             return Positioned(
               left: x + 7.5,
               top: y + 7.5,
-              //TODO: https://www.syncfusion.com/blogs/post/create-stunning-circular-progress-bars-with-flutter-radial-gauge-part-1.aspx
               child: Container(
                 width: 20.0,
                 height: 20.0,
