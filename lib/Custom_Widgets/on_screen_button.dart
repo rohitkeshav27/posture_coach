@@ -16,13 +16,14 @@ class ButtonOnScreen extends StatelessWidget {
             Navigator.restorablePushNamed(context, routeTo);
           },
           style: ElevatedButton.styleFrom(
-            shadowColor: Colors.teal,
+            shadowColor: Color(0xFF4e0004),
+            elevation: 15,
             textStyle: TextStyle(
               fontSize: 30.0,
               fontWeight: FontWeight.bold,
             ),
-            onPrimary: Colors.teal,
-            primary: Colors.white,
+            onPrimary: Colors.white,
+            primary: Color(0xFF9a0007),
             padding: EdgeInsets.only(
                 left: 100.0, right: 100.0, top: 10.0, bottom: 10.0),
             shape: new RoundedRectangleBorder(
