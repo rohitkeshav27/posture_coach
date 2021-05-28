@@ -38,12 +38,11 @@ class ExerciseScreenState extends State<ExerciseScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Padding(
-            padding: EdgeInsets.only(left: widget.exercise.paddingValue),
-            child: Text(
-              widget.exercise.name,
-              style: TextStyle(color: Colors.black),
-            )),
+        centerTitle: true,
+        title: Text(
+          widget.exercise.name,
+          style: TextStyle(color: Colors.white),
+        ),
       ),
       body: Column(
         children: [

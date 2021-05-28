@@ -17,7 +17,7 @@ class FlippingCard extends StatelessWidget {
       child: Card(
         margin: const EdgeInsets.only(left: 20.0, right: 20.0),
         elevation: 0.0,
-        color: Colors.white,
+        color: Color(0xFFe0e0e0),
         child: FlipCard(
           direction: FlipDirection.HORIZONTAL,
           speed: 1000,
@@ -26,8 +26,8 @@ class FlippingCard extends StatelessWidget {
           },
           front: Container(
             decoration: BoxDecoration(
-              border: Border.all(color: Colors.white, width: 5.0),
-              color: Colors.teal,
+              border: Border.all(color: Color(0xFF9a0007), width: 5.0),
+              color: Color(0xFFff6659),
               borderRadius: BorderRadius.all(Radius.circular(8.0)),
             ),
             child: Column(
@@ -43,8 +43,8 @@ class FlippingCard extends StatelessWidget {
           back: Container(
             width: 400.0,
             decoration: BoxDecoration(
-              border: Border.all(color: Colors.white, width: 5.0),
-              color: Colors.teal,
+              border: Border.all(color: Color(0xFF9a0007), width: 5.0),
+              color: Color(0xFFff6659),
               borderRadius: BorderRadius.all(Radius.circular(8.0)),
             ),
             child: Column(

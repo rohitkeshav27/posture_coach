@@ -12,19 +12,19 @@ class ExerciseInventoryScreen extends StatelessWidget {
 
   final List<Widget> images = [
     ImageContainer(
-      path: 'images/Bicep_curl.jpg',
+      path: 'images/BicepCurl.png',
       routeName: '/bicep',
     ),
     ImageContainer(
-      path: 'images/Front_raise.jpg',
+      path: 'images/FrontRaise.png',
       routeName: '/raise',
     ),
     ImageContainer(
-      path: 'images/Shoulder_Press.jpg',
+      path: 'images/shoulderPress.png',
       routeName: '/press',
     ),
     ImageContainer(
-      path: 'images/Shrugs.jpg',
+      path: 'images/squats.png',
       routeName: '/squats',
     )
   ];
@@ -39,7 +39,7 @@ class ExerciseInventoryScreen extends StatelessWidget {
               child: Text(
         'Posture Coach',
         style: TextStyle(
-          color: Colors.black,
+          color: Colors.white,
         ),
       ))),
       body: SafeArea(
@@ -54,11 +54,10 @@ class ExerciseInventoryScreen extends StatelessWidget {
                       images: images,
                       // required
                       textStyle: TextStyle(
-                        color: Colors.grey[350],
-                        fontSize: 10.0,
-                        fontFamily: 'Acetone',
-                        fontWeight: FontWeight.w600,
-                      ),
+                          color: Colors.white,
+                          fontSize: 10.0,
+                          fontFamily: 'Acetone',
+                          fontWeight: FontWeight.w600),
                       // optional
                       onPageChanged: (page) {
                         // optional

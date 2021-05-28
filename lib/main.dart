@@ -19,8 +19,8 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Posture Coach',
       theme: ThemeData(
-        primaryColor: Colors.teal,
-        scaffoldBackgroundColor: Colors.white,
+        primaryColor: Color(0xFF9a0007),
+        scaffoldBackgroundColor: Color(0xFFe0e0e0),
       ),
       initialRoute: '/',
       routes: {
