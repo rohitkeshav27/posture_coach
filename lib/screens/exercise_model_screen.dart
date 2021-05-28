@@ -116,13 +116,18 @@ class _ExerciseModelScreenState extends State<ExerciseModelScreen> {
                   width: cameraWidth,
                 ),
                 Positioned(
-                  top: cameraHeight + 8,
+                  // top: cameraHeight + 8,
+                  bottom: 8,
                   width: MediaQuery.of(context).size.width,
-                  child: Text(
-                    messages.values.join("\n"),
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 18.0,
+                  child: Center(
+                    child: Text(
+                      messages.values.join("\n"),
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        backgroundColor: Colors.black.withOpacity(0.5),
+                        color: Colors.white,
+                        fontSize: 22.0,
+                      ),
                     ),
                   ),
                 ),
