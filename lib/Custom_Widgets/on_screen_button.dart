@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:posture_coach/screens/exercise_screen.dart';
+import 'package:video_player/video_player.dart';
 
 class ButtonOnScreen extends StatelessWidget {
   ButtonOnScreen({@required this.routeTo});
@@ -11,7 +13,7 @@ class ButtonOnScreen extends StatelessWidget {
       opacity: 0.95,
       child: ElevatedButton(
           onPressed: () {
-            Navigator.pushNamed(context, routeTo);
+            Navigator.restorablePushNamed(context, routeTo);
           },
           style: ElevatedButton.styleFrom(
             shadowColor: Colors.teal,

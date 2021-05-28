@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:vertical_card_pager/vertical_card_pager.dart';
 import 'package:posture_coach/image_container.dart';
+import 'package:posture_coach/Custom_Widgets/verticalpager.dart';
 
 class ExerciseInventoryScreen extends StatelessWidget {
   final List<String> titles = [
@@ -54,10 +54,11 @@ class ExerciseInventoryScreen extends StatelessWidget {
                       images: images,
                       // required
                       textStyle: TextStyle(
-                          color: Colors.grey[350],
-                          fontSize: 10.0,
-                          fontFamily: 'Acetone',
-                          fontWeight: FontWeight.w600),
+                        color: Colors.grey[350],
+                        fontSize: 10.0,
+                        fontFamily: 'Acetone',
+                        fontWeight: FontWeight.w600,
+                      ),
                       // optional
                       onPageChanged: (page) {
                         // optional

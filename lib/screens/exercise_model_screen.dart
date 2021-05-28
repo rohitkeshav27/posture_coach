@@ -52,6 +52,11 @@ class _ExerciseModelScreenState extends State<ExerciseModelScreen> {
   }
 
   @override
+  void dispose() {
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     screen = MediaQuery.of(context).size;
     return Scaffold(
