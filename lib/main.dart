@@ -4,6 +4,7 @@ import 'package:posture_coach/screens/exercise_inventory_screen.dart';
 import 'package:posture_coach/Exercises/exercise.dart';
 import 'package:posture_coach/screens/exercise_model_screen.dart';
 import 'package:posture_coach/screens/exercise_screen.dart';
+import 'package:flutter_text_to_speech/flutter_text_to_speech.dart';
 
 List<CameraDescription> cameras;
 
