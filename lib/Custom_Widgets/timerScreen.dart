@@ -24,33 +24,34 @@ class _TimerScreenState extends State<TimerScreen> {
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
         Text(
-          "Exercise Starts in ",
+          "Exercise Starts in ...",
           style: TextStyle(
             color: Colors.white,
-            fontSize: 45,
+            fontSize: 30,
             fontWeight: FontWeight.bold,
           ),
         ),
         SizedBox(
           height: 40.0,
         ),
-        TimeCircularCountdown(
-          unit: CountdownUnit.second,
-          countdownTotal: 5,
-          diameter: 375,
-          strokeWidth: 20.0,
-          countdownCurrentColor: Colors.white,
-          countdownTotalColor: Colors.white,
-          countdownRemainingColor: Colors.white.withOpacity(0.5),
-          onFinished: () {
-            setState(() {
-              widget._isTimerCompleted = true;
-            });
-          },
-          textStyle: const TextStyle(
-            color: Colors.white,
-            fontSize: 90,
-            fontWeight: FontWeight.bold,
+        Center(
+          child: TimeCircularCountdown(
+            unit: CountdownUnit.second,
+            countdownTotal: 5,
+            strokeWidth: 10.0,
+            countdownCurrentColor: Colors.black.withOpacity(0),
+            countdownTotalColor: Colors.black.withOpacity(0),
+            countdownRemainingColor: Colors.black.withOpacity(0),
+            onFinished: () {
+              setState(() {
+                widget._isTimerCompleted = true;
+              });
+            },
+            textStyle: const TextStyle(
+              color: Colors.white,
+              fontSize: 60,
+              fontWeight: FontWeight.bold,
+            ),
           ),
         ),
       ],
