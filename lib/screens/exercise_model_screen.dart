@@ -11,6 +11,7 @@ import 'package:camera/camera.dart';
 import 'package:posture_coach/keypointConstants.dart';
 import 'package:tflite/tflite.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_text_to_speech/flutter_text_to_speech.dart';
 
 enum MetricStatus {
   start,
@@ -50,9 +51,12 @@ class _ExerciseModelScreenState extends State<ExerciseModelScreen> {
   var feedbackImageToDisplay = '';
   bool timerCompleted = false;
   var timerWidget = TimerScreen();
+  VoiceController _voiceController;
 
   @override
   void initState() {
+    _voiceController = FlutterTextToSpeech.instance.voiceController();
+    _voiceController.init();
     super.initState();
     var res = loadModel();
     // print('Model Response: ' + res.toString());
@@ -62,6 +66,14 @@ class _ExerciseModelScreenState extends State<ExerciseModelScreen> {
   @override
   void dispose() {
     super.dispose();
+    _voiceController.stop();
+  }
+
+  _playVoice(text) {
+    _voiceController.speak(
+      text,
+      VoiceControllerOptions(),
+    );
   }
 
   @override
@@ -168,7 +180,8 @@ class _ExerciseModelScreenState extends State<ExerciseModelScreen> {
 
         keyPoints = new KeyPointConstants(_recognitions);
       }
-      if (_recognitions.isNotEmpty) {
+
+      if (_recognitions.isNotEmpty && timerCompleted) {
         var pose = PosesFactory.getPose(widget.exerciseName);
         //TODO: Check if relevant keypoints are visible
         completions =
@@ -200,6 +213,9 @@ class _ExerciseModelScreenState extends State<ExerciseModelScreen> {
       if (metric.containsKey("confidence")) if (metric["confidence"]) {
         if (metric["type"] == metricType.static && metric["completion"] == 0) {
           metricFlag = false;
+          if (!messages.containsKey(index)) {
+            _playVoice(metric["message"]);
+          }
           messages[index] = metric["message"];
           feedbackImageToDisplay = crossImageString;
           showFeedback = true;
@@ -227,6 +243,7 @@ class _ExerciseModelScreenState extends State<ExerciseModelScreen> {
                 metric["completion"] == 0) {
               dynamicMetricStatus[index] = MetricStatus.notCompleted;
               messages[index] = metric["message"];
+              _playVoice(messages[index]);
               feedbackImageToDisplay = crossImageString;
               showFeedback = true;
             }
