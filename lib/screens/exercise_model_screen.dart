@@ -89,11 +89,11 @@ class _ExerciseModelScreenState extends State<ExerciseModelScreen> {
         ),
         timerCompleted
             ? Stack(children: [
-                BndBox(
-                  results: _recognitions == null ? [] : _recognitions,
-                  height: cameraHeight,
-                  width: cameraWidth,
-                ),
+                // BndBox(
+                //   results: _recognitions == null ? [] : _recognitions,
+                //   height: cameraHeight,
+                //   width: cameraWidth,
+                // ),
                 CustomPaint(
                     painter: MyPainter(
                   height: cameraHeight,
