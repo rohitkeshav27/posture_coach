@@ -53,6 +53,16 @@ class _ExerciseModelScreenState extends State<ExerciseModelScreen> {
   bool timerCompleted = false;
   var timerWidget;
   VoiceController _voiceController;
+  var messagesGood = ["Good Work",
+    "Excellent",
+    "You're Doing Great",
+    "Amazing" ,
+    "Wonderful",
+    "Well Done",
+    "No Pain No Gain",
+    "You go hard or you go home",
+    "Just do it",
+    "Keep Pushing"];
 
   @override
   void initState() {
