@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:circular_countdown/circular_countdown.dart';
+import 'package:flutter_text_to_speech/flutter_text_to_speech.dart';
 
 class TimerScreen extends StatefulWidget {
   bool _isTimerCompleted = false;
@@ -13,6 +14,28 @@ class TimerScreen extends StatefulWidget {
 }
 
 class _TimerScreenState extends State<TimerScreen> {
+  VoiceController _voiceController;
+
+  @override
+  void initState() {
+    super.initState();
+    _voiceController = FlutterTextToSpeech.instance.voiceController();
+    _voiceController.init();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _voiceController.stop();
+  }
+
+  playVoice(text) {
+    _voiceController.speak(
+      text,
+      VoiceControllerOptions(),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -33,6 +56,7 @@ class _TimerScreenState extends State<TimerScreen> {
           child: TimeCircularCountdown(
             unit: CountdownUnit.second,
             countdownTotal: 5,
+            onUpdated: (unit, remainingTime) => playVoice(remainingTime),
             strokeWidth: 10.0,
             countdownCurrentColor: Colors.black.withOpacity(0),
             countdownTotalColor: Colors.black.withOpacity(0),
