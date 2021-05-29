@@ -3,7 +3,6 @@ import 'package:posture_coach/Custom_Widgets/timerScreen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:posture_coach/cameras.dart';
-import 'package:posture_coach/bndbox.dart';
 import 'package:posture_coach/metrics.dart';
 import 'package:posture_coach/poses.dart';
 import 'package:posture_coach/stickFigure.dart';
