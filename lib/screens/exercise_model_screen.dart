@@ -50,14 +50,17 @@ class _ExerciseModelScreenState extends State<ExerciseModelScreen> {
   final String crossImageString = 'images/cross.png';
   var feedbackImageToDisplay = '';
   bool timerCompleted = false;
-  var timerWidget = TimerScreen();
+  var timerWidget;
   VoiceController _voiceController;
 
   @override
   void initState() {
-    super.initState();
     _voiceController = FlutterTextToSpeech.instance.voiceController();
-    _voiceController.init();
+    _voiceController.init().then((_) {
+      timerWidget = TimerScreen();
+      timerWidget.voiceController = _voiceController;
+    });
+    super.initState();
     var res = loadModel();
     SystemChrome.setEnabledSystemUIOverlays([]);
     // playVoice("Exercise starts in 5 seconds");
@@ -69,7 +72,7 @@ class _ExerciseModelScreenState extends State<ExerciseModelScreen> {
     _voiceController.stop();
   }
 
-  playVoice(text) {
+  _playVoice(text) {
     _voiceController.speak(
       text,
       VoiceControllerOptions(),
@@ -173,7 +176,7 @@ class _ExerciseModelScreenState extends State<ExerciseModelScreen> {
                   .size
                   .height,
             ),
-            timerWidget
+            timerWidget != null ? timerWidget : Container()
           ],
         ),
       ]),
@@ -225,7 +228,7 @@ class _ExerciseModelScreenState extends State<ExerciseModelScreen> {
         if (metric["type"] == metricType.static && metric["completion"] == 0) {
           metricFlag = false;
           if (!messages.containsKey(index)) {
-            playVoice(metric["message"]);
+            _playVoice(metric["message"]);
           }
           messages[index] = metric["message"];
           feedbackImageToDisplay = crossImageString;
@@ -254,7 +257,7 @@ class _ExerciseModelScreenState extends State<ExerciseModelScreen> {
                 metric["completion"] == 0) {
               dynamicMetricStatus[index] = MetricStatus.notCompleted;
               messages[index] = metric["message"];
-              playVoice(messages[index]);
+              _playVoice(messages[index]);
               feedbackImageToDisplay = crossImageString;
               showFeedback = true;
             }
