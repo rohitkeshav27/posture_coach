@@ -13,7 +13,6 @@ import 'package:tflite/tflite.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_text_to_speech/flutter_text_to_speech.dart';
 
-
 enum MetricStatus {
   start,
   inProgress,
@@ -24,7 +23,6 @@ enum MetricStatus {
 class ExerciseModelScreen extends StatefulWidget {
   final String exerciseName;
   final List<CameraDescription> cameras;
-
 
   @override
   const ExerciseModelScreen({Key key, this.exerciseName, this.cameras})
@@ -57,34 +55,26 @@ class _ExerciseModelScreenState extends State<ExerciseModelScreen> {
 
   @override
   void initState() {
-     _voiceController = FlutterTextToSpeech.instance.voiceController();
-
+    _voiceController = FlutterTextToSpeech.instance.voiceController();
+    _voiceController.init();
     super.initState();
     var res = loadModel();
     // print('Model Response: ' + res.toString());
     SystemChrome.setEnabledSystemUIOverlays([]);
-   
   }
 
   @override
   void dispose() {
     super.dispose();
-     _voiceController.stop();
+    _voiceController.stop();
   }
 
   _playVoice(text) {
-    if(text == ''){
-      print("hello");
-    }
-    print(text);
-    _voiceController.init().then((_) {
-      _voiceController.speak(
-        text,
-        VoiceControllerOptions(),
-      );
-    });
+    _voiceController.speak(
+      text,
+      VoiceControllerOptions(),
+    );
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -190,14 +180,14 @@ class _ExerciseModelScreenState extends State<ExerciseModelScreen> {
 
         keyPoints = new KeyPointConstants(_recognitions);
       }
-      if (_recognitions.isNotEmpty) {
+
+      if (_recognitions.isNotEmpty && timerCompleted) {
         var pose = PosesFactory.getPose(widget.exerciseName);
         //TODO: Check if relevant keypoints are visible
         completions =
             pose.evaluate(keyPoints, imageHeight, imageWidth, counter);
 
         managePose();
-      //  _playVoice(messages);
 
         if (completions["isStepCompleted"] && metricFlag) {
           dynamicMetricStatus.clear();
@@ -223,8 +213,10 @@ class _ExerciseModelScreenState extends State<ExerciseModelScreen> {
       if (metric.containsKey("confidence")) if (metric["confidence"]) {
         if (metric["type"] == metricType.static && metric["completion"] == 0) {
           metricFlag = false;
+          if (!messages.containsKey(index)) {
+            _playVoice(metric["message"]);
+          }
           messages[index] = metric["message"];
-          _playVoice(messages[index]);
           feedbackImageToDisplay = crossImageString;
           showFeedback = true;
         }
@@ -251,7 +243,7 @@ class _ExerciseModelScreenState extends State<ExerciseModelScreen> {
                 metric["completion"] == 0) {
               dynamicMetricStatus[index] = MetricStatus.notCompleted;
               messages[index] = metric["message"];
-               _playVoice(messages[index]);
+              _playVoice(messages[index]);
               feedbackImageToDisplay = crossImageString;
               showFeedback = true;
             }
@@ -268,7 +260,6 @@ class _ExerciseModelScreenState extends State<ExerciseModelScreen> {
       } else {
         reset = false;
       }
-     
     });
     if (reset && !metricFlag) {
       metricFlag = true;
