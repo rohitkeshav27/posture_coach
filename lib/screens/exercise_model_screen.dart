@@ -3,7 +3,6 @@ import 'package:posture_coach/Custom_Widgets/timerScreen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:posture_coach/cameras.dart';
-import 'package:posture_coach/bndbox.dart';
 import 'package:posture_coach/metrics.dart';
 import 'package:posture_coach/poses.dart';
 import 'package:posture_coach/stickFigure.dart';
@@ -12,6 +11,7 @@ import 'package:posture_coach/keypointConstants.dart';
 import 'package:tflite/tflite.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_text_to_speech/flutter_text_to_speech.dart';
+import 'dart:math';
 
 enum MetricStatus {
   start,
@@ -52,6 +52,18 @@ class _ExerciseModelScreenState extends State<ExerciseModelScreen> {
   bool timerCompleted = false;
   var timerWidget;
   VoiceController _voiceController;
+  var messagesGood = [
+    "Good Work",
+    "Excellent",
+    "You're Doing Great",
+    "Amazing",
+    "Wonderful",
+    "Well Done",
+    "No Pain No Gain",
+    "You go hard or you go home",
+    "Just do it",
+    "Keep Pushing"
+  ];
 
   @override
   void initState() {
@@ -63,7 +75,6 @@ class _ExerciseModelScreenState extends State<ExerciseModelScreen> {
     super.initState();
     var res = loadModel();
     SystemChrome.setEnabledSystemUIOverlays([]);
-    // playVoice("Exercise starts in 5 seconds");
   }
 
   @override
@@ -81,9 +92,7 @@ class _ExerciseModelScreenState extends State<ExerciseModelScreen> {
 
   @override
   Widget build(BuildContext context) {
-    screen = MediaQuery
-        .of(context)
-        .size;
+    screen = MediaQuery.of(context).size;
     return Scaffold(
       backgroundColor: Colors.black,
       body: Stack(children: [
@@ -94,91 +103,82 @@ class _ExerciseModelScreenState extends State<ExerciseModelScreen> {
         ),
         timerCompleted
             ? Stack(children: [
-          // BndBox(
-          //   results: _recognitions == null ? [] : _recognitions,
-          //   height: cameraHeight,
-          //   width: cameraWidth,
-          // ),
-          CustomPaint(
-              painter: MyPainter(
-                height: cameraHeight,
-                width: cameraWidth,
-                partsToDisplay:
-                completions == null ? [] : completions["partsToDisplay"],
-              )),
-          Positioned(
-            top: 0,
-            child: Container(
-              padding: EdgeInsets.symmetric(vertical: 8, horizontal: 8),
-              decoration: BoxDecoration(
-                  color: Color.fromRGBO(0, 0, 0, 0.7),
-                  borderRadius: BorderRadius.only(
-                    bottomRight: Radius.circular(8),
-                  )),
-              child: Text(
-                // counter.toString() + " " + metricFlag.toString(),
-                "Reps: " + (counter ~/ 2).toString(),
-                style: TextStyle(
-                  color: Color.fromRGBO(37, 213, 253, 1.0),
-                  fontSize: 20.0,
+                // BndBox(
+                //   results: _recognitions == null ? [] : _recognitions,
+                //   height: cameraHeight,
+                //   width: cameraWidth,
+                // ),
+                CustomPaint(
+                    painter: MyPainter(
+                  height: cameraHeight,
+                  width: cameraWidth,
+                  partsToDisplay:
+                      completions == null ? [] : completions["partsToDisplay"],
+                )),
+                Positioned(
+                  top: 0,
+                  child: Container(
+                    padding: EdgeInsets.symmetric(vertical: 8, horizontal: 8),
+                    decoration: BoxDecoration(
+                        color: Color.fromRGBO(0, 0, 0, 0.7),
+                        borderRadius: BorderRadius.only(
+                          bottomRight: Radius.circular(8),
+                        )),
+                    child: Text(
+                      // counter.toString() + " " + metricFlag.toString(),
+                      "Reps: " + (counter ~/ 2).toString(),
+                      style: TextStyle(
+                        color: Color.fromRGBO(37, 213, 253, 1.0),
+                        fontSize: 20.0,
+                      ),
+                    ),
+                  ),
                 ),
-              ),
-            ),
-          ),
-          JointCompletion(
-            results: completions == null
-                ? Map<dynamic, dynamic>()
-                : completions,
-            height: cameraHeight,
-            width: cameraWidth,
-          ),
-          Positioned(
-            // top: cameraHeight + 8,
-            bottom: 8,
-            width: MediaQuery
-                .of(context)
-                .size
-                .width,
-            child: Center(
-              child: Text(
-                messages.values.join("\n"),
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  backgroundColor: Colors.black.withOpacity(0.5),
-                  color: Colors.white,
-                  fontSize: 22.0,
+                JointCompletion(
+                  results: completions == null
+                      ? Map<dynamic, dynamic>()
+                      : completions,
+                  height: cameraHeight,
+                  width: cameraWidth,
                 ),
-              ),
-            ),
-          ),
-          Positioned(
-              top: 20,
-              right: 20,
-              child: Opacity(
-                opacity: showFeedback ? 1 : 0,
-                child: Image(
-                  image: AssetImage(feedbackImageToDisplay),
-                  height: 50,
-                  width: 50,
+                Positioned(
+                  // top: cameraHeight + 8,
+                  bottom: 8,
+                  width: MediaQuery.of(context).size.width,
+                  child: Center(
+                    child: Text(
+                      messages.values.join("\n"),
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        backgroundColor: Colors.black.withOpacity(0.5),
+                        color: Colors.white,
+                        fontSize: 22.0,
+                      ),
+                    ),
+                  ),
                 ),
-              ))
-        ])
+                Positioned(
+                    top: 20,
+                    right: 20,
+                    child: Opacity(
+                      opacity: showFeedback ? 1 : 0,
+                      child: Image(
+                        image: AssetImage(feedbackImageToDisplay),
+                        height: 50,
+                        width: 50,
+                      ),
+                    ))
+              ])
             : Stack(
-          children: [
-            Container(
-              color: Colors.black.withOpacity(0.5),
-              width: MediaQuery
-                  .of(context)
-                  .size
-                  .width,
-              height: MediaQuery
-                  .of(context)
-                  .size
-                  .height,
-            ),
-            timerWidget != null ? timerWidget : Container()
-          ],
-        ),
+                children: [
+                  Container(
+                    color: Colors.black.withOpacity(0.5),
+                    width: MediaQuery.of(context).size.width,
+                    height: MediaQuery.of(context).size.height,
+                  ),
+                  timerWidget != null ? timerWidget : Container()
+                ],
+              ),
       ]),
     );
   }
@@ -213,8 +213,18 @@ class _ExerciseModelScreenState extends State<ExerciseModelScreen> {
     });
   }
 
+  T getRandomElement<T>(List<T> list) {
+    final random = new Random();
+    var i = random.nextInt(list.length);
+    return list[i];
+  }
+
   void displayTickForDuration(int seconds) {
     feedbackImageToDisplay = tickImageString;
+    if (Random().nextBool() && counter % 2 == 0) {
+      var element = getRandomElement(messagesGood);
+      _playVoice(element);
+    }
     showFeedback = true;
     Timer(Duration(seconds: seconds), () {
       showFeedback = false;
