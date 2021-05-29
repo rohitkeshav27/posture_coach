@@ -50,6 +50,7 @@ class _TimerScreenState extends State<TimerScreen> {
             countdownTotalColor: Colors.black.withOpacity(0),
             countdownRemainingColor: Colors.black.withOpacity(0),
             onFinished: () {
+              _playVoice("Lets begin!");
               setState(() {
                 widget._isTimerCompleted = true;
               });

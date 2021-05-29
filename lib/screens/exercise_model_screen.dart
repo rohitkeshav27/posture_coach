@@ -52,7 +52,7 @@ class _ExerciseModelScreenState extends State<ExerciseModelScreen> {
   bool timerCompleted = false;
   var timerWidget;
   VoiceController _voiceController;
-  var messagesGood = [
+  var motivationMessages = [
     "Good Work",
     "Excellent",
     "You're Doing Great",
@@ -60,7 +60,6 @@ class _ExerciseModelScreenState extends State<ExerciseModelScreen> {
     "Wonderful",
     "Well Done",
     "No Pain No Gain",
-    "You go hard or you go home",
     "Just do it",
     "Keep Pushing"
   ];
@@ -222,7 +221,7 @@ class _ExerciseModelScreenState extends State<ExerciseModelScreen> {
   void displayTickForDuration(int seconds) {
     feedbackImageToDisplay = tickImageString;
     if (Random().nextBool() && counter % 2 == 0) {
-      var element = getRandomElement(messagesGood);
+      var element = getRandomElement(motivationMessages);
       _playVoice(element);
     }
     showFeedback = true;
