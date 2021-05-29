@@ -50,17 +50,20 @@ class _ExerciseModelScreenState extends State<ExerciseModelScreen> {
   final String crossImageString = 'images/cross.png';
   var feedbackImageToDisplay = '';
   bool timerCompleted = false;
-  var timerWidget = TimerScreen();
+  var timerWidget;
   VoiceController _voiceController;
 
   @override
   void initState() {
     _voiceController = FlutterTextToSpeech.instance.voiceController();
-    _voiceController.init();
+    _voiceController.init().then((_) {
+      timerWidget = TimerScreen();
+      timerWidget.voiceController = _voiceController;
+    });
     super.initState();
     var res = loadModel();
-    // print('Model Response: ' + res.toString());
     SystemChrome.setEnabledSystemUIOverlays([]);
+    // playVoice("Exercise starts in 5 seconds");
   }
 
   @override
@@ -78,7 +81,9 @@ class _ExerciseModelScreenState extends State<ExerciseModelScreen> {
 
   @override
   Widget build(BuildContext context) {
-    screen = MediaQuery.of(context).size;
+    screen = MediaQuery
+        .of(context)
+        .size;
     return Scaffold(
       backgroundColor: Colors.black,
       body: Stack(children: [
@@ -89,82 +94,91 @@ class _ExerciseModelScreenState extends State<ExerciseModelScreen> {
         ),
         timerCompleted
             ? Stack(children: [
-                // BndBox(
-                //   results: _recognitions == null ? [] : _recognitions,
-                //   height: cameraHeight,
-                //   width: cameraWidth,
-                // ),
-                CustomPaint(
-                    painter: MyPainter(
-                  height: cameraHeight,
-                  width: cameraWidth,
-                  partsToDisplay:
-                      completions == null ? [] : completions["partsToDisplay"],
-                )),
-                Positioned(
-                  top: 0,
-                  child: Container(
-                    padding: EdgeInsets.symmetric(vertical: 8, horizontal: 8),
-                    decoration: BoxDecoration(
-                        color: Color.fromRGBO(0, 0, 0, 0.7),
-                        borderRadius: BorderRadius.only(
-                          bottomRight: Radius.circular(8),
-                        )),
-                    child: Text(
-                      // counter.toString() + " " + metricFlag.toString(),
-                      "Reps: " + (counter ~/ 2).toString(),
-                      style: TextStyle(
-                        color: Color.fromRGBO(37, 213, 253, 1.0),
-                        fontSize: 20.0,
-                      ),
-                    ),
-                  ),
+          // BndBox(
+          //   results: _recognitions == null ? [] : _recognitions,
+          //   height: cameraHeight,
+          //   width: cameraWidth,
+          // ),
+          CustomPaint(
+              painter: MyPainter(
+                height: cameraHeight,
+                width: cameraWidth,
+                partsToDisplay:
+                completions == null ? [] : completions["partsToDisplay"],
+              )),
+          Positioned(
+            top: 0,
+            child: Container(
+              padding: EdgeInsets.symmetric(vertical: 8, horizontal: 8),
+              decoration: BoxDecoration(
+                  color: Color.fromRGBO(0, 0, 0, 0.7),
+                  borderRadius: BorderRadius.only(
+                    bottomRight: Radius.circular(8),
+                  )),
+              child: Text(
+                // counter.toString() + " " + metricFlag.toString(),
+                "Reps: " + (counter ~/ 2).toString(),
+                style: TextStyle(
+                  color: Color.fromRGBO(37, 213, 253, 1.0),
+                  fontSize: 20.0,
                 ),
-                JointCompletion(
-                  results: completions == null
-                      ? Map<dynamic, dynamic>()
-                      : completions,
-                  height: cameraHeight,
-                  width: cameraWidth,
-                ),
-                Positioned(
-                  // top: cameraHeight + 8,
-                  bottom: 8,
-                  width: MediaQuery.of(context).size.width,
-                  child: Center(
-                    child: Text(
-                      messages.values.join("\n"),
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        backgroundColor: Colors.black.withOpacity(0.5),
-                        color: Colors.white,
-                        fontSize: 22.0,
-                      ),
-                    ),
-                  ),
-                ),
-                Positioned(
-                    top: 20,
-                    right: 20,
-                    child: Opacity(
-                      opacity: showFeedback ? 1 : 0,
-                      child: Image(
-                        image: AssetImage(feedbackImageToDisplay),
-                        height: 50,
-                        width: 50,
-                      ),
-                    ))
-              ])
-            : Stack(
-                children: [
-                  Container(
-                    color: Colors.black.withOpacity(0.5),
-                    width: MediaQuery.of(context).size.width,
-                    height: MediaQuery.of(context).size.height,
-                  ),
-                  timerWidget
-                ],
               ),
+            ),
+          ),
+          JointCompletion(
+            results: completions == null
+                ? Map<dynamic, dynamic>()
+                : completions,
+            height: cameraHeight,
+            width: cameraWidth,
+          ),
+          Positioned(
+            // top: cameraHeight + 8,
+            bottom: 8,
+            width: MediaQuery
+                .of(context)
+                .size
+                .width,
+            child: Center(
+              child: Text(
+                messages.values.join("\n"),
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  backgroundColor: Colors.black.withOpacity(0.5),
+                  color: Colors.white,
+                  fontSize: 22.0,
+                ),
+              ),
+            ),
+          ),
+          Positioned(
+              top: 20,
+              right: 20,
+              child: Opacity(
+                opacity: showFeedback ? 1 : 0,
+                child: Image(
+                  image: AssetImage(feedbackImageToDisplay),
+                  height: 50,
+                  width: 50,
+                ),
+              ))
+        ])
+            : Stack(
+          children: [
+            Container(
+              color: Colors.black.withOpacity(0.5),
+              width: MediaQuery
+                  .of(context)
+                  .size
+                  .width,
+              height: MediaQuery
+                  .of(context)
+                  .size
+                  .height,
+            ),
+            timerWidget != null ? timerWidget : Container()
+          ],
+        ),
       ]),
     );
   }
