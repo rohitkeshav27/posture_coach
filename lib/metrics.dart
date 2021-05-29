@@ -7,9 +7,20 @@ import 'package:posture_coach/skeleton.dart';
     isStepCompleted: Bool,
     keypoints: [ { "x":double, "y":double, "completion":double(range 0-1), "type":metricType, "message":String , "confidence":Bool} , {} ],
     partsToDisplay: [ [keypointA,keypointB] , [keypointC,keypointD] ],
+    isBodyVisible: Bool
     }
 */
 enum metricType { static, dynamic }
+
+bool checkPointScore(var list) {
+  bool check = false;
+  for (var x in list) {
+    if (x["score"] > 0.2) {
+      check = true;
+    }
+  }
+  return check;
+}
 
 class BicepCurl implements Poses {
   Map<dynamic, dynamic> evaluate(KeyPointConstants keyPoints, var imageHeight,
@@ -36,6 +47,13 @@ class BicepCurl implements Poses {
       elbow = keyPoints.leftElbow;
       hip = keyPoints.leftHip;
     }
+
+    if (!checkPointScore([shoulder, wrist, elbow, hip])) {
+      result["isBodyVisible"] = false;
+      return result;
+    }
+    result["isBodyVisible"] = true;
+
     var elbowAngle = skeleton.getAngleBetween(shoulder, elbow, wrist);
     var elbowMetric = Map<String, dynamic>();
     elbowMetric["x"] = elbow["x"];
@@ -111,6 +129,12 @@ class ShoulderPress implements Poses {
         elbow = keyPoints.rightElbow;
         wrist = keyPoints.rightWrist;
       }
+
+      if (!checkPointScore([shoulder, wrist, elbow, hip])) {
+        result["isBodyVisible"] = false;
+        return result;
+      }
+      result["isBodyVisible"] = true;
 
       var shoulderAngle = skeleton.getAngleBetween(hip, shoulder, elbow);
 
@@ -213,6 +237,12 @@ class ShoulderFrontRaise implements Poses {
       knee = keyPoints.leftKnee;
     }
 
+    if (!checkPointScore([shoulder, wrist, elbow, hip, knee])) {
+      result["isBodyVisible"] = false;
+      return result;
+    }
+    result["isBodyVisible"] = true;
+
     var backAngle = skeleton.getAngleBetween(shoulder, hip, knee);
     var backMetric = Map<String, dynamic>();
     backMetric["x"] = hip["x"];
@@ -304,6 +334,12 @@ class Squats implements Poses {
       hip = keyPoints.leftHip;
       knee = keyPoints.leftKnee;
     }
+
+    if (!checkPointScore([shoulder, ankle, ear, hip, knee])) {
+      result["isBodyVisible"] = false;
+      return result;
+    }
+    result["isBodyVisible"] = true;
 
     var backAngle = skeleton.getAngleBetween(ear, shoulder, hip);
     var backMetric = Map<String, dynamic>();

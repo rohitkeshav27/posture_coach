@@ -200,14 +200,15 @@ class _ExerciseModelScreenState extends State<ExerciseModelScreen> {
         //TODO: Check if relevant keypoints are visible
         completions =
             pose.evaluate(keyPoints, imageHeight, imageWidth, counter);
+        if (completions["isBodyVisible"]) {
+          managePose();
 
-        managePose();
-
-        if (completions["isStepCompleted"] && metricFlag) {
-          dynamicMetricStatus.clear();
-          messages.clear();
-          displayTickForDuration(2);
-          counter++;
+          if (completions["isStepCompleted"] && metricFlag) {
+            dynamicMetricStatus.clear();
+            messages.clear();
+            displayTickForDuration(2);
+            counter++;
+          }
         }
       }
     });
