@@ -52,6 +52,7 @@ class _ExerciseModelScreenState extends State<ExerciseModelScreen> {
   bool timerCompleted = false;
   var timerWidget;
   VoiceController _voiceController;
+  bool alreadyCalled = true;
   var messagesGood = [
     "Good Work",
     "Excellent",
@@ -216,15 +217,19 @@ class _ExerciseModelScreenState extends State<ExerciseModelScreen> {
         keyPoints = new KeyPointConstants(_recognitions);
       }
 
-      if(completions == null || _recognitions.isEmpty) {
-        _playVoice("You are not completely visible. Please step into the camera's field of view.");
+
+      if(timerCompleted && alreadyCalled && (completions == null || _recognitions.isEmpty)) {
+        _playVoice("You are not completely visible.");
+        alreadyCalled = false;
       }
+
       if (_recognitions.isNotEmpty && timerCompleted) {
         var pose = PosesFactory.getPose(widget.exerciseName);
         //TODO: Check if relevant keypoints are visible
         completions =
             pose.evaluate(keyPoints, imageHeight, imageWidth, counter);
         if (completions != null) {
+          alreadyCalled = true;
           managePose();
 
           if (completions["isStepCompleted"] && metricFlag) {
