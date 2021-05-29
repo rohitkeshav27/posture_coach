@@ -49,10 +49,8 @@ class BicepCurl implements Poses {
     }
 
     if (!checkPointScore([shoulder, wrist, elbow, hip])) {
-      result["isBodyVisible"] = false;
-      return result;
+      return null;
     }
-    result["isBodyVisible"] = true;
 
     var elbowAngle = skeleton.getAngleBetween(shoulder, elbow, wrist);
     var elbowMetric = Map<String, dynamic>();
@@ -131,10 +129,8 @@ class ShoulderPress implements Poses {
       }
 
       if (!checkPointScore([shoulder, wrist, elbow, hip])) {
-        result["isBodyVisible"] = false;
-        return result;
+        return null;
       }
-      result["isBodyVisible"] = true;
 
       var shoulderAngle = skeleton.getAngleBetween(hip, shoulder, elbow);
 
@@ -238,10 +234,8 @@ class ShoulderFrontRaise implements Poses {
     }
 
     if (!checkPointScore([shoulder, wrist, elbow, hip, knee])) {
-      result["isBodyVisible"] = false;
-      return result;
+      return null;
     }
-    result["isBodyVisible"] = true;
 
     var backAngle = skeleton.getAngleBetween(shoulder, hip, knee);
     var backMetric = Map<String, dynamic>();
@@ -336,10 +330,8 @@ class Squats implements Poses {
     }
 
     if (!checkPointScore([shoulder, ankle, ear, hip, knee])) {
-      result["isBodyVisible"] = false;
-      return result;
+      return null;
     }
-    result["isBodyVisible"] = true;
 
     var backAngle = skeleton.getAngleBetween(ear, shoulder, hip);
     var backMetric = Map<String, dynamic>();
