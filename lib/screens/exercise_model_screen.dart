@@ -12,6 +12,8 @@ import 'package:posture_coach/keypointConstants.dart';
 import 'package:tflite/tflite.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_text_to_speech/flutter_text_to_speech.dart';
+import 'dart:math';
+
 
 enum MetricStatus {
   start,
@@ -63,7 +65,6 @@ class _ExerciseModelScreenState extends State<ExerciseModelScreen> {
     super.initState();
     var res = loadModel();
     SystemChrome.setEnabledSystemUIOverlays([]);
-    // playVoice("Exercise starts in 5 seconds");
   }
 
   @override
@@ -213,8 +214,18 @@ class _ExerciseModelScreenState extends State<ExerciseModelScreen> {
     });
   }
 
+  T getRandomElement<T>(List<T> list) {
+    final random = new Random();
+    var i = random.nextInt(list.length);
+    return list[i];
+}
+
   void displayTickForDuration(int seconds) {
     feedbackImageToDisplay = tickImageString;
+    if(Random().nextBool() && counter % 2 == 0) {
+      var element = getRandomElement(messagesGood);
+      _playVoice(element);
+    }
     showFeedback = true;
     Timer(Duration(seconds: seconds), () {
       showFeedback = false;
