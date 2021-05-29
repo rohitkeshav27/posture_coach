@@ -118,7 +118,7 @@ class _ExerciseModelScreenState extends State<ExerciseModelScreen> {
                 Positioned(
                   top: 0,
                   child: Container(
-                    padding: EdgeInsets.symmetric(vertical: 8, horizontal: 8),
+                    padding: EdgeInsets.symmetric(vertical: 8, horizontal: 12),
                     decoration: BoxDecoration(
                         color: Color.fromRGBO(0, 0, 0, 0.7),
                         borderRadius: BorderRadius.only(
@@ -129,7 +129,7 @@ class _ExerciseModelScreenState extends State<ExerciseModelScreen> {
                       "Reps: " + (counter ~/ 2).toString(),
                       style: TextStyle(
                         color: Color.fromRGBO(37, 213, 253, 1.0),
-                        fontSize: 20.0,
+                        fontSize: 24.0,
                       ),
                     ),
                   ),
@@ -158,7 +158,7 @@ class _ExerciseModelScreenState extends State<ExerciseModelScreen> {
                   ),
                 ),
                 Positioned(
-                    top: 20,
+                    top: 10,
                     right: 20,
                     child: Opacity(
                       opacity: showFeedback ? 1 : 0,
@@ -175,16 +175,15 @@ class _ExerciseModelScreenState extends State<ExerciseModelScreen> {
                     height: MediaQuery.of(context).size.height,
                   ),
                   Positioned(
-                    top: 100,
+                    top: 200,
                     width: MediaQuery.of(context).size.width,
                     child: Center(
                       child: Text(
                           "You are not completely visible. Please step into the camera's field of view.",
                         textAlign: TextAlign.center,
                         style: TextStyle(
-                          backgroundColor: Colors.black.withOpacity(0.5),
                           color: Colors.white,
-                          fontSize: 22.0,
+                          fontSize: 30.0,
                         ),
                       )
                     ),
@@ -217,12 +216,6 @@ class _ExerciseModelScreenState extends State<ExerciseModelScreen> {
         keyPoints = new KeyPointConstants(_recognitions);
       }
 
-
-      if(timerCompleted && alreadyCalled && (completions == null || _recognitions.isEmpty)) {
-        _playVoice("You are not completely visible.");
-        alreadyCalled = false;
-      }
-
       if (_recognitions.isNotEmpty && timerCompleted) {
         var pose = PosesFactory.getPose(widget.exerciseName);
         //TODO: Check if relevant keypoints are visible
@@ -239,6 +232,11 @@ class _ExerciseModelScreenState extends State<ExerciseModelScreen> {
             counter++;
           }
         }
+      }
+
+      if(timerCompleted && alreadyCalled && (completions == null || _recognitions.isEmpty)) {
+        _playVoice("You are not completely visible.");
+        alreadyCalled = false;
       }
     });
   }

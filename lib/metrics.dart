@@ -15,7 +15,7 @@ enum metricType { static, dynamic }
 bool checkPointScore(var list) {
   bool check = false;
   for (var x in list) {
-    if (x["score"] > 0.2) {
+    if (x["score"] > 0.4) {
       check = true;
     }
   }
@@ -79,7 +79,7 @@ class BicepCurl implements Poses {
     shoulderMetric["x"] = shoulder["x"];
     shoulderMetric["y"] = shoulder["y"];
     shoulderMetric["type"] = metricType.static;
-    shoulderMetric["completion"] = shoulderAngle < 35.0 ? 1 : 0;
+    shoulderMetric["completion"] = shoulderAngle < 25.0 ? 1 : 0;
     shoulderMetric["confidence"] = (hip["score"] > scoreThreshold &&
         shoulder["score"] > scoreThreshold &&
         elbow["score"] > scoreThreshold);
