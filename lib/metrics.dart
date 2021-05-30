@@ -7,9 +7,20 @@ import 'package:posture_coach/skeleton.dart';
     isStepCompleted: Bool,
     keypoints: [ { "x":double, "y":double, "completion":double(range 0-1), "type":metricType, "message":String , "confidence":Bool} , {} ],
     partsToDisplay: [ [keypointA,keypointB] , [keypointC,keypointD] ],
+    isBodyVisible: Bool
     }
 */
 enum metricType { static, dynamic }
+
+bool checkPointScore(var list) {
+  bool check = false;
+  for (var x in list) {
+    if (x["score"] > 0.4) {
+      check = true;
+    }
+  }
+  return check;
+}
 
 class BicepCurl implements Poses {
   Map<dynamic, dynamic> evaluate(KeyPointConstants keyPoints, var imageHeight,
@@ -36,6 +47,11 @@ class BicepCurl implements Poses {
       elbow = keyPoints.leftElbow;
       hip = keyPoints.leftHip;
     }
+
+    if (!checkPointScore([shoulder, wrist, elbow, hip])) {
+      return null;
+    }
+
     var elbowAngle = skeleton.getAngleBetween(shoulder, elbow, wrist);
     var elbowMetric = Map<String, dynamic>();
     elbowMetric["x"] = elbow["x"];
@@ -63,7 +79,7 @@ class BicepCurl implements Poses {
     shoulderMetric["x"] = shoulder["x"];
     shoulderMetric["y"] = shoulder["y"];
     shoulderMetric["type"] = metricType.static;
-    shoulderMetric["completion"] = shoulderAngle < 35.0 ? 1 : 0;
+    shoulderMetric["completion"] = shoulderAngle < 25.0 ? 1 : 0;
     shoulderMetric["confidence"] = (hip["score"] > scoreThreshold &&
         shoulder["score"] > scoreThreshold &&
         elbow["score"] > scoreThreshold);
@@ -110,6 +126,10 @@ class ShoulderPress implements Poses {
         shoulder = keyPoints.rightShoulder;
         elbow = keyPoints.rightElbow;
         wrist = keyPoints.rightWrist;
+      }
+
+      if (!checkPointScore([shoulder, wrist, elbow, hip])) {
+        return null;
       }
 
       var shoulderAngle = skeleton.getAngleBetween(hip, shoulder, elbow);
@@ -213,6 +233,10 @@ class ShoulderFrontRaise implements Poses {
       knee = keyPoints.leftKnee;
     }
 
+    if (!checkPointScore([shoulder, wrist, elbow, hip, knee])) {
+      return null;
+    }
+
     var backAngle = skeleton.getAngleBetween(shoulder, hip, knee);
     var backMetric = Map<String, dynamic>();
     backMetric["x"] = hip["x"];
@@ -303,6 +327,10 @@ class Squats implements Poses {
       ear = keyPoints.leftEar;
       hip = keyPoints.leftHip;
       knee = keyPoints.leftKnee;
+    }
+
+    if (!checkPointScore([shoulder, ankle, ear, hip, knee])) {
+      return null;
     }
 
     var backAngle = skeleton.getAngleBetween(ear, shoulder, hip);

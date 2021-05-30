@@ -52,7 +52,8 @@ class _ExerciseModelScreenState extends State<ExerciseModelScreen> {
   bool timerCompleted = false;
   var timerWidget;
   VoiceController _voiceController;
-  var motivationMessages = [
+  bool alreadyCalled = true;
+  var messagesGood = [
     "Good Work",
     "Excellent",
     "You're Doing Great",
@@ -117,7 +118,7 @@ class _ExerciseModelScreenState extends State<ExerciseModelScreen> {
                 Positioned(
                   top: 0,
                   child: Container(
-                    padding: EdgeInsets.symmetric(vertical: 8, horizontal: 8),
+                    padding: EdgeInsets.symmetric(vertical: 8, horizontal: 12),
                     decoration: BoxDecoration(
                         color: Color.fromRGBO(0, 0, 0, 0.7),
                         borderRadius: BorderRadius.only(
@@ -128,7 +129,7 @@ class _ExerciseModelScreenState extends State<ExerciseModelScreen> {
                       "Reps: " + (counter ~/ 2).toString(),
                       style: TextStyle(
                         color: Color.fromRGBO(37, 213, 253, 1.0),
-                        fontSize: 20.0,
+                        fontSize: 24.0,
                       ),
                     ),
                   ),
@@ -157,7 +158,7 @@ class _ExerciseModelScreenState extends State<ExerciseModelScreen> {
                   ),
                 ),
                 Positioned(
-                    top: 20,
+                    top: 10,
                     right: 20,
                     child: Opacity(
                       opacity: showFeedback ? 1 : 0,
@@ -166,7 +167,28 @@ class _ExerciseModelScreenState extends State<ExerciseModelScreen> {
                         height: 50,
                         width: 50,
                       ),
-                    ))
+                    )),
+                completions == null || _recognitions.isEmpty ? Stack(
+                  children: [Container(
+                    color: Colors.black.withOpacity(0.5),
+                    width: MediaQuery.of(context).size.width,
+                    height: MediaQuery.of(context).size.height,
+                  ),
+                  Positioned(
+                    top: 200,
+                    width: MediaQuery.of(context).size.width,
+                    child: Center(
+                      child: Text(
+                          "You are not completely visible. Please step into the camera's field of view.",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 30.0,
+                        ),
+                      )
+                    ),
+                  )],
+                ) : Container()
               ])
             : Stack(
                 children: [
@@ -199,15 +221,22 @@ class _ExerciseModelScreenState extends State<ExerciseModelScreen> {
         //TODO: Check if relevant keypoints are visible
         completions =
             pose.evaluate(keyPoints, imageHeight, imageWidth, counter);
+        if (completions != null) {
+          alreadyCalled = true;
+          managePose();
 
-        managePose();
-
-        if (completions["isStepCompleted"] && metricFlag) {
-          dynamicMetricStatus.clear();
-          messages.clear();
-          displayTickForDuration(2);
-          counter++;
+          if (completions["isStepCompleted"] && metricFlag) {
+            dynamicMetricStatus.clear();
+            messages.clear();
+            displayTickForDuration(2);
+            counter++;
+          }
         }
+      }
+
+      if(timerCompleted && alreadyCalled && (completions == null || _recognitions.isEmpty)) {
+        _playVoice("You are not completely visible.");
+        alreadyCalled = false;
       }
     });
   }
@@ -221,7 +250,7 @@ class _ExerciseModelScreenState extends State<ExerciseModelScreen> {
   void displayTickForDuration(int seconds) {
     feedbackImageToDisplay = tickImageString;
     if (Random().nextBool() && counter % 2 == 0) {
-      var element = getRandomElement(motivationMessages);
+      var element = getRandomElement(messagesGood);
       _playVoice(element);
     }
     showFeedback = true;
