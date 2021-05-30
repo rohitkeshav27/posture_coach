@@ -53,7 +53,7 @@ class _ExerciseModelScreenState extends State<ExerciseModelScreen> {
   var timerWidget;
   VoiceController _voiceController;
   bool alreadyCalled = true;
-  var messagesGood = [
+  var motivationMessages = [
     "Good Work",
     "Excellent",
     "You're Doing Great",
@@ -64,6 +64,7 @@ class _ExerciseModelScreenState extends State<ExerciseModelScreen> {
     "Just do it",
     "Keep Pushing"
   ];
+  bool hasGotNegativeFeedback = false;
 
   @override
   void initState() {
@@ -248,9 +249,10 @@ class _ExerciseModelScreenState extends State<ExerciseModelScreen> {
 
   void displayTickForDuration(int seconds) {
     feedbackImageToDisplay = tickImageString;
-    if (Random().nextBool() && counter % 2 == 0) {
-      var element = getRandomElement(messagesGood);
+    if ((Random().nextBool() && counter % 2 == 0) || hasGotNegativeFeedback) {
+      var element = getRandomElement(motivationMessages);
       _playVoice(element);
+      hasGotNegativeFeedback = false;
     }
     showFeedback = true;
     Timer(Duration(seconds: seconds), () {
@@ -269,6 +271,7 @@ class _ExerciseModelScreenState extends State<ExerciseModelScreen> {
           }
           messages[index] = metric["message"];
           feedbackImageToDisplay = crossImageString;
+          hasGotNegativeFeedback = true;
           showFeedback = true;
         }
         if (metric["type"] == metricType.static && metric["completion"] == 0) {
@@ -294,6 +297,7 @@ class _ExerciseModelScreenState extends State<ExerciseModelScreen> {
                 metric["completion"] == 0) {
               dynamicMetricStatus[index] = MetricStatus.notCompleted;
               messages[index] = metric["message"];
+              hasGotNegativeFeedback = true;
               _playVoice(messages[index]);
               feedbackImageToDisplay = crossImageString;
               showFeedback = true;

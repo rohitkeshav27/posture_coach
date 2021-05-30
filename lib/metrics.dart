@@ -15,7 +15,7 @@ enum metricType { static, dynamic }
 bool checkPointScore(var list) {
   bool check = false;
   for (var x in list) {
-    if (x["score"] > 0.4) {
+    if (x["score"] > 0.5) {
       check = true;
     }
   }

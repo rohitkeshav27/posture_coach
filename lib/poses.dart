@@ -73,7 +73,6 @@ class JointCompletion extends StatelessWidget {
                   strokeWidth: 8.0,
                 ));
           } else {
-            score = 1;
             if (k["completion"] == 1.0) {
               green = 255;
               red = 0;
@@ -82,7 +81,7 @@ class JointCompletion extends StatelessWidget {
               red = 255;
             }
             if (!k["confidence"]) {
-              red = 255;
+              red = 0;
               green = 255;
             }
             return Positioned(
