@@ -19,7 +19,7 @@ final List<Exercise> exercises = [
   Exercise(
       'Bicep Curl',
       '/bicep/bicepmod',
-      "videos/bicep.mp4",
+      "videos/bicepCurl.mp4",
       'Instructions:\n\t'
           '-Face towards the side\n\t'
           '-Train one arm at a time\n\t'
@@ -34,7 +34,7 @@ final List<Exercise> exercises = [
   Exercise(
       "Shoulder Front Raise",
       '/raise/raisemod',
-      "videos/frontraise.mp4",
+      "videos/frontRaise.mp4",
       'Instructions:\n\t'
           '-Face towards the side\n\t'
           '-Train one arm at a time\n\t'
@@ -49,7 +49,7 @@ final List<Exercise> exercises = [
   Exercise(
       "Shoulder Press",
       '/press/pressmod',
-      "videos/press.mp4",
+      "videos/ShoulderPress.mp4",
       'Instructions:\n\t'
           '-Face towards your phone\n\t'
           '-Stand while exercising\n\t'
@@ -64,7 +64,7 @@ final List<Exercise> exercises = [
   Exercise(
       "Squats",
       '/squats/squatsmod',
-      "videos/Shrug.mp4",
+      "videos/squats.mp4",
       'Instructions:\n\t'
           '-Face towards the side\n\t'
           '-You can keep your arms out to maintain balance\n\t'
