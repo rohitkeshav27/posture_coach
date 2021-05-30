@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flip_card/flip_card.dart';
 
 const flippingCardStyle = TextStyle(
-    color: Colors.black, fontWeight: FontWeight.normal, fontSize: 20.0);
+    color: Colors.black, fontWeight: FontWeight.normal, fontSize: 18.0);
 
 class FlippingCard extends StatelessWidget {
   FlippingCard({@required this.frontInfo, @required this.backInfo});

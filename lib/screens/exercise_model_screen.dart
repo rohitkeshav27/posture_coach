@@ -218,7 +218,6 @@ class _ExerciseModelScreenState extends State<ExerciseModelScreen> {
 
       if (_recognitions.isNotEmpty && timerCompleted) {
         var pose = PosesFactory.getPose(widget.exerciseName);
-        //TODO: Check if relevant keypoints are visible
         completions =
             pose.evaluate(keyPoints, imageHeight, imageWidth, counter);
         if (completions != null) {

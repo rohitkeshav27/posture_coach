@@ -20,34 +20,56 @@ final List<Exercise> exercises = [
       'Bicep Curl',
       '/bicep/bicepmod',
       "videos/bicep.mp4",
-      'Biceps curl is a general term for a series of strength'
-          ' exercises that involve brachioradialis, '
+      'Instructions:\n\t'
+          '-Face towards the side\n\t'
+          '-Train one arm at a time\n\t'
+          '-The arm you wish to train should face your phone\n\t'
+          '-Using a dumbbell is recommended\n\t'
+          '-Start with a light weight and gradually increase\n\n'
+          'Tap for description',
+      'Biceps curl is a general term for a series of strength '
+          'exercises that involve brachioradialis, '
           'front deltoid and the main target on biceps brachii. '
-          'Includes variations using barbell, dumbbell and resistance band, etc.',
-      'Types of Bicep Curl:\n'
-          '\t-Concentration Curl \n\t-Hammer Curl\n\t-Spider Curl \n\t-Zottman Curl\n\t-Cable Curls '),
+          'Includes variations using barbell, dumbbell and resistance band, etc.'),
   Exercise(
       "Shoulder Front Raise",
       '/raise/raisemod',
       "videos/frontraise.mp4",
+      'Instructions:\n\t'
+          '-Face towards the side\n\t'
+          '-Train one arm at a time\n\t'
+          '-The arm you wish to train should face your phone\n\t'
+          '-Using a dumbbell is recommended\n\t'
+          '-Start with a light weight and gradually increase\n\n'
+          'Tap for description',
       'The front raise is a weight training exercise.'
           ' This exercise is an isolation exercise which isolates shoulder flexion.'
           'It primarily works the anterior deltoid, with assistance from the serratus anterior,'
-          ' biceps brachii ',
-      'Types of Shoulder front raise:\n\t-Barbell\n\t-Dumbbell\n\t-Cable'),
+          ' biceps brachii '),
   Exercise(
       "Shoulder Press",
       '/press/pressmod',
       "videos/press.mp4",
-      'The overhead press, also referred to'
-          ' as a shoulder press, military press, or simply the press, '
-          ' is a weight training exercise with many variations. '
-          'The exercise helps build muscular shoulders with bigger arms,',
-      'Types of Shoulder Press:\n\t-Military Press\n\t-Push Press\n\t-Bradford Press'),
+      'Instructions:\n\t'
+          '-Face towards your phone\n\t'
+          '-Stand while exercising\n\t'
+          '-Train both arms simultaneously\n\t'
+          '-Using dumbbells are recommended\n\t'
+          '-Start with a light weight and gradually increase\n\n'
+          'Tap for description',
+      'The overhead press, also referred to '
+          'as a shoulder press, military press, or simply the press, '
+          'is a weight training exercise with many variations. '
+          'The exercise helps build muscular shoulders with bigger arms,'),
   Exercise(
       "Squats",
       '/squats/squatsmod',
       "videos/Shrug.mp4",
-      'A squat is a strength exercise in which the trainee lowers their hips from a standing position and then stands back up.',
-      'Types of Squats:\n\t-Barbell Squats\n\t-Dumbbell Squats\n\t-Weighted Squats')
+      'Instructions:\n\t'
+          '-Face towards the side\n\t'
+          '-You can keep your arms out to maintain balance\n\t'
+          '-Make sure your feet are flat on ground at all times\n\t'
+          '-Keep your back straight throughout the exercise\n\t'
+          'Tap for description',
+      'A squat is a strength exercise in which the trainee lowers their hips from a standing position and then stands back up.')
 ];
