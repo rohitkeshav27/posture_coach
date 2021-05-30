@@ -241,7 +241,7 @@ class ShoulderFrontRaise implements Poses {
     backMetric["x"] = hip["x"];
     backMetric["y"] = hip["y"];
     backMetric["type"] = metricType.static;
-    backMetric["completion"] = (backAngle > 170) ? 1 : 0;
+    backMetric["completion"] = (backAngle > 165) ? 1 : 0;
     backMetric["confidence"] = (shoulder["score"] > scoreThreshold &&
         hip["score"] > scoreThreshold &&
         knee["score"] > scoreThreshold);

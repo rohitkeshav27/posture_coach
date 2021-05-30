@@ -44,7 +44,7 @@ class ExerciseScreenState extends State<ExerciseScreen> {
           style: TextStyle(color: Colors.white),
         ),
       ),
-      body: Column(
+      body: ListView(
         children: [
           SizedBox(
             height: 30.0,
@@ -76,7 +76,10 @@ class ExerciseScreenState extends State<ExerciseScreen> {
           ),
           ButtonOnScreen(
             routeTo: widget.exercise.route,
-          )
+          ),
+          SizedBox(
+            height: 30.0,
+          ),
         ],
       ),
     );
