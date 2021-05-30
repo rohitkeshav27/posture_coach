@@ -70,8 +70,8 @@ class BicepCurl implements Poses {
         shoulder["score"] > scoreThreshold &&
         elbow["score"] > scoreThreshold);
     elbowMetric["message"] = counter % 2 == 0
-        ? "Please raise your arm completely"
-        : "Please lower your arm completely";
+        ? "Raise your arm completely"
+        : "Lower your arm completely";
     keyPointList.add(elbowMetric);
 
     var shoulderAngle = skeleton.getAngleBetween(hip, shoulder, elbow);
@@ -83,7 +83,7 @@ class BicepCurl implements Poses {
     shoulderMetric["confidence"] = (hip["score"] > scoreThreshold &&
         shoulder["score"] > scoreThreshold &&
         elbow["score"] > scoreThreshold);
-    shoulderMetric["message"] = "Please keep your upper arm close to your body";
+    shoulderMetric["message"] = "Keep your upper arm close to your body";
     keyPointList.add(shoulderMetric);
 
     var flag = true;
@@ -142,9 +142,8 @@ class ShoulderPress implements Poses {
       shoulderStaticMetric["confidence"] = (hip["score"] > scoreThreshold &&
           shoulder["score"] > scoreThreshold &&
           elbow["score"] > scoreThreshold);
-      shoulderStaticMetric["message"] = "Please keep your " +
-          i +
-          "elbow at shoulder level"; //TODO: Check message
+      shoulderStaticMetric["message"] =
+          "Keep your " + i + "elbow at shoulder level";
       keyPointList.add(shoulderStaticMetric);
 
       var ghostPoint = Map();
@@ -158,7 +157,7 @@ class ShoulderPress implements Poses {
       lowerArmMetric["completion"] = lowerArmAngle > 150.0 ? 1 : 0;
       lowerArmMetric["confidence"] =
           (wrist["score"] > scoreThreshold && elbow["score"] > scoreThreshold);
-      lowerArmMetric["message"] = "Please keep your " + i + " arm vertical";
+      lowerArmMetric["message"] = "Keep your " + i + " arm vertical";
       keyPointList.add(lowerArmMetric);
 
       var shoulderDynamicMetric = Map<String, dynamic>();
@@ -178,8 +177,8 @@ class ShoulderPress implements Poses {
           shoulder["score"] > scoreThreshold &&
           elbow["score"] > scoreThreshold);
       shoulderDynamicMetric["message"] = counter % 2 == 0
-          ? "Please raise your " + i + " arm completely"
-          : "Please lower your " + i + " arm completely";
+          ? "Raise your " + i + " arm completely"
+          : "Lower your " + i + " arm completely";
       keyPointList.add(shoulderDynamicMetric);
     }
 
@@ -246,7 +245,7 @@ class ShoulderFrontRaise implements Poses {
     backMetric["confidence"] = (shoulder["score"] > scoreThreshold &&
         hip["score"] > scoreThreshold &&
         knee["score"] > scoreThreshold);
-    backMetric["message"] = "correct back"; //TODO: message
+    backMetric["message"] = "Keep your back straight";
     keyPointList.add(backMetric);
 
     var elbowAngle = skeleton.getAngleBetween(shoulder, elbow, wrist);
@@ -258,7 +257,7 @@ class ShoulderFrontRaise implements Poses {
     elbowMetric["confidence"] = (shoulder["score"] > scoreThreshold &&
         elbow["score"] > scoreThreshold &&
         wrist["score"] > scoreThreshold);
-    elbowMetric["message"] = "correct elbow"; //TODO: message
+    elbowMetric["message"] = "Keep your arm straight";
     keyPointList.add(elbowMetric);
 
     var shoulderAngle = skeleton.getAngleBetween(wrist, shoulder, hip);
@@ -278,7 +277,9 @@ class ShoulderFrontRaise implements Poses {
     shoulderMetric["confidence"] = (shoulder["score"] > scoreThreshold &&
         wrist["score"] > scoreThreshold &&
         hip["score"] > scoreThreshold);
-    shoulderMetric["message"] = "correct shoulder"; //TODO: message
+    shoulderMetric["message"] = counter % 2 == 0
+        ? "Raise your arms to eye level"
+        : "Lower your arm completely";
     keyPointList.add(shoulderMetric);
 
     var partsToDisplay = [
@@ -342,7 +343,7 @@ class Squats implements Poses {
     backMetric["confidence"] = (shoulder["score"] > scoreThreshold &&
         hip["score"] > scoreThreshold &&
         ear["score"] > scoreThreshold);
-    backMetric["message"] = "correct back"; //TODO: message
+    backMetric["message"] = "Keep your back straight";
     keyPointList.add(backMetric);
 
     var ghostPoint = Map();
@@ -356,7 +357,7 @@ class Squats implements Poses {
     shoulderToAnkleMetric["completion"] = (shoulderToAnkle > 160) ? 1 : 0;
     shoulderToAnkleMetric["confidence"] =
         (shoulder["score"] > scoreThreshold && ankle["score"] > scoreThreshold);
-    shoulderToAnkleMetric["message"] = "correct shoulder"; //TODO: message
+    shoulderToAnkleMetric["message"] = "Do not lean forward";
     keyPointList.add(shoulderToAnkleMetric);
 
     var kneeAngle = skeleton.getAngleBetween(ankle, knee, hip);
@@ -364,20 +365,20 @@ class Squats implements Poses {
     kneeDynamicMetric["x"] = knee["x"];
     kneeDynamicMetric["y"] = knee["y"];
     kneeDynamicMetric["type"] = metricType.dynamic;
-    if (kneeAngle < 70.0) {
+    if (kneeAngle < 90.0) {
       kneeDynamicMetric["completion"] = counter % 2 == 0 ? 1 : 0;
     } else if (kneeAngle > 160.0) {
       kneeDynamicMetric["completion"] = counter % 2 == 0 ? 0 : 1;
     } else {
       kneeDynamicMetric["completion"] = counter % 2 == 0
-          ? ((kneeAngle - 160) / (70 - 160))
-          : 1 - ((kneeAngle - 160) / (70 - 160));
+          ? ((kneeAngle - 160) / (90 - 160))
+          : 1 - ((kneeAngle - 160) / (90 - 160));
     }
     kneeDynamicMetric["confidence"] = (hip["score"] > scoreThreshold &&
         knee["score"] > scoreThreshold &&
         ankle["score"] > scoreThreshold);
     kneeDynamicMetric["message"] =
-        counter % 2 == 0 ? "Please lower your hip" : "Please stand straight";
+        counter % 2 == 0 ? "Lower your hip" : "Stand straight";
     keyPointList.add(kneeDynamicMetric);
 
     var hipAngle = skeleton.getAngleBetween(shoulder, hip, knee);
@@ -398,8 +399,8 @@ class Squats implements Poses {
         knee["score"] > scoreThreshold &&
         shoulder["score"] > scoreThreshold);
     hipDynamicMetric["message"] = counter % 2 == 0
-        ? "Please lower your shoulder"
-        : "Please stand straight";
+        ? "Squat Lower"
+        : "Stand straight";
     keyPointList.add(hipDynamicMetric);
 
     var partsToDisplay = [
