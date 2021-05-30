@@ -57,8 +57,6 @@ flutter:
     - images/cross.png
     - videos/
     - assets/models/posenet_mv1_075_float_from_checkpoints.tflite
-    - assets/models/posenet_mobilenet_v1_100_257x257_multi_kpt_stripped.tflite
-    - assets/models/multi_person_mobilenet_v1_075_float.tflite
 
 
 
